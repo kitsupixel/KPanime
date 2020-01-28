@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.showdetail.ShowDetailActivity">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="pt.kitsupixel.kpanime.ui.showdetail.ShowDetailViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:contentScrim="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
+                app:layout_scrollInterpolator="@android:anim/decelerate_interpolator">
+
+                <ImageView
+                    android:id="@+id/show_thumbnail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@{viewModel.show.title}"
+                    android:cropToPadding="true"
+                    android:drawingCacheQuality="high"
+                    android:maxHeight="500sp"
+                    android:scaleType="centerCrop"
+                    android:src="@android:drawable/sym_def_app_icon"
+                    app:imageUrl="@{viewModel.show.thumbnail}" />
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/titleTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/mdPadding"
+                    android:layout_marginTop="@dimen/mdPadding"
+                    android:layout_marginEnd="@dimen/mdPadding"
+                    android:textSize="30sp"
+                    app:convertTextToHtml="@{viewModel.show.title}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Rikei ga Koi ni Ochita no de Shoumei shitemita" />
+
+                <TextView
+                    android:id="@+id/descriptionTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/mdPadding"
+                    android:layout_marginTop="@dimen/lgPadding"
+                    android:layout_marginEnd="@dimen/mdPadding"
+                    android:text="@{viewModel.show.synopsis}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+                    tools:text="What happens when a science-inclined girl and boy who are deeply passionate about research fall in love? An intelligent woman named Himuro Ayame who is a science graduate student at Saitama University happens to ask fellow science grad student Yukimura Shinya out. Of course, there’s no logical reason for this love! But as a science and engineering major, not being able to logically prove love would mean that those feelings aren’t real, and they’d fail as a science student. With that in mind, the two drag everyone else in the lab into trying various experiments to prove love actually exists." />
+
+                <ProgressBar
+                    android:id="@+id/loadingSpinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/lgPadding"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/descriptionTextView"
+                    app:goneIfNotNull="@{viewModel.episodes}"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/show_episodes_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginTop="@dimen/lgPadding"
+                    android:layout_weight="0.5"
+                    android:isScrollContainer="false"
+                    app:fastScrollEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/loadingSpinner"
+                    tools:itemCount="30"
+                    tools:listitem="@layout/episode_item">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/favourite_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_marginTop="8dp"
+            android:tint="@android:color/white"
+            app:backgroundTint="@color/colorPrimary"
+            app:layout_anchor="@id/appbar"
+            app:layout_anchorGravity="bottom|end"
+            app:rippleColor="@color/colorPrimaryDark"
+            android:onClick="@{() -> viewModel.toggleFavorite()}"/>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">KPanime</string>
+    <string name="tab_home">Home</string>
+    <string name="tab_latest">Latest</string>
+    <string name="tab_current">Current</string>
+    <string name="tab_shows">Shows</string>
+    <string name="episode">Episode</string>
+    <string name="search">Search</string>
+</resources>
