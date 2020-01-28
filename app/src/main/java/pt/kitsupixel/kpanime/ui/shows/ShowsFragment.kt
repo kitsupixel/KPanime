@@ -67,7 +67,7 @@ class ShowsFragment : Fragment() {
                 if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT)
                     GridLayoutManager(context, 3)
                 else
-                    GridLayoutManager(context, 6)
+                    GridLayoutManager(context, 5)
 
             adapter = viewModelAdapter
         }
