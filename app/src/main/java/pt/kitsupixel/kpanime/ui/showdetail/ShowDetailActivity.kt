@@ -81,6 +81,16 @@ class ShowDetailActivity : AppCompatActivity() {
                 viewModel.eventFavoriteClear()
             }
         })
+
+        viewModel.show.observe(this, Observer { show ->
+            when (show?.favorite) {
+                true -> binding.favouriteFab.setImageResource(R.drawable.ic_favourite)
+                else -> binding.favouriteFab.setImageResource(R.drawable.ic_unfavourite)
+            }
+            // Workaround for bug on lib 28.0.0
+            binding.favouriteFab.hide()
+            binding.favouriteFab.show()
+        })
     }
 
     override fun finish() {
