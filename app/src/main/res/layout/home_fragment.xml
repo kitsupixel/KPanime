@@ -13,15 +13,22 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal|top"
-        android:gravity="center_horizontal|top">
+        android:layout_gravity="center"
+        android:gravity="center">
 
-        <ProgressBar
-            android:id="@+id/home_loading_spinner"
-            app:goneIfNotNull="@{viewModel.shows}"
-            android:layout_width="0dp"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp" />
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_centerInParent="true"
+            android:text="@string/pick_favorites"
+            android:textAlignment="center"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="30sp"
+            app:goneIfEmpty="@{viewModel.shows}" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/home_recycler_view"
@@ -29,7 +36,8 @@
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="3"
-            tools:listitem="@layout/show_item" />
+            tools:listitem="@layout/show_item"
+            tools:visibility="gone" />
 
     </RelativeLayout>
 </layout>

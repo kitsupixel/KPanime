@@ -14,4 +14,5 @@
     <string name="latest">Latest</string>
     <string name="current">Current</string>
     <string name="shows">Shows</string>
+    <string name="pick_favorites">Please pick your favorite shows and enjoy!</string>
 </resources>
