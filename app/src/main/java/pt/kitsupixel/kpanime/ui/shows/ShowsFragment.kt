@@ -1,22 +1,21 @@
 package pt.kitsupixel.kpanime.ui.shows
 
-import android.content.Intent
 import android.content.res.Configuration
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import pt.kitsupixel.kpanime.MainNavDirections
 import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.adapters.ShowItemAdapter
 import pt.kitsupixel.kpanime.adapters.ShowItemClickListener
 import pt.kitsupixel.kpanime.databinding.ShowsFragmentBinding
 import pt.kitsupixel.kpanime.domain.Show
-import pt.kitsupixel.kpanime.ui.showdetail.ShowDetailActivity
 import java.util.*
 
 
@@ -78,28 +77,28 @@ class ShowsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setAdapterToShows()
-        setHasOptionsMenu(true)
+        //setHasOptionsMenu(true)
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        super.onPrepareOptionsMenu(menu)
-
-        val myActionMenuItem: MenuItem? = menu.findItem(R.id.action_search)
-        myActionMenuItem?.isVisible = true
-        val searchView = myActionMenuItem?.actionView as SearchView
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                filterResults(query)
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String): Boolean {
-                filterResults(newText)
-                return true
-            }
-        })
-    }
+//    override fun onPrepareOptionsMenu(menu: Menu) {
+//        super.onPrepareOptionsMenu(menu)
+//
+//        val myActionMenuItem: MenuItem? = menu.findItem(R.id.action_search)
+//        myActionMenuItem?.isVisible = true
+//        val searchView = myActionMenuItem?.actionView as SearchView
+//
+//        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+//            override fun onQueryTextSubmit(query: String?): Boolean {
+//                filterResults(query)
+//                return true
+//            }
+//
+//            override fun onQueryTextChange(newText: String): Boolean {
+//                filterResults(newText)
+//                return true
+//            }
+//        })
+//    }
 
     private fun setAdapterToShows() {
         viewModel.shows.observe(viewLifecycleOwner, Observer { shows ->
@@ -134,14 +133,8 @@ class ShowsFragment : Fragment() {
     }
 
     private fun showClicked(showId: Long) {
-        val intent = Intent(this.context, ShowDetailActivity::class.java)
-
-        val args = Bundle()
-        args.putLong("showId", showId)
-        intent.putExtras(args)
-
-        startActivity(intent)
-
+        val directions = MainNavDirections.actionGlobalDetailFragment().setShowId(showId)
+        Navigation.findNavController(this.view!!).navigate(directions)
         viewModel.navigateEventClear()
     }
 

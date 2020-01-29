@@ -2,12 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.showdetail.ShowDetailActivity">
+    tools:context=".ui.detail.DetailFragment">
 
     <data>
+
         <variable
             name="viewModel"
-            type="pt.kitsupixel.kpanime.ui.showdetail.ShowDetailViewModel" />
+            type="pt.kitsupixel.kpanime.ui.detail.DetailViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -60,6 +61,7 @@
                     android:layout_marginStart="@dimen/mdPadding"
                     android:layout_marginTop="@dimen/mdPadding"
                     android:layout_marginEnd="@dimen/mdPadding"
+                    android:textAppearance="@style/CustomHeadline5"
                     android:textSize="30sp"
                     app:convertTextToHtml="@{viewModel.show.title}"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -75,6 +77,7 @@
                     android:layout_marginTop="@dimen/lgPadding"
                     android:layout_marginEnd="@dimen/mdPadding"
                     android:text="@{viewModel.show.synopsis}"
+                    android:textAppearance="?textAppearanceHeadline6"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/titleTextView"
@@ -85,10 +88,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/lgPadding"
+                    app:goneIfNotNull="@{viewModel.episodes}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/descriptionTextView"
-                    app:goneIfNotNull="@{viewModel.episodes}"/>
+                    app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/show_episodes_recyclerview"
@@ -117,12 +120,13 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:layout_marginTop="8dp"
-            android:tint="@android:color/white"
-            app:backgroundTint="@color/colorPrimary"
+            android:onClick="@{() -> viewModel.toggleFavorite()}"
+            android:tint="@color/secondaryTextColor"
+            app:backgroundTint="@color/primaryColor"
             app:layout_anchor="@id/appbar"
             app:layout_anchorGravity="bottom|end"
-            app:rippleColor="@color/colorPrimaryDark"
-            android:onClick="@{() -> viewModel.toggleFavorite()}"/>
+            app:rippleColor="@color/primaryDarkColor" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </layout>

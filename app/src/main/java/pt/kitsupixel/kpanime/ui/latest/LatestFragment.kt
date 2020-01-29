@@ -1,23 +1,18 @@
 package pt.kitsupixel.kpanime.ui.latest
 
-import android.content.Intent
-import android.content.res.Configuration
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import pt.kitsupixel.kpanime.MainNavDirections
 import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.adapters.ReleaseItemAdapter
 import pt.kitsupixel.kpanime.adapters.ReleaseItemClickListener
 import pt.kitsupixel.kpanime.databinding.LatestFragmentBinding
-import pt.kitsupixel.kpanime.domain.Show
-import pt.kitsupixel.kpanime.ui.showdetail.ShowDetailActivity
 import timber.log.Timber
 
 
@@ -63,7 +58,7 @@ class LatestFragment : Fragment() {
             }
         })
 
-        binding.root.findViewById<RecyclerView>(R.id.latest_recycler_view).apply {
+        binding.latestRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = viewModelAdapter
         }
@@ -73,6 +68,7 @@ class LatestFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
         viewModel.episodes.observe(viewLifecycleOwner, Observer { episodes ->
             episodes?.apply {
                 viewModelAdapter.submitList(episodes)
@@ -80,18 +76,12 @@ class LatestFragment : Fragment() {
 
             Timber.i(episodes.size.toString())
         })
-        setHasOptionsMenu(true)
+//        setHasOptionsMenu(true)
     }
 
     private fun showClicked(showId: Long) {
-        val intent = Intent(this.context, ShowDetailActivity::class.java)
-
-        val args = Bundle()
-        args.putLong("showId", showId)
-        intent.putExtras(args)
-
-        startActivity(intent)
-
+        val directions = MainNavDirections.actionGlobalDetailFragment().setShowId(showId)
+        Navigation.findNavController(this.view!!).navigate(directions)
         viewModel.navigateEventClear()
     }
 

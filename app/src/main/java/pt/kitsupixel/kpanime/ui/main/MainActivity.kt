@@ -1,39 +1,49 @@
 package pt.kitsupixel.kpanime.ui.main
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import com.google.android.material.tabs.TabLayout
-import androidx.viewpager.widget.ViewPager
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
+import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import pt.kitsupixel.kpanime.R
-import pt.kitsupixel.kpanime.database.getDatabase
-import pt.kitsupixel.kpanime.repository.ShowsRepository
+import pt.kitsupixel.kpanime.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var viewPager: ViewPager
+    lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
-        viewPager = findViewById(R.id.view_pager)
-        viewPager.adapter = sectionsPagerAdapter
-
-        val tabs: TabLayout = findViewById(R.id.tabs)
-        tabs.setupWithViewPager(viewPager)
+        setupNavigation()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
+    /**
+     * Setup Navigation for this Activity
+     */
+    private fun setupNavigation() {
+        val navController = this.findNavController(R.id.nav_host_fragment)
+        val bottomNavigation: BottomNavigationView = binding.navView
 
-        return true
+        NavigationUI.setupWithNavController(bottomNavigation, navController)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = this.findNavController(R.id.nav_host_fragment)
+        return navController.navigateUp()
+    }
+
+    fun hideActionBar() {
+        supportActionBar?.hide()
+        binding.navView.visibility = View.GONE
+    }
+
+    fun showActionBar() {
+        supportActionBar?.show()
+        binding.navView.visibility = View.VISIBLE
     }
 }

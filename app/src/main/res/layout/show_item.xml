@@ -59,12 +59,13 @@
                 android:textAlignment="viewStart"
                 android:textAllCaps="false"
                 android:textStyle="bold"
-                app:convertTextToHtml="@{show.title}"
+                app:convertTextToHtml="@{show.title.toUpperCase()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/clickableOverlay"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/video_thumbnail"
-                tools:text="Video title" />
+                style="@style/TextAppearance.ItemTitle"
+                tools:text="A VERY BIG VIDEO TITLE TO PLACE HERE" />
 
             <View
                 android:id="@+id/clickableOverlay"

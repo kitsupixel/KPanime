@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="pt.kitsupixel.kpanime.ui.detail.DetailFragment"
+        android:label="activity_show_detail"
+        tools:layout="@layout/detail_fragment" >
+        <argument
+            android:name="showId"
+            app:argType="long"
+            android:defaultValue="0L" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_detailFragment"
+        app:destination="@id/detailFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="pt.kitsupixel.kpanime.ui.home.HomeFragment"
+        android:label="home_fragment"
+        tools:layout="@layout/home_fragment" />
+    <fragment
+        android:id="@+id/latestFragment"
+        android:name="pt.kitsupixel.kpanime.ui.latest.LatestFragment"
+        android:label="latest_fragment"
+        tools:layout="@layout/latest_fragment" />
+    <fragment
+        android:id="@+id/currentFragment"
+        android:name="pt.kitsupixel.kpanime.ui.current.CurrentFragment"
+        android:label="current_fragment"
+        tools:layout="@layout/current_fragment" />
+    <fragment
+        android:id="@+id/showsFragment"
+        android:name="pt.kitsupixel.kpanime.ui.shows.ShowsFragment"
+        android:label="shows_fragment"
+        tools:layout="@layout/shows_fragment" />
+</navigation>

@@ -15,7 +15,7 @@ interface EpisodeDao {
     fun getByShow(showId: Long): LiveData<List<DatabaseEpisode>?>
 
     @Transaction
-    @Query("SELECT * FROM episodes ORDER BY created_at DESC")
+    @Query("SELECT * FROM episodes WHERE DATE(released_on) >= DATE('now', '-3 days') ORDER BY DATE(released_on) DESC, id DESC LIMIT 10")
     fun getLatest(): LiveData<List<DatabaseEpisodeAndShow>?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

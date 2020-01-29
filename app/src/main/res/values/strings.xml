@@ -6,4 +6,12 @@
     <string name="tab_shows">Shows</string>
     <string name="episode">Episode</string>
     <string name="search">Search</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="home">Home</string>
+    <string name="latest">Latest</string>
+    <string name="current">Current</string>
+    <string name="shows">Shows</string>
 </resources>

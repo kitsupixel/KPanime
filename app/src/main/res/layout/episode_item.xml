@@ -16,8 +16,12 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.CardView.EpisodeItem"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="2dp"
         app:cardCornerRadius="0dp"
-        app:strokeColor="#525252"
         app:cardElevation="5dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,13 +37,11 @@
                 android:layout_marginBottom="16dp"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:scrollHorizontally="true"
                 android:text="@string/episode"
                 android:textAlignment="viewStart"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                style="@style/CustomHeadline6"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -51,14 +53,13 @@
                 android:layout_marginStart="@dimen/mdPadding"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:scrollHorizontally="true"
                 android:text="@{episode.number}"
                 android:textAlignment="viewStart"
-                android:textAllCaps="false"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBaseline_toBaselineOf="@+id/episode_text"
                 app:layout_constraintStart_toEndOf="@+id/episode_text"
+                style="@style/CustomHeadline6"
                 tools:text="001" />
 
             <TextView
@@ -68,13 +69,13 @@
                 android:layout_marginEnd="@dimen/mdPadding"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:scrollHorizontally="true"
                 android:text="@{episode.released_on.toString()}"
                 android:textAlignment="viewStart"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:layout_constraintBaseline_toBaselineOf="@+id/episode_number"
                 app:layout_constraintEnd_toEndOf="parent"
+                style="@style/CustomHeadline6"
                 tools:text="10/10/18" />
 
             <View

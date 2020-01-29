@@ -6,7 +6,6 @@ import androidx.work.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import pt.kitsupixel.kpanime.database.AppDatabase
 import pt.kitsupixel.kpanime.database.getDatabase
 import pt.kitsupixel.kpanime.repository.ShowsRepository
 import pt.kitsupixel.kpanime.work.RefreshDataWorker
