@@ -1,13 +1,12 @@
 package pt.kitsupixel.kpanime.ui.current
 
 import android.content.res.Configuration
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import pt.kitsupixel.kpanime.MainNavDirections
@@ -78,28 +77,33 @@ class CurrentFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setAdapterToShows()
-       // setHasOptionsMenu(true)
+        setHasOptionsMenu(true)
     }
 
-//    override fun onPrepareOptionsMenu(menu: Menu) {
-//        super.onPrepareOptionsMenu(menu)
-//
-//        val myActionMenuItem: MenuItem? = menu.findItem(R.id.action_search)
-//        myActionMenuItem?.isVisible = true
-//        val searchView = myActionMenuItem?.actionView as SearchView
-//
-//        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//                filterResults(query)
-//                return true
-//            }
-//
-//            override fun onQueryTextChange(newText: String): Boolean {
-//                filterResults(newText)
-//                return true
-//            }
-//        })
-//    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.toolbar_menu, menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+
+        val myActionMenuItem: MenuItem? = menu.findItem(R.id.app_bar_search)
+        myActionMenuItem?.isVisible = true
+        val searchView = myActionMenuItem?.actionView as android.widget.SearchView
+
+        searchView.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                filterResults(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                filterResults(newText)
+                return true
+            }
+        })
+    }
 
     private fun setAdapterToShows() {
         viewModel.shows.observe(viewLifecycleOwner, Observer { shows ->
