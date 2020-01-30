@@ -16,11 +16,11 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.CardView.EpisodeItem"
         android:layout_marginStart="2dp"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="2dp"
         android:layout_marginBottom="2dp"
+        app:cardBackgroundColor="#222222"
         app:cardCornerRadius="0dp"
         app:cardElevation="5dp">
 
@@ -30,6 +30,7 @@
 
             <TextView
                 android:id="@+id/episode_text"
+                style="@style/CustomHeadline6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/mdPadding"
@@ -39,15 +40,16 @@
                 android:maxLines="2"
                 android:text="@string/episode"
                 android:textAlignment="viewStart"
+                android:textColor="@color/colorTextPrimaryDark"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                style="@style/CustomHeadline6"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/episode_number"
+                style="@style/CustomHeadline6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/mdPadding"
@@ -55,15 +57,16 @@
                 android:maxLines="2"
                 android:text="@{episode.number}"
                 android:textAlignment="viewStart"
+                android:textColor="@color/colorTextPrimaryDark"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBaseline_toBaselineOf="@+id/episode_text"
                 app:layout_constraintStart_toEndOf="@+id/episode_text"
-                style="@style/CustomHeadline6"
                 tools:text="001" />
 
             <TextView
                 android:id="@+id/episode_date"
+                style="@style/CustomHeadline6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/mdPadding"
@@ -72,10 +75,10 @@
                 android:text="@{episode.released_on.toString()}"
                 android:textAlignment="viewStart"
                 android:textAllCaps="false"
+                android:textColor="@color/colorTextPrimaryDark"
                 android:textStyle="bold"
                 app:layout_constraintBaseline_toBaselineOf="@+id/episode_number"
                 app:layout_constraintEnd_toEndOf="parent"
-                style="@style/CustomHeadline6"
                 tools:text="10/10/18" />
 
             <View
@@ -87,7 +90,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="gone" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

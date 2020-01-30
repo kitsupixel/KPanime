@@ -13,10 +13,11 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#222222">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appbar"
+            android:id="@+id/detail_appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -62,6 +63,7 @@
                     android:layout_marginTop="@dimen/mdPadding"
                     android:layout_marginEnd="@dimen/mdPadding"
                     android:textAppearance="@style/CustomHeadline5"
+                    android:textColor="@color/colorTextPrimaryDark"
                     android:textSize="30sp"
                     app:convertTextToHtml="@{viewModel.show.title}"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -78,6 +80,7 @@
                     android:layout_marginEnd="@dimen/mdPadding"
                     android:text="@{viewModel.show.synopsis}"
                     android:textAppearance="?textAppearanceHeadline6"
+                    android:textColor="@color/colorTextPrimaryDark"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/titleTextView"
@@ -121,11 +124,12 @@
             android:layout_margin="16dp"
             android:layout_marginTop="8dp"
             android:onClick="@{() -> viewModel.toggleFavorite()}"
-            android:tint="@color/secondaryTextColor"
-            app:backgroundTint="@color/primaryColor"
-            app:layout_anchor="@id/appbar"
+            app:srcCompat="@drawable/ic_unfavourite"
+            app:tint="@android:color/white"
+            app:backgroundTint="@color/colorPrimary"
+            app:layout_anchor="@id/detail_appbar"
             app:layout_anchorGravity="bottom|end"
-            app:rippleColor="@color/primaryDarkColor" />
+            app:rippleColor="@color/colorAccent"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

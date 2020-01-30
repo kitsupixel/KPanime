@@ -16,7 +16,6 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
-        style="@style/Widget.MaterialComponents.CardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
@@ -35,6 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:adjustViewBounds="false"
+                android:contentDescription="@{show.title}"
                 android:cropToPadding="false"
                 android:scaleType="centerCrop"
                 app:imageCardUrl="@{show.thumbnail}"
@@ -42,8 +42,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@tools:sample/backgrounds/scenic"
-                android:contentDescription="@{show.title}" />
+                tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
             <TextView
                 android:id="@+id/episode_text"

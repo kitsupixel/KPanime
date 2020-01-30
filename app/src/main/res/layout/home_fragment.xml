@@ -26,7 +26,6 @@
             android:layout_centerInParent="true"
             android:text="@string/pick_favorites"
             android:textAlignment="center"
-            android:textColor="@color/secondaryTextColor"
             android:textSize="30sp"
             app:goneIfEmpty="@{viewModel.shows}" />
 
