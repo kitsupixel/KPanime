@@ -14,6 +14,13 @@
             android:name="showId"
             app:argType="long"
             android:defaultValue="0L" />
+        <action
+            android:id="@+id/action_detailFragment_to_episodeFragment"
+            app:destination="@id/episodeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <action
         android:id="@+id/action_global_detailFragment"
@@ -43,4 +50,18 @@
         android:name="pt.kitsupixel.kpanime.ui.shows.ShowsFragment"
         android:label="shows_fragment"
         tools:layout="@layout/shows_fragment" />
+    <fragment
+        android:id="@+id/episodeFragment"
+        android:name="pt.kitsupixel.kpanime.ui.episode.EpisodeFragment"
+        android:label="episode_fragment"
+        tools:layout="@layout/episode_fragment" >
+        <argument
+            android:name="episodeId"
+            app:argType="long"
+            android:defaultValue="0L" />
+        <argument
+            android:name="showId"
+            app:argType="long"
+            android:defaultValue="0L" />
+    </fragment>
 </navigation>

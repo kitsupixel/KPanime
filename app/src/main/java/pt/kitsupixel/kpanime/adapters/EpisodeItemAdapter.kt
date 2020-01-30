@@ -32,10 +32,6 @@ class EpisodeItemAdapter(val clickListener: EpisodeItemClickListener) :
             it.clickListener = clickListener
         }
     }
-
-    fun setSearchResult(filteredList: List<Episode>?) {
-        submitList(filteredList)
-    }
 }
 
 

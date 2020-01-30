@@ -33,10 +33,6 @@ class ShowItemAdapter(val clickListener: ShowItemClickListener) :
             it.clickListener = clickListener
         }
     }
-
-    fun setSearchResult(filteredList: List<Show>?) {
-        submitList(filteredList)
-    }
 }
 
 

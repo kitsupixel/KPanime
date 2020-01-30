@@ -22,29 +22,30 @@ data class DatabaseLink(
     val type: String,
     val quality: String,
     val link: String
-) {
-    fun List<DatabaseLink>.linkAsDomainModel(): List<Link> {
-        return map {
-            Link(
-                id = it.id,
-                episode_id = it.episode_id,
-                type = it.type,
-                quality = it.quality,
-                link = it.link
-            )
-        }
-    }
+)
 
-    fun DatabaseLink.linkAsDomainModel(): Link {
-        return Link(
-            id = this.id,
-            episode_id = this.episode_id,
-            type = this.type,
-            quality = this.quality,
-            link = this.link
+fun List<DatabaseLink>.linkAsDomainModel(): List<Link> {
+    return map {
+        Link(
+            id = it.id,
+            episode_id = it.episode_id,
+            type = it.type,
+            quality = it.quality,
+            link = it.link
         )
     }
 }
+
+fun DatabaseLink.linkAsDomainModel(): Link {
+    return Link(
+        id = this.id,
+        episode_id = this.episode_id,
+        type = this.type,
+        quality = this.quality,
+        link = this.link
+    )
+}
+
 
 
 

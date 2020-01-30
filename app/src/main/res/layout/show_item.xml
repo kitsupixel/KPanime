@@ -45,7 +45,7 @@
                 tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
             <TextView
-                android:id="@+id/episode_text"
+                android:id="@+id/quality_link"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginStart="8dp"

@@ -10,6 +10,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
+import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import pt.kitsupixel.kpanime.R
@@ -118,8 +120,10 @@ class DetailFragment : Fragment() {
     }
 
     private fun episodeClicked(episodeId: Long) {
-        Toast.makeText(context, "Episode $episodeId clicked", Toast.LENGTH_SHORT)
-            .show()
+        val directions = DetailFragmentDirections.actionDetailFragmentToEpisodeFragment()
+            .setEpisodeId(episodeId)
+            .setShowId(showId)
+        Navigation.findNavController(this.view!!).navigate(directions)
     }
 
 }

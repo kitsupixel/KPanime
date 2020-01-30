@@ -33,10 +33,6 @@ class ReleaseItemAdapter(val clickListener: ReleaseItemClickListener) :
             it.clickListener = clickListener
         }
     }
-
-    fun setSearchResult(filteredList: List<EpisodeAndShow>?) {
-        submitList(filteredList)
-    }
 }
 
 

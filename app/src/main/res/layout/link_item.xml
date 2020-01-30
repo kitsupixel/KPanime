@@ -5,12 +5,12 @@
 
     <data>
         <variable
-            name="episode"
-            type="pt.kitsupixel.kpanime.domain.Episode" />
+            name="link"
+            type="pt.kitsupixel.kpanime.domain.Link" />
 
         <variable
             name="clickListener"
-            type="pt.kitsupixel.kpanime.adapters.EpisodeItemClickListener" />
+            type="pt.kitsupixel.kpanime.adapters.LinkItemClickListener" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -38,14 +38,15 @@
                 android:layout_marginBottom="16dp"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="@string/episode"
+                android:text="@{link.quality}"
                 android:textAlignment="viewStart"
                 android:textColor="@color/colorTextPrimaryDark"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="360p" />
 
             <TextView
                 android:id="@+id/link_type"
@@ -55,14 +56,14 @@
                 android:layout_marginStart="@dimen/mdPadding"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="@{episode.number}"
+                android:text="@{link.type}"
                 android:textAlignment="viewStart"
                 android:textColor="@color/colorTextPrimaryDark"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBaseline_toBaselineOf="@+id/quality_link"
                 app:layout_constraintStart_toEndOf="@+id/quality_link"
-                tools:text="001" />
+                tools:text="Torrent" />
 
             <TextView
                 android:id="@+id/episode_date"
@@ -72,7 +73,7 @@
                 android:layout_marginEnd="@dimen/mdPadding"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="@{episode.released_on.toString()}"
+                android:text=""
                 android:textAlignment="viewStart"
                 android:textAllCaps="false"
                 android:textColor="@color/colorTextPrimaryDark"
@@ -86,7 +87,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="?attr/selectableItemBackground"
-                android:onClick="@{() -> clickListener.onClick(episode)}"
+                android:onClick="@{() -> clickListener.onClick(link)}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

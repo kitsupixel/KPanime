@@ -5,11 +5,9 @@ import androidx.lifecycle.Transformations
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import pt.kitsupixel.kpanime.database.AppDatabase
-import pt.kitsupixel.kpanime.database.entities.DatabaseShowMeta
-import pt.kitsupixel.kpanime.database.entities.episodeAsDomainModel
-import pt.kitsupixel.kpanime.database.entities.episodeShowAsDomainModel
-import pt.kitsupixel.kpanime.database.entities.showMetaAsDomainModel
+import pt.kitsupixel.kpanime.database.entities.*
 import pt.kitsupixel.kpanime.domain.Episode
+import pt.kitsupixel.kpanime.domain.EpisodeAndLink
 import pt.kitsupixel.kpanime.domain.EpisodeAndShow
 import pt.kitsupixel.kpanime.domain.Show
 import pt.kitsupixel.kpanime.network.DTObjects.asDatabaseModel
@@ -50,6 +48,12 @@ class ShowsRepository(private val database: AppDatabase) {
         }
     }
 
+    fun getEpisodeAndLinks(episodeId: Long): LiveData<EpisodeAndLink> {
+        return Transformations.map(database.episodeDao.getEpisodeAndLinks(episodeId)) {
+            it?.episodeLinkAsDomainModel()
+        }
+    }
+
     suspend fun refreshShows() {
         Timber.i("RefreshShows called!")
         withContext(Dispatchers.IO) {
@@ -71,6 +75,16 @@ class ShowsRepository(private val database: AppDatabase) {
         withContext(Dispatchers.IO) {
             val episodes = Network.KPanime.getLatestEpisodes().await()
             database.episodeDao.insert(*episodes.asDatabaseModel())
+        }
+    }
+
+    suspend fun refreshLinks(showId: Long?, episodeId: Long?) {
+        Timber.i("refreshLatest called!")
+        if (showId != null && episodeId != null) {
+            withContext(Dispatchers.IO) {
+                val links = Network.KPanime.getLinks(showId, episodeId).await()
+                database.linkDao.insert(*links.asDatabaseModel())
+            }
         }
     }
 
