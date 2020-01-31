@@ -3,6 +3,7 @@ package pt.kitsupixel.kpanime
 import android.app.Application
 import android.os.Build
 import androidx.work.*
+import com.google.android.gms.ads.MobileAds
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,8 +21,11 @@ class KPApplication : Application() {
         applicationScope.launch {
             setupRecurringWork()
             showsRepository.refreshShows()
-            showsRepository.refreshLatest()
+            //showsRepository.refreshLatest()
         }
+
+        if (!BuildConfig.noAds)
+            MobileAds.initialize(this, "ca-app-pub-7666356884507044~2530296315")
     }
 
     private lateinit var showsRepository: ShowsRepository
@@ -50,7 +54,9 @@ class KPApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        Timber.plant(Timber.DebugTree())
+
+        if (BuildConfig.Logging)
+            Timber.plant(Timber.DebugTree())
 
         val database = getDatabase(this)
         showsRepository = ShowsRepository(database)

@@ -22,9 +22,35 @@ android {
         multiDexEnabled true
     }
     buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            debuggable true
+
+            buildConfigField("Boolean", "AdmobTest", "true")
+            buildConfigField("Boolean", "Logging", "true")
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            buildConfigField("Boolean", "AdmobTest", "false")
+            buildConfigField("Boolean", "Logging", "false")
+        }
+    }
+
+    flavorDimensions "version"
+    productFlavors {
+        lite {
+            dimension "version"
+            applicationIdSuffix ".lite"
+            versionNameSuffix "-lite"
+            buildConfigField("Boolean", "noAds", "false")
+        }
+        pro {
+            dimension "version"
+            applicationIdSuffix ".pro"
+            versionNameSuffix "-pro"
+            buildConfigField("Boolean", "noAds", "true")
         }
     }
 
@@ -97,4 +123,7 @@ dependencies {
 
     // MutliDex
     implementation "com.android.support:multidex:$version_multidex"
+
+    // Google Admob
+    implementation 'com.google.android.gms:play-services-ads:18.3.0'
 }

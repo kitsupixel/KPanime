@@ -17,18 +17,44 @@
         android:gravity="center_horizontal|top"
         android:background="#222222">
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/episode_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:textAppearance="@style/CustomHeadline5"
+                    android:textColor="@color/colorTextPrimaryDark"
+                    app:formatText="@{viewModel.episode.number}"
+                    tools:text="Episode 001" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/episode_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="24dp"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="2"
+                    tools:listitem="@layout/link_item" />
+            </LinearLayout>
+        </ScrollView>
+
         <ProgressBar
             android:id="@+id/episode_loading_spinner"
-            app:goneIfNotNull="@{viewModel.episode.links}"
+            app:goneIfNotNull="@{viewModel.links}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/episode_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:listitem="@layout/link_item" />
 
     </RelativeLayout>
 

@@ -1,13 +1,16 @@
 package pt.kitsupixel.kpanime.ui.latest
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import pt.kitsupixel.kpanime.BuildConfig
 import pt.kitsupixel.kpanime.MainNavDirections
 import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.adapters.ReleaseItemAdapter
@@ -74,7 +77,7 @@ class LatestFragment : Fragment() {
                 viewModelAdapter.submitList(episodes)
             }
 
-            Timber.i(episodes.size.toString())
+            if (BuildConfig.Logging) Timber.i(episodes.size.toString())
         })
 //        setHasOptionsMenu(true)
     }

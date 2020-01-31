@@ -11,4 +11,5 @@ data class Episode(
     fun toLocalDate(): String {
         return DateTime.parse(this.released_on).toLocalDate().toString()
     }
+
 }

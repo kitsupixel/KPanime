@@ -10,7 +10,7 @@ import pt.kitsupixel.kpanime.database.entities.DatabaseEpisodeAndShow
 interface EpisodeDao {
 
     @Query("SELECT * FROM episodes WHERE id = :id")
-    fun get(id: Int): LiveData<DatabaseEpisode?>
+    fun get(id: Long): LiveData<DatabaseEpisode?>
 
     @Query("SELECT * FROM episodes WHERE show_id = :showId ORDER BY released_on DESC")
     fun getByShow(showId: Long): LiveData<List<DatabaseEpisode>?>

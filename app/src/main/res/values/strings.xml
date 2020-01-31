@@ -16,4 +16,5 @@
     <string name="shows">Shows</string>
     <string name="pick_favorites">Please pick your favorite shows and enjoy!</string>
     <string name="search_shows">Search shows</string>
+    <string name="episode_text">Episode %1$s</string>
 </resources>

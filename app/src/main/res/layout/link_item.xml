@@ -28,59 +28,56 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/quality_link"
-                style="@style/CustomHeadline6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/mdPadding"
-                android:layout_marginTop="@dimen/lgPadding"
-                android:layout_marginBottom="16dp"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:text="@{link.quality}"
-                android:textAlignment="viewStart"
-                android:textColor="@color/colorTextPrimaryDark"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
+            <ImageView
+                android:id="@+id/type_image_view"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:tint="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="360p" />
+                tools:srcCompat="@drawable/ic_torrent_black_24dp" />
 
             <TextView
                 android:id="@+id/link_type"
                 style="@style/CustomHeadline6"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/mdPadding"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="@{link.type}"
-                android:textAlignment="viewStart"
+                android:textAlignment="center"
                 android:textColor="@color/colorTextPrimaryDark"
-                android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintBaseline_toBaselineOf="@+id/quality_link"
-                app:layout_constraintStart_toEndOf="@+id/quality_link"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/quality_chip"
                 tools:text="Torrent" />
 
-            <TextView
-                android:id="@+id/episode_date"
-                style="@style/CustomHeadline6"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/quality_chip"
+                style="@style/TextAppearance.ItemTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/mdPadding"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:text=""
-                android:textAlignment="viewStart"
-                android:textAllCaps="false"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:checkable="false"
+                android:text="@{link.quality}"
                 android:textColor="@color/colorTextPrimaryDark"
-                android:textStyle="bold"
-                app:layout_constraintBaseline_toBaselineOf="@+id/link_type"
+                app:chipBackgroundColor="#00464343"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:text="10/10/18" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/type_image_view"
+                tools:text="360p" />
 
             <View
                 android:id="@+id/clickableOverlay"
@@ -93,6 +90,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:visibility="gone" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

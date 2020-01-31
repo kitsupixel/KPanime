@@ -1,6 +1,7 @@
 package pt.kitsupixel.kpanime.ui.episode
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,13 +12,16 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
+import pt.kitsupixel.kpanime.BuildConfig
 import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.adapters.LinkItemAdapter
 import pt.kitsupixel.kpanime.adapters.LinkItemClickListener
 import pt.kitsupixel.kpanime.databinding.EpisodeFragmentBinding
 import pt.kitsupixel.kpanime.domain.Link
-import pt.kitsupixel.kpanime.ui.main.MainActivity
 import timber.log.Timber
 
 
@@ -31,7 +35,10 @@ class EpisodeFragment : Fragment() {
         val activity = requireNotNull(this.activity) {
             "You can only access the viewModel after onActivityCreated()"
         }
-        ViewModelProviders.of(this, EpisodeViewModel.Factory(activity.application, showId, episodeId))
+        ViewModelProviders.of(
+            this,
+            EpisodeViewModel.Factory(activity.application, showId, episodeId)
+        )
             .get(EpisodeViewModel::class.java)
     }
 
@@ -64,24 +71,45 @@ class EpisodeFragment : Fragment() {
             })
 
         binding.episodeRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager =
+                if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT)
+                    GridLayoutManager(context, 2)
+                else
+                    GridLayoutManager(context, 4)
             adapter = viewModelAdapter
         }
 
-        //(activity as MainActivity?)?.hideActionBar()
+        if (!BuildConfig.noAds) {
+            setInterstitialAd()
+        }
 
         return binding.root
     }
 
+    fun setInterstitialAd() {
+        val mInterstitialAd = InterstitialAd(this.context)
+
+        if (BuildConfig.AdmobTest) {
+            Timber.i("Using test ad")
+            mInterstitialAd.adUnitId = "ca-app-pub-3940256099942544/1033173712" // Test Ads
+        }
+
+        mInterstitialAd.loadAd(AdRequest.Builder().build())
+
+        mInterstitialAd.adListener = object : AdListener() {
+            override fun onAdLoaded() {
+                mInterstitialAd.show()
+            }
+        }
+    }
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel.episode.observe(viewLifecycleOwner, Observer { episode ->
-            Timber.i("Number of links: " + episode?.links?.size.toString())
-            episode?.links.apply {
-                viewModelAdapter.submitList(this)
+        viewModel.links.observe(viewLifecycleOwner, Observer { links ->
+            links?.apply {
+                viewModelAdapter.submitList(links)
             }
         })
     }
@@ -97,5 +125,4 @@ class EpisodeFragment : Fragment() {
             e.printStackTrace()
         }
     }
-
 }

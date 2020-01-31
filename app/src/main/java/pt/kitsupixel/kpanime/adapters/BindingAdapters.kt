@@ -78,3 +78,8 @@ fun convertTitle(textView: TextView, text: String?) {
         }
     }
 }
+
+@BindingAdapter("formatText")
+fun formatText(textView: TextView, text: String?) {
+    textView.text = String.format(textView.context.getString(R.string.episode_text), text)
+}
