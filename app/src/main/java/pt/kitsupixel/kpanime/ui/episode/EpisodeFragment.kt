@@ -22,6 +22,7 @@ import pt.kitsupixel.kpanime.adapters.LinkItemAdapter
 import pt.kitsupixel.kpanime.adapters.LinkItemClickListener
 import pt.kitsupixel.kpanime.databinding.EpisodeFragmentBinding
 import pt.kitsupixel.kpanime.domain.Link
+import pt.kitsupixel.kpanime.ui.main.MainActivity
 import timber.log.Timber
 
 
@@ -80,7 +81,12 @@ class EpisodeFragment : Fragment() {
         }
 
         if (!BuildConfig.noAds) {
-            setInterstitialAd()
+            val lastAdShown = (activity as MainActivity?)?.getTimeLastAd() ?: 0L
+            val now = System.currentTimeMillis()
+            if (lastAdShown + 60000 < now) {
+                setInterstitialAd()
+                (activity as MainActivity?)?.setTimeLastAd()
+            }
         }
 
         return binding.root

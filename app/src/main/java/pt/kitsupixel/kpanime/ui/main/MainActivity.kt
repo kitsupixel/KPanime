@@ -9,11 +9,14 @@ import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.databinding.ActivityMainBinding
+import java.sql.Timestamp
 
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
+
+    var lastAdShown: Long = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,5 +50,13 @@ class MainActivity : AppCompatActivity() {
     fun showActionBar() {
         supportActionBar?.show()
         binding.navView.visibility = View.VISIBLE
+    }
+
+    fun getTimeLastAd(): Long {
+        return lastAdShown
+    }
+
+    fun setTimeLastAd() {
+        lastAdShown = System.currentTimeMillis()
     }
 }
