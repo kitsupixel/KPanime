@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import pt.kitsupixel.kpanime.database.getDatabase
 import pt.kitsupixel.kpanime.repository.ShowsRepository
 
-class DetailViewModel(application: Application, showId: Long) : ViewModel() {
+class DetailViewModel(application: Application, private val showId: Long) : ViewModel() {
 
     private val viewModelJob = SupervisorJob()
     private val viewModelScope = CoroutineScope(viewModelJob + Dispatchers.Main)
@@ -35,10 +35,9 @@ class DetailViewModel(application: Application, showId: Long) : ViewModel() {
     }
 
     fun toggleFavorite() {
-        val id = show.value?.id ?: 0L
         val toggle = show.value?.favorite ?: false
         viewModelScope.launch {
-            showsRepository.toggleFavorite(id)
+            showsRepository.toggleFavorite(showId)
             _eventFavorite.value = toggle == false
         }
     }

@@ -9,7 +9,6 @@ import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.databinding.ActivityMainBinding
-import java.sql.Timestamp
 
 
 class MainActivity : AppCompatActivity() {

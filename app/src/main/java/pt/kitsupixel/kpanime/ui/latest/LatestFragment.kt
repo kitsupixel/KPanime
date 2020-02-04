@@ -7,11 +7,10 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import pt.kitsupixel.kpanime.BuildConfig
-import pt.kitsupixel.kpanime.MainNavDirections
 import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.adapters.ReleaseItemAdapter
 import pt.kitsupixel.kpanime.adapters.ReleaseItemClickListener
@@ -29,7 +28,7 @@ class LatestFragment : Fragment() {
         val activity = requireNotNull(this.activity) {
             "You can only access the viewModel after onActivityCreated()"
         }
-        ViewModelProviders.of(this, LatestViewModel.Factory(activity.application))
+        ViewModelProvider(this, LatestViewModel.Factory(activity.application))
             .get(LatestViewModel::class.java)
     }
 
@@ -51,26 +50,22 @@ class LatestFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        viewModelAdapter = ReleaseItemAdapter(ReleaseItemClickListener { showId ->
-            showClicked(showId)
-        })
+        setClickListener()
 
-        viewModel.navigateEvent.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                showClicked(it)
-            }
-        })
+        setRecyclerView()
 
-        binding.latestRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = viewModelAdapter
-        }
+        setSwipeRefresh()
 
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    private fun setRecyclerView() {
+        binding.latestRecyclerView.apply {
+            setHasFixedSize(true)
+
+            layoutManager = LinearLayoutManager(context)
+            adapter = viewModelAdapter
+        }
 
         viewModel.episodes.observe(viewLifecycleOwner, Observer { episodes ->
             episodes?.apply {
@@ -79,13 +74,34 @@ class LatestFragment : Fragment() {
 
             if (BuildConfig.Logging) Timber.i(episodes.size.toString())
         })
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 //        setHasOptionsMenu(true)
     }
 
-    private fun showClicked(showId: Long) {
-        val directions = MainNavDirections.actionGlobalDetailFragment().setShowId(showId)
-        Navigation.findNavController(this.view!!).navigate(directions)
-        viewModel.navigateEventClear()
+    private fun setClickListener() {
+        viewModelAdapter = ReleaseItemAdapter(ReleaseItemClickListener { showId ->
+            Navigation.findNavController(this.view!!)
+                .navigate(
+                    LatestFragmentDirections.actionGlobalDetailActivity()
+                        .setShowId(showId)
+                )
+        })
+    }
+
+    private fun setSwipeRefresh() {
+        binding.latestSwipeRefresh.setOnRefreshListener {
+            Timber.i("onRefresh called from SwipeRefreshLayout")
+            viewModel.refresh()
+        }
+
+        viewModel.refreshing.observe(viewLifecycleOwner, Observer { refreshing ->
+            refreshing?.apply {
+                binding.latestSwipeRefresh.isRefreshing = refreshing
+            }
+        })
     }
 
 }

@@ -27,7 +27,13 @@
             android:text="@string/pick_favorites"
             android:textAlignment="center"
             android:textSize="30sp"
-            app:goneIfEmpty="@{viewModel.shows}" />
+            android:visibility="gone"
+            app:goneIfEmpty="@{viewModel.shows}"/>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/home_swipe_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/home_recycler_view"
@@ -37,6 +43,7 @@
             app:spanCount="3"
             tools:listitem="@layout/show_item"
             tools:visibility="gone" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </RelativeLayout>
 </layout>

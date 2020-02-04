@@ -6,15 +6,15 @@ import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
-import pt.kitsupixel.kpanime.MainNavDirections
 import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.adapters.ShowItemAdapter
 import pt.kitsupixel.kpanime.adapters.ShowItemClickListener
 import pt.kitsupixel.kpanime.databinding.CurrentFragmentBinding
 import pt.kitsupixel.kpanime.domain.Show
+import timber.log.Timber
 import java.util.*
 
 
@@ -29,7 +29,7 @@ class CurrentFragment : Fragment() {
         val activity = requireNotNull(this.activity) {
             "You can only access the viewModel after onActivityCreated()"
         }
-        ViewModelProviders.of(this, CurrentViewModel.Factory(activity.application))
+        ViewModelProvider(this, CurrentViewModel.Factory(activity.application))
             .get(CurrentViewModel::class.java)
     }
 
@@ -51,17 +51,19 @@ class CurrentFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        viewModelAdapter = ShowItemAdapter(ShowItemClickListener { showId ->
-            showClicked(showId)
-        })
+        setClickListener()
 
-        viewModel.navigateEvent.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                showClicked(it)
-            }
-        })
+        setRecyclerView()
 
+        setSwipeRefresh()
+
+        return binding.root
+    }
+
+    private fun setRecyclerView() {
         binding.currentRecyclerView.apply {
+            setHasFixedSize(true)
+
             layoutManager =
                 if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT)
                     GridLayoutManager(context, 3)
@@ -71,44 +73,41 @@ class CurrentFragment : Fragment() {
             adapter = viewModelAdapter
         }
 
-        return binding.root
+        setAdapterToShows()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setAdapterToShows()
         setHasOptionsMenu(true)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.toolbar_menu, menu)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        super.onPrepareOptionsMenu(menu)
-
-        val myActionMenuItem: MenuItem? = menu.findItem(R.id.app_bar_search)
-        myActionMenuItem?.isVisible = true
-        val searchView = myActionMenuItem?.actionView as android.widget.SearchView
-
-        searchView.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                filterResults(query)
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String): Boolean {
-                filterResults(newText)
-                return true
-            }
-        })
     }
 
     private fun setAdapterToShows() {
         viewModel.shows.observe(viewLifecycleOwner, Observer { shows ->
             shows?.apply {
                 viewModelAdapter.submitList(shows)
+            }
+        })
+    }
+
+    private fun setClickListener() {
+        viewModelAdapter = ShowItemAdapter(ShowItemClickListener { showId ->
+            Navigation.findNavController(this.view!!)
+                .navigate(
+                    CurrentFragmentDirections.actionGlobalDetailActivity()
+                        .setShowId(showId)
+                )
+        })
+    }
+
+    private fun setSwipeRefresh() {
+        binding.currentSwipeRefresh.setOnRefreshListener {
+            Timber.i("onRefresh called from SwipeRefreshLayout")
+            viewModel.refresh()
+        }
+
+        viewModel.refreshing.observe(viewLifecycleOwner, Observer { refreshing ->
+            refreshing?.apply {
+                binding.currentSwipeRefresh.isRefreshing = refreshing
             }
         })
     }
@@ -137,10 +136,29 @@ class CurrentFragment : Fragment() {
 
     }
 
-    private fun showClicked(showId: Long) {
-        val directions = MainNavDirections.actionGlobalDetailFragment().setShowId(showId)
-        Navigation.findNavController(this.view!!).navigate(directions)
-        viewModel.navigateEventClear()
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.toolbar_menu, menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+
+        val myActionMenuItem: MenuItem? = menu.findItem(R.id.app_bar_search)
+        myActionMenuItem?.isVisible = true
+        val searchView = myActionMenuItem?.actionView as android.widget.SearchView
+
+        searchView.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                filterResults(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                filterResults(newText)
+                return true
+            }
+        })
     }
 
 }

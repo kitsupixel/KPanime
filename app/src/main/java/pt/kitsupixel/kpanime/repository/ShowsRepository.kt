@@ -6,7 +6,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import pt.kitsupixel.kpanime.database.AppDatabase
 import pt.kitsupixel.kpanime.database.entities.*
-import pt.kitsupixel.kpanime.domain.*
+import pt.kitsupixel.kpanime.domain.Episode
+import pt.kitsupixel.kpanime.domain.EpisodeAndShow
+import pt.kitsupixel.kpanime.domain.Link
+import pt.kitsupixel.kpanime.domain.Show
 import pt.kitsupixel.kpanime.network.DTObjects.asDatabaseModel
 import pt.kitsupixel.kpanime.network.Network
 import timber.log.Timber
@@ -42,12 +45,6 @@ class ShowsRepository(private val database: AppDatabase) {
     fun getEpisodesByShow(showId: Long): LiveData<List<Episode>?> {
         return Transformations.map(database.episodeDao.getByShow(showId)) {
             it?.episodeAsDomainModel()
-        }
-    }
-
-    fun getEpisodeAndLinks(episodeId: Long): LiveData<EpisodeAndLink> {
-        return Transformations.map(database.episodeDao.getEpisodeAndLinks(episodeId)) {
-            it?.episodeLinkAsDomainModel()
         }
     }
 

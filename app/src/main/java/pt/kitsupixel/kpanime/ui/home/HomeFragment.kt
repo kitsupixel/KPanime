@@ -8,14 +8,14 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
-import pt.kitsupixel.kpanime.MainNavDirections
 import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.adapters.ShowItemAdapter
 import pt.kitsupixel.kpanime.adapters.ShowItemClickListener
 import pt.kitsupixel.kpanime.databinding.HomeFragmentBinding
+import timber.log.Timber
 
 
 class HomeFragment : Fragment() {
@@ -28,7 +28,7 @@ class HomeFragment : Fragment() {
         val activity = requireNotNull(this.activity) {
             "You can only access the viewModel after onActivityCreated()"
         }
-        ViewModelProviders.of(this, HomeViewModel.Factory(activity.application))
+        ViewModelProvider(this, HomeViewModel.Factory(activity.application))
             .get(HomeViewModel::class.java)
     }
 
@@ -50,17 +50,19 @@ class HomeFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        viewModelAdapter = ShowItemAdapter(ShowItemClickListener { showId ->
-            showClicked(showId)
-        })
+        setClickListener()
 
-        viewModel.navigateEvent.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                showClicked(it)
-            }
-        })
+        setRecyclerView()
 
+        setSwipeRefresh()
+
+        return binding.root
+    }
+
+    private fun setRecyclerView() {
         binding.homeRecyclerView.apply {
+            setHasFixedSize(true)
+
             layoutManager =
                 if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT)
                     GridLayoutManager(context, 3)
@@ -70,15 +72,6 @@ class HomeFragment : Fragment() {
             adapter = viewModelAdapter
         }
 
-        return binding.root
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        setAdapterToShows()
-    }
-
-    private fun setAdapterToShows() {
         viewModel.shows.observe(viewLifecycleOwner, Observer { shows ->
             shows?.apply {
                 viewModelAdapter.submitList(shows)
@@ -86,10 +79,32 @@ class HomeFragment : Fragment() {
         })
     }
 
-    private fun showClicked(showId: Long) {
-        val directions = MainNavDirections.actionGlobalDetailFragment().setShowId(showId)
-        Navigation.findNavController(this.view!!).navigate(directions)
-        viewModel.navigateEventClear()
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        // ...
+    }
+
+    private fun setClickListener() {
+        viewModelAdapter = ShowItemAdapter(ShowItemClickListener { showId ->
+            Navigation.findNavController(this.view!!)
+                .navigate(
+                    HomeFragmentDirections.actionGlobalDetailActivity()
+                        .setShowId(showId)
+                )
+        })
+    }
+
+    private fun setSwipeRefresh() {
+        binding.homeSwipeRefresh.setOnRefreshListener {
+            Timber.i("onRefresh called from SwipeRefreshLayout")
+            viewModel.refresh()
+        }
+
+        viewModel.refreshing.observe(viewLifecycleOwner, Observer { refreshing ->
+            refreshing?.apply {
+                binding.homeSwipeRefresh.isRefreshing = refreshing
+            }
+        })
     }
 
 }

@@ -13,15 +13,19 @@ import pt.kitsupixel.kpanime.work.RefreshDataWorker
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
+
 class KPApplication : Application() {
 
-    val applicationScope = CoroutineScope(Dispatchers.Default)
+    private val applicationScope = CoroutineScope(Dispatchers.Default)
+
+    var lastAdShown: Long = 0L
 
     private fun delayedInit() {
         applicationScope.launch {
             setupRecurringWork()
-            showsRepository.refreshShows()
-            //showsRepository.refreshLatest()
+            if (firstTime) {
+                showsRepository.refreshShows()
+            }
         }
 
         if (!BuildConfig.noAds)
@@ -29,6 +33,8 @@ class KPApplication : Application() {
     }
 
     private lateinit var showsRepository: ShowsRepository
+
+    private var firstTime: Boolean = true
 
     private fun setupRecurringWork() {
         val constraints = Constraints.Builder()
@@ -63,4 +69,13 @@ class KPApplication : Application() {
 
         delayedInit()
     }
+
+    fun getTimeLastAd(): Long {
+        return lastAdShown
+    }
+
+    fun setTimeLastAd() {
+        lastAdShown = System.currentTimeMillis()
+    }
+
 }

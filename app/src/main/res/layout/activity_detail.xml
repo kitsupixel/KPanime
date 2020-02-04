@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.detail.DetailFragment">
+    tools:context="pt.kitsupixel.kpanime.ui.detail.DetailActivity">
 
     <data>
 
@@ -60,7 +60,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/mdPadding"
-                    android:layout_marginTop="@dimen/mdPadding"
+                    android:layout_marginTop="32dp"
                     android:layout_marginEnd="@dimen/mdPadding"
                     android:textAppearance="@style/CustomHeadline5"
                     android:textColor="@color/colorTextPrimaryDark"
@@ -97,17 +97,18 @@
                     app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/show_episodes_recyclerview"
+                    android:id="@+id/detail_episodes_recyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent"
                     android:layout_marginTop="@dimen/lgPadding"
-                    android:layout_weight="0.5"
+                    android:layout_weight="1"
                     android:isScrollContainer="false"
+                    android:visibility="visible"
                     app:fastScrollEnabled="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/loadingSpinner"
-                    tools:itemCount="30"
+                    tools:itemCount="10"
                     tools:listitem="@layout/episode_item">
 
                 </androidx.recyclerview.widget.RecyclerView>
@@ -132,5 +133,4 @@
             app:rippleColor="@color/colorAccent"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
 </layout>

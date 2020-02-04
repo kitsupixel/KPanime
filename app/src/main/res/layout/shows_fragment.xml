@@ -5,6 +5,7 @@
     tools:context=".ui.shows.ShowsFragment">
 
     <data>
+
         <variable
             name="viewModel"
             type="pt.kitsupixel.kpanime.ui.shows.ShowsViewModel" />
@@ -12,24 +13,22 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal|top"
-        android:gravity="center_horizontal|top">
+        android:layout_height="match_parent">
 
-        <ProgressBar
-            android:id="@+id/shows_loading_spinner"
-            app:goneIfNotNull="@{viewModel.shows}"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/shows_recycler_view"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/shows_swipe_refresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="3"
-            tools:listitem="@layout/show_item" />
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/shows_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="3"
+                tools:listitem="@layout/show_item" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </RelativeLayout>
 </layout>

@@ -1,6 +1,8 @@
 package pt.kitsupixel.kpanime.ui.episode
 
 import android.app.Application
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.CoroutineScope
@@ -10,7 +12,7 @@ import kotlinx.coroutines.launch
 import pt.kitsupixel.kpanime.database.getDatabase
 import pt.kitsupixel.kpanime.repository.ShowsRepository
 
-class EpisodeViewModel(private val application: Application, showId: Long, episodeId: Long) : ViewModel() {
+class EpisodeViewModel(private val application: Application, private val showId: Long, private val episodeId: Long) : ViewModel() {
     private val viewModelJob = SupervisorJob()
     private val viewModelScope = CoroutineScope(viewModelJob + Dispatchers.Main)
     private val database = getDatabase(application)
@@ -21,8 +23,20 @@ class EpisodeViewModel(private val application: Application, showId: Long, episo
 
     init {
         viewModelScope.launch {
+            refresh()
+        }
+    }
+
+    private val _refreshing = MutableLiveData<Boolean?>()
+    val refreshing: LiveData<Boolean?>
+        get() = _refreshing
+
+    fun refresh() {
+        _refreshing.value = true
+        viewModelScope.launch {
             showsRepository.refreshLinks(showId, episodeId)
         }
+        _refreshing.value = false
     }
 
     class Factory(val app: Application, val showId: Long, val episodeId: Long) :

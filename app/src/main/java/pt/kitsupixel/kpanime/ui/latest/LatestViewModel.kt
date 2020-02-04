@@ -21,27 +21,29 @@ class LatestViewModel(application: Application) : ViewModel() {
 
     val episodes = showsRepository.latest
 
-    private val _navigateEvent = MutableLiveData<Long?>()
-    val navigateEvent: LiveData<Long?>
-        get() = _navigateEvent
-
     init {
         viewModelScope.launch {
+            _refreshing.value = true
             showsRepository.refreshLatest()
+            _refreshing.value = false
         }
-    }
-
-    fun navigateToEvent(showId: Long) {
-        _navigateEvent.value = showId
-    }
-
-    fun navigateEventClear() {
-        _navigateEvent.value = null
     }
 
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
+    }
+
+    private val _refreshing = MutableLiveData<Boolean?>()
+    val refreshing: LiveData<Boolean?>
+        get() = _refreshing
+
+    fun refresh() {
+        _refreshing.value = true
+        viewModelScope.launch {
+            showsRepository.refreshLatest()
+        }
+        _refreshing.value = false
     }
 
     class Factory(val app: Application) : ViewModelProvider.Factory {
