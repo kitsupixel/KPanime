@@ -14,7 +14,6 @@ import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
 import pt.kitsupixel.kpanime.BuildConfig
-import pt.kitsupixel.kpanime.KPApplication
 import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.adapters.LinkItemAdapter
 import pt.kitsupixel.kpanime.adapters.LinkItemClickListener
@@ -61,12 +60,7 @@ class EpisodeActivity : AppCompatActivity() {
         setSwipeRefresh()
 
         if (!BuildConfig.noAds) {
-            val lastAdShown = (application as KPApplication).getTimeLastAd()
-            val now = System.currentTimeMillis()
-            if (lastAdShown + 60000 < now) {
-                setInterstitialAd()
-                (application as KPApplication).setTimeLastAd()
-            }
+            setInterstitialAd()
         }
     }
 
@@ -137,7 +131,7 @@ class EpisodeActivity : AppCompatActivity() {
             Timber.i("Using test ad")
             mInterstitialAd.adUnitId = "ca-app-pub-3940256099942544/1033173712" // Test Ads
         } else {
-            mInterstitialAd.adUnitId = "ca-app-pub-7666356884507044~2530296315" // Prod Ads
+            mInterstitialAd.adUnitId = "ca-app-pub-7666356884507044/7588812185" // Prod Ads
         }
 
         mInterstitialAd.loadAd(AdRequest.Builder().build())

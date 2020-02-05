@@ -28,8 +28,7 @@ class KPApplication : Application() {
             }
         }
 
-        if (!BuildConfig.noAds)
-            MobileAds.initialize(this, "ca-app-pub-7666356884507044~2530296315")
+        MobileAds.initialize(this, "ca-app-pub-7666356884507044~9085371469")
     }
 
     private lateinit var showsRepository: ShowsRepository
