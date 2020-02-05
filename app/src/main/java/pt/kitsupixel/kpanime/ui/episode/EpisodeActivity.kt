@@ -136,6 +136,8 @@ class EpisodeActivity : AppCompatActivity() {
         if (BuildConfig.AdmobTest) {
             Timber.i("Using test ad")
             mInterstitialAd.adUnitId = "ca-app-pub-3940256099942544/1033173712" // Test Ads
+        } else {
+            mInterstitialAd.adUnitId = "ca-app-pub-7666356884507044~2530296315" // Prod Ads
         }
 
         mInterstitialAd.loadAd(AdRequest.Builder().build())
