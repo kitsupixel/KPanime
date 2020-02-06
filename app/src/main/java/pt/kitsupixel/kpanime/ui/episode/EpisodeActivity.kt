@@ -1,15 +1,30 @@
 package pt.kitsupixel.kpanime.ui.episode
 
+import android.Manifest
+import android.R.attr.button
+import android.app.ProgressDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.view.View
+import android.widget.ProgressBar
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.github.se_bastiaan.torrentstream.StreamStatus
+import com.github.se_bastiaan.torrentstream.Torrent
+import com.github.se_bastiaan.torrentstream.TorrentOptions
+import com.github.se_bastiaan.torrentstream.TorrentStream
+import com.github.se_bastiaan.torrentstream.listeners.TorrentListener
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
@@ -21,7 +36,8 @@ import pt.kitsupixel.kpanime.databinding.ActivityEpisodeBinding
 import pt.kitsupixel.kpanime.domain.Link
 import timber.log.Timber
 
-class EpisodeActivity : AppCompatActivity() {
+
+class EpisodeActivity : AppCompatActivity(), TorrentListener  {
 
     private val viewModel: EpisodeViewModel by lazy {
         ViewModelProvider(this, EpisodeViewModel.Factory(this.application, showId, episodeId))
@@ -99,17 +115,69 @@ class EpisodeActivity : AppCompatActivity() {
             })
     }
 
+    private lateinit var torrentStream: TorrentStream
+
     private fun linkClicked(link: Link) {
         try {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.addCategory(Intent.CATEGORY_BROWSABLE)
-            intent.data = Uri.parse(link.link)
-            startActivity(intent)
+            if (link.type == "Torrent" || link.type == "Magnet") {
+                val torrentOptions: TorrentOptions = TorrentOptions.Builder()
+                    .saveLocation(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS))
+                    .removeFilesAfterStop(true)
+                    .build()
+
+                torrentStream = TorrentStream.init(torrentOptions)
+                torrentStream.addListener(this)
+
+                torrentStream.startStream(link.link)
+
+                binding.progressBar.visibility = View.VISIBLE
+
+            } else {
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.addCategory(Intent.CATEGORY_BROWSABLE)
+                intent.data = Uri.parse(link.link)
+                startActivity(intent)
+            }
         } catch (e: Exception) {
             Toast.makeText(this, "Service unavailable", Toast.LENGTH_SHORT).show()
             e.printStackTrace()
         }
     }
+
+    override fun onStreamReady(torrent: Torrent?) {
+        Timber.i("onStreamReady")
+        binding.progressBar.progress = 100
+        binding.progressBar.visibility = View.GONE
+
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(torrent?.videoFile.toString()))
+        intent.setDataAndType(Uri.parse(torrent?.videoFile.toString()), "video/mp4")
+        startActivity(intent)
+    }
+
+    override fun onStreamPrepared(torrent: Torrent?) {
+        Timber.i("onStreamPrepared")
+    }
+
+    override fun onStreamStopped() {
+        Timber.i("onStreamStopped")
+    }
+
+    override fun onStreamStarted(torrent: Torrent?) {
+        Timber.i("onStreamStarted")
+    }
+
+    override fun onStreamProgress(torrent: Torrent?, status: StreamStatus?) {
+        if (status != null && binding.progressBar.progress != status.bufferProgress)  {
+            Timber.i("Progress: " + status?.bufferProgress)
+            binding.progressBar.isIndeterminate = false
+            binding.progressBar.progress = status.bufferProgress
+        }
+    }
+
+    override fun onStreamError(torrent: Torrent?, e: java.lang.Exception?) {
+        Timber.i("onStreamError")
+    }
+
 
     private fun setSwipeRefresh() {
         binding.episodeSwipeRefresh.setOnRefreshListener {
@@ -141,5 +209,25 @@ class EpisodeActivity : AppCompatActivity() {
                 mInterstitialAd.show()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                0
+            )
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        torrentStream.stopStream()
     }
 }

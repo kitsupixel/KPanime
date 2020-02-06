@@ -137,5 +137,8 @@ dependencies {
     implementation "com.android.support:multidex:$version_multidex"
 
     // Google Admob
-    implementation 'com.google.android.gms:play-services-ads:18.3.0'
+    implementation "com.google.android.gms:play-services-ads:$version_admob"
+
+    // TorrentStream
+    implementation "com.github.TorrentStream:TorrentStream-Android:$version_torrent_stream"
 }

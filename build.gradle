@@ -23,6 +23,7 @@ buildscript {
         version_multidex = "1.0.3"
         version_material = "1.1.0-rc02"
         version_admob = "18.3.0"
+        version_torrent_stream = "2.6.1"
     }
     repositories {
         google()
@@ -43,7 +44,8 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
+
+        maven { url "https://jitpack.io" }
     }
 }
 
