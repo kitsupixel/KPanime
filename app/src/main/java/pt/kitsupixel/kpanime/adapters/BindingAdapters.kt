@@ -42,7 +42,6 @@ fun setImageCardUrl(imageView: ImageView, url: String) {
             RequestOptions()
                 .error(R.drawable.ic_broken_image)
                 .placeholder(R.drawable.loading_animation)
-                .override(135, 180) // resizes the image to these dimensions (in pixel)
                 .centerCrop() // this cropping technique scales the image so that it fills the requested bounds and then crops the extra.
         )
         .into(imageView)
