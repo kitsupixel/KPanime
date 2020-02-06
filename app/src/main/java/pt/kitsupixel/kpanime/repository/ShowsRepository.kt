@@ -12,6 +12,7 @@ import pt.kitsupixel.kpanime.domain.Link
 import pt.kitsupixel.kpanime.domain.Show
 import pt.kitsupixel.kpanime.network.DTObjects.asDatabaseModel
 import pt.kitsupixel.kpanime.network.Network
+import retrofit2.HttpException
 import timber.log.Timber
 
 class ShowsRepository(private val database: AppDatabase) {
@@ -64,24 +65,45 @@ class ShowsRepository(private val database: AppDatabase) {
     suspend fun refreshShows() {
         Timber.i("RefreshShows called!")
         withContext(Dispatchers.IO) {
-            val shows = Network.KPanime.getShows().await()
-            database.showDao.insert(*shows.asDatabaseModel())
+            try {
+                val shows = Network.KPanime.getShows().await()
+                database.showDao.insert(*shows.asDatabaseModel())
+            } catch (e: HttpException) {
+                // Log exception //
+                Timber.e(e.message())
+            } catch (e: Throwable) {
+                // Log error //)
+            }
         }
     }
 
     suspend fun refreshEpisodes(showId: Long) {
         Timber.i("refreshEpisodes called!")
         withContext(Dispatchers.IO) {
-            val episodes = Network.KPanime.getEpisodes(showId).await()
-            database.episodeDao.insert(*episodes.asDatabaseModel())
+            try {
+                val episodes = Network.KPanime.getEpisodes(showId).await()
+                database.episodeDao.insert(*episodes.asDatabaseModel())
+            } catch (e: HttpException) {
+                // Log exception //
+                Timber.e(e.message())
+            } catch (e: Throwable) {
+                // Log error //)
+            }
         }
     }
 
     suspend fun refreshLatest() {
         Timber.i("refreshLatest called!")
         withContext(Dispatchers.IO) {
-            val episodes = Network.KPanime.getLatestEpisodes().await()
-            database.episodeDao.insert(*episodes.asDatabaseModel())
+            try {
+                val episodes = Network.KPanime.getLatestEpisodes().await()
+                database.episodeDao.insert(*episodes.asDatabaseModel())
+            } catch (e: HttpException) {
+                // Log exception //
+                Timber.e(e.message())
+            } catch (e: Throwable) {
+                // Log error //)
+            }
         }
     }
 
@@ -89,8 +111,15 @@ class ShowsRepository(private val database: AppDatabase) {
         Timber.i("refreshLinks called!")
         if (showId != null && episodeId != null) {
             withContext(Dispatchers.IO) {
-                val links = Network.KPanime.getLinks(showId, episodeId).await()
-                database.linkDao.insert(*links.asDatabaseModel())
+                try {
+                    val links = Network.KPanime.getLinks(showId, episodeId).await()
+                    database.linkDao.insert(*links.asDatabaseModel())
+                } catch (e: HttpException) {
+                    // Log exception //
+                    Timber.e(e.message())
+                } catch (e: Throwable) {
+                    // Log error //)
+                }
             }
         }
     }
