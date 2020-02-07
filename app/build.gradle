@@ -43,6 +43,8 @@ android {
 
             buildConfigField("Boolean", "AdmobTest", "false")
             buildConfigField("Boolean", "Logging", "false")
+
+            signingConfig signingConfigs.release
         }
     }
 
@@ -53,14 +55,12 @@ android {
             applicationIdSuffix ".lite"
             versionNameSuffix "-lite"
             buildConfigField("Boolean", "noAds", "false")
-            signingConfig signingConfigs.release
         }
         pro {
             dimension "version"
             applicationIdSuffix ".pro"
             versionNameSuffix "-pro"
             buildConfigField("Boolean", "noAds", "true")
-            signingConfig signingConfigs.release
         }
     }
 

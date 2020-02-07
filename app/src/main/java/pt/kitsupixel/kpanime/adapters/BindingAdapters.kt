@@ -9,6 +9,7 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import pt.kitsupixel.kpanime.R
+import pt.kitsupixel.kpanime.domain.Episode
 
 
 @BindingAdapter("goneIfNotNull")
@@ -78,7 +79,9 @@ fun convertTitle(textView: TextView, text: String?) {
     }
 }
 
-@BindingAdapter("formatText")
-fun formatText(textView: TextView, text: String?) {
-    textView.text = String.format(textView.context.getString(R.string.episode_text), text)
+@BindingAdapter("formatEpisodeText")
+fun formatEpisodeText(textView: TextView, episode: Episode?) {
+    if (episode != null) {
+        textView.text = episode.type.capitalize() + " " + episode.number
+    }
 }

@@ -21,6 +21,7 @@ data class DatabaseLink(
     val episode_id: Long,
     val type: String,
     val quality: String,
+    val language: String,
     val link: String
 )
 
@@ -31,6 +32,7 @@ fun List<DatabaseLink>.linkAsDomainModel(): List<Link> {
             episode_id = it.episode_id,
             type = it.type,
             quality = it.quality,
+            language = it.language,
             link = it.link
         )
     }
@@ -42,6 +44,7 @@ fun DatabaseLink.linkAsDomainModel(): Link {
         episode_id = this.episode_id,
         type = this.type,
         quality = this.quality,
+        language = this.language,
         link = this.link
     )
 }

@@ -8,7 +8,7 @@ import pt.kitsupixel.kpanime.database.entities.DatabaseShowAndMeta
 @Dao
 interface ShowDao {
     @Transaction
-    @Query("SELECT * FROM shows ORDER BY title")
+    @Query("SELECT * FROM shows WHERE active = 1 ORDER BY title")
     fun get(): LiveData<List<DatabaseShowAndMeta>?>
 
     @Transaction
@@ -16,11 +16,11 @@ interface ShowDao {
     fun get(id: Long): LiveData<DatabaseShowAndMeta?>
 
     @Transaction
-    @Query("SELECT shows.* FROM shows INNER JOIN show_meta ON shows.id = show_meta.show_id WHERE show_meta.favorite = 1 ORDER BY title")
+    @Query("SELECT shows.* FROM shows INNER JOIN show_meta ON shows.id = show_meta.show_id WHERE show_meta.favorite = 1 AND shows.active = 1 ORDER BY title")
     fun favorites(): LiveData<List<DatabaseShowAndMeta>?>
 
     @Transaction
-    @Query("SELECT * FROM shows WHERE ongoing = 1 ORDER BY title")
+    @Query("SELECT * FROM shows WHERE ongoing = 1 AND shows.active = 1 ORDER BY title")
     fun current(): LiveData<List<DatabaseShowAndMeta>?>
 
     @Query("UPDATE show_meta SET favorite = NOT(favorite) WHERE show_id = :id")

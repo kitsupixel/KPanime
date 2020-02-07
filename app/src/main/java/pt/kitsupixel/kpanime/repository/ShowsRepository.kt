@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import pt.kitsupixel.kpanime.BuildConfig
 import pt.kitsupixel.kpanime.database.AppDatabase
 import pt.kitsupixel.kpanime.database.entities.*
 import pt.kitsupixel.kpanime.domain.Episode
@@ -63,7 +64,7 @@ class ShowsRepository(private val database: AppDatabase) {
     }
 
     suspend fun refreshShows() {
-        Timber.i("RefreshShows called!")
+        if (BuildConfig.Logging) Timber.i("RefreshShows called!")
         withContext(Dispatchers.IO) {
             try {
                 val shows = Network.KPanime.getShows().await()
@@ -78,7 +79,7 @@ class ShowsRepository(private val database: AppDatabase) {
     }
 
     suspend fun refreshEpisodes(showId: Long) {
-        Timber.i("refreshEpisodes called!")
+        if (BuildConfig.Logging) Timber.i("refreshEpisodes called!")
         withContext(Dispatchers.IO) {
             try {
                 val episodes = Network.KPanime.getEpisodes(showId).await()
@@ -93,7 +94,7 @@ class ShowsRepository(private val database: AppDatabase) {
     }
 
     suspend fun refreshLatest() {
-        Timber.i("refreshLatest called!")
+        if (BuildConfig.Logging) Timber.i("refreshLatest called!")
         withContext(Dispatchers.IO) {
             try {
                 val episodes = Network.KPanime.getLatestEpisodes().await()
@@ -108,7 +109,7 @@ class ShowsRepository(private val database: AppDatabase) {
     }
 
     suspend fun refreshLinks(showId: Long?, episodeId: Long?) {
-        Timber.i("refreshLinks called!")
+        if (BuildConfig.Logging) Timber.i("refreshLinks called!")
         if (showId != null && episodeId != null) {
             withContext(Dispatchers.IO) {
                 try {
@@ -125,7 +126,7 @@ class ShowsRepository(private val database: AppDatabase) {
     }
 
     suspend fun toggleFavorite(showId: Long) {
-        Timber.i("toggleFavorite called with id $showId!")
+        if (BuildConfig.Logging) Timber.i("toggleFavorite called with id $showId!")
         withContext(Dispatchers.IO) {
             val record = database.showMetaDao.get(showId)
             if (record != null) {

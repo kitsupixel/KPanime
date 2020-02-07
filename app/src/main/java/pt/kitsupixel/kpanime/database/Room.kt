@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import pt.kitsupixel.kpanime.database.daos.EpisodeDao
 import pt.kitsupixel.kpanime.database.daos.LinkDao
 import pt.kitsupixel.kpanime.database.daos.ShowDao
@@ -20,7 +22,7 @@ import pt.kitsupixel.kpanime.database.entities.DatabaseShowMeta
         DatabaseLink::class,
         DatabaseShowMeta::class
     ],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -40,10 +42,19 @@ fun getDatabase(context: Context): AppDatabase {
                 AppDatabase::class.java,
                 "db_shows"
             )
-                .fallbackToDestructiveMigration()
+                .addMigrations(MIGRATION_3_4)
                 .build()
         }
     }
 
     return INSTANCE
+}
+
+val MIGRATION_3_4 = object : Migration(3, 4) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("ALTER TABLE shows ADD COLUMN active INTEGER NOT NULL DEFAULT 1")
+        database.execSQL("ALTER TABLE episodes ADD COLUMN type TEXT NOT NULL DEFAULT 'episode'")
+        database.execSQL("ALTER TABLE episode_links ADD COLUMN language TEXT NOT NULL DEFAULT 'en'")
+    }
+
 }

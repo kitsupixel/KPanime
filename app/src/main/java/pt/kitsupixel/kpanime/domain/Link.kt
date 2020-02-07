@@ -5,5 +5,6 @@ data class Link(
     val episode_id: Long,
     val type: String,
     val quality: String,
+    val language: String,
     val link: String
 )

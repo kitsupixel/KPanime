@@ -12,6 +12,7 @@ data class NetworkEpisode(
     val id: Long,
     val show_id: Long,
     val number: String,
+    val type: String,
     val released_on: String,
     val created_at: String
 )
@@ -25,6 +26,7 @@ fun NetworkEpisodeContainer.asDomainModel(): List<Episode> {
             id = it.id,
             show_id = it.show_id,
             number = it.number,
+            type = it.type,
             released_on = it.released_on
         )
     }
@@ -36,6 +38,7 @@ fun NetworkEpisodeContainer.asDatabaseModel(): Array<DatabaseEpisode> {
             id = it.id,
             show_id = it.show_id,
             number = it.number,
+            type = it.type,
             released_on = it.released_on,
             created_at = it.created_at
         )

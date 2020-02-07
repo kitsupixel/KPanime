@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
+import pt.kitsupixel.kpanime.BuildConfig
 import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.adapters.ShowItemAdapter
 import pt.kitsupixel.kpanime.adapters.ShowItemClickListener
@@ -101,7 +102,7 @@ class CurrentFragment : Fragment() {
 
     private fun setSwipeRefresh() {
         binding.currentSwipeRefresh.setOnRefreshListener {
-            Timber.i("onRefresh called from SwipeRefreshLayout")
+            if (BuildConfig.Logging) Timber.i("onRefresh called from SwipeRefreshLayout")
             viewModel.refresh()
         }
 

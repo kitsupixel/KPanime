@@ -13,6 +13,7 @@ data class NetworkLink(
     val episode_id: Long,
     val type: String,
     val quality: String,
+    val language: String,
     val link: String
 )
 
@@ -26,6 +27,7 @@ fun NetworkLinkContainer.asDomainModel(): List<Link> {
             episode_id = it.episode_id,
             type = it.type,
             quality = it.quality,
+            language = it.language,
             link = it.link
         )
     }
@@ -38,6 +40,7 @@ fun NetworkLinkContainer.asDatabaseModel(): Array<DatabaseLink> {
             episode_id = it.episode_id,
             type = it.type,
             quality = it.quality,
+            language = it.language,
             link = it.link
         )
     }.toTypedArray()

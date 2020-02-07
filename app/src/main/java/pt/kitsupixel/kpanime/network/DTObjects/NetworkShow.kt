@@ -15,7 +15,8 @@ data class NetworkShow(
     val thumbnail: String,
     val season: String,
     val year: Int,
-    val ongoing: Int
+    val ongoing: Int,
+    val active: Int
 )
 
 /**
@@ -44,7 +45,8 @@ fun NetworkShowContainer.asDatabaseModel(): Array<DatabaseShow> {
             thumbnail = it.thumbnail,
             season = it.season,
             year = it.year,
-            ongoing = it.ongoing == 1
+            ongoing = it.ongoing == 1,
+            active = it.active == 1
         )
     }.toTypedArray()
 }

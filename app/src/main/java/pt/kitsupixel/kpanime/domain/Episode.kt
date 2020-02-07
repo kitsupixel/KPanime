@@ -6,10 +6,13 @@ data class Episode(
     val id: Long,
     val show_id: Long,
     val number: String,
+    val type: String,
     val released_on: String
 ) {
-    fun toLocalDate(): String {
+    fun releasedToLocalDate(): String {
         return DateTime.parse(this.released_on).toLocalDate().toString()
     }
-
+    fun typeCapitalized(): String {
+        return this.type.capitalize()
+    }
 }

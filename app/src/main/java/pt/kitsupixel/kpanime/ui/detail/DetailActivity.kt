@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import pt.kitsupixel.kpanime.BuildConfig
 import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.adapters.EpisodeItemAdapter
 import pt.kitsupixel.kpanime.adapters.EpisodeItemClickListener
@@ -103,7 +104,7 @@ class DetailActivity : AppCompatActivity() {
                         Snackbar.LENGTH_SHORT
                     ).show()
 
-                Timber.i("favourite is $isFavourite")
+                if (BuildConfig.Logging) Timber.i("favourite is $isFavourite")
 
                 viewModel.eventFavoriteClear()
             }

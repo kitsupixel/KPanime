@@ -93,7 +93,7 @@ class LatestFragment : Fragment() {
 
     private fun setSwipeRefresh() {
         binding.latestSwipeRefresh.setOnRefreshListener {
-            Timber.i("onRefresh called from SwipeRefreshLayout")
+            if (BuildConfig.Logging) Timber.i("onRefresh called from SwipeRefreshLayout")
             viewModel.refresh()
         }
 

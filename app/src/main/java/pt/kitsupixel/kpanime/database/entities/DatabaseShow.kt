@@ -12,7 +12,8 @@ data class DatabaseShow constructor(
     val thumbnail: String?,
     val season: String?,
     val year: Int?,
-    val ongoing: Boolean = false
+    val ongoing: Boolean = false,
+    val active: Boolean = false
 )
 
 fun List<DatabaseShow>.showAsDomainModel(): List<Show> {

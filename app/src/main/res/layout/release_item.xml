@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/episode"
+                android:text="@{episodeAndShow.episode.typeCapitalized()}"
                 app:layout_constraintStart_toEndOf="@+id/ShowImageView"
                 app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
@@ -89,7 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:text="@{episodeAndShow.episode.released_on}"
+                android:text="@{episodeAndShow.episode.releasedToLocalDate()}"
                 app:layout_constraintBaseline_toBaselineOf="@+id/episodeTextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="2020-01-01" />
