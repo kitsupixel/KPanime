@@ -12,7 +12,7 @@ interface EpisodeDao {
     @Query("SELECT * FROM episodes WHERE id = :id")
     fun get(id: Long): LiveData<DatabaseEpisode?>
 
-    @Query("SELECT * FROM episodes WHERE show_id = :showId ORDER BY CASE type WHEN 'episode' THEN 1 WHEN 'batch' THEN 2 ELSE 3 END, number DESC")
+    @Query("SELECT * FROM episodes WHERE show_id = :showId ORDER BY CASE type WHEN 'episode' THEN 1 WHEN 'batch' THEN 2 ELSE 3 END, CAST(number AS INT) DESC, released_on DESC")
     fun getByShow(showId: Long): LiveData<List<DatabaseEpisode>?>
 
     @Transaction
