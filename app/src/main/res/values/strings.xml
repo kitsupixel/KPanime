@@ -17,5 +17,7 @@
     <string name="pick_favorites">Please pick your favorite shows and enjoy!</string>
     <string name="search_shows">Search shows</string>
     <string name="episode_text">Episode %1$s</string>
-    <string name="loading">Loading...</string>
+    <string name="loading">Loading…</string>
+    <string name="warning">Warning: This feature is experimental and can cause a crash on the application.\nThe Video stream is treated as a torrent download, and can stop playing at any given time depending on the total number of seeds or the internet speed.\nThe use of VLC player is recommended.
+    </string>
 </resources>

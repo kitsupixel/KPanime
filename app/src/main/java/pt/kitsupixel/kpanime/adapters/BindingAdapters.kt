@@ -17,6 +17,18 @@ fun goneIfNotNull(view: View, it: Any?) {
     view.visibility = if (it != null) View.GONE else View.VISIBLE
 }
 
+
+@BindingAdapter("goneIfNull")
+fun goneIfNull(view: View, it: Any?) {
+    view.visibility = if (it == null) View.GONE else View.VISIBLE
+}
+
+@BindingAdapter("disabledIfNull")
+fun disabledIfNull(view: View, it: Any?) {
+    view.isEnabled = it != null
+}
+
+
 @BindingAdapter("goneIfFalse")
 fun goneIfNotFalse(view: View, it: Any?) {
     view.visibility = if (it == false) View.GONE else View.VISIBLE

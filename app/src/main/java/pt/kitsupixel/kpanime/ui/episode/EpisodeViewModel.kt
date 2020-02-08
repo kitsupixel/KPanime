@@ -19,7 +19,26 @@ class EpisodeViewModel(private val application: Application, private val showId:
     private val showsRepository = ShowsRepository(database)
 
     var episode = showsRepository.getEpisode(episodeId)
+
     var links = showsRepository.getLinks(episodeId)
+
+
+    private var _torrent480 = MutableLiveData<String?>()
+    val torrent480p: LiveData<String?>
+        get() = _torrent480
+
+    private var _torrent720 = MutableLiveData<String?>()
+    val torrent720p: LiveData<String?>
+        get() = _torrent720
+
+    private var _torrent1080p = MutableLiveData<String?>()
+    val torrent1080p: LiveData<String?>
+        get() = _torrent1080p
+
+    private var _textViewable = MutableLiveData<Boolean>(false)
+    val textViewable: LiveData<Boolean>
+        get() = _textViewable
+
 
     init {
         viewModelScope.launch {
@@ -37,6 +56,22 @@ class EpisodeViewModel(private val application: Application, private val showId:
             showsRepository.refreshLinks(showId, episodeId)
         }
         _refreshing.value = false
+    }
+
+    fun setTorrent480Link(url: String) {
+        _torrent480.value = url
+    }
+
+    fun setTorrent720Link(url: String) {
+        _torrent720.value = url
+    }
+
+    fun setTorrent1080Link(url: String) {
+        _torrent1080p.value = url
+    }
+
+    fun setTextViewable(value: Boolean) {
+        _textViewable.value = value
     }
 
     class Factory(val app: Application, val showId: Long, val episodeId: Long) :

@@ -48,6 +48,7 @@ class EpisodeActivity : AppCompatActivity(), TorrentListener {
     private lateinit var torrentStream: TorrentStream
 
     private var showId: Long = 0L
+
     private var episodeId: Long = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,8 +99,22 @@ class EpisodeActivity : AppCompatActivity(), TorrentListener {
         }
 
         viewModel.links.observe(this, Observer { links ->
+
             links?.apply {
                 viewModelAdapter.submitList(links)
+
+                for (link in links) {
+                    if (link.quality == "480p" && (link.type == "Torrent" || (link.type == "Magnet" && viewModel.torrent480p.value == null))) {
+                        viewModel.setTorrent480Link(link.link)
+                        viewModel.setTextViewable(true)
+                    } else if (link.quality == "720p" && (link.type == "Torrent" || (link.type == "Magnet" && viewModel.torrent720p.value == null))) {
+                        viewModel.setTorrent720Link(link.link)
+                        viewModel.setTextViewable(true)
+                    } else if (link.quality == "1080p" && (link.type == "Torrent" || (link.type == "Magnet" && viewModel.torrent1080p.value == null))) {
+                        viewModel.setTorrent1080Link(link.link)
+                        viewModel.setTextViewable(true)
+                    }
+                }
             }
         })
     }
@@ -118,34 +133,92 @@ class EpisodeActivity : AppCompatActivity(), TorrentListener {
             LinkItemAdapter(LinkItemClickListener { link ->
                 linkClicked(link)
             })
+
+        binding.button480.setOnClickListener {
+            streamEpisode(viewModel.torrent480p.value)
+        }
+
+        binding.button720.setOnClickListener {
+            streamEpisode(viewModel.torrent720p.value)
+        }
+
+        binding.button1080.setOnClickListener {
+            streamEpisode(viewModel.torrent1080p.value)
+        }
     }
 
 
     private fun linkClicked(link: Link) {
         try {
-            if (viewModel.episode.value?.type == "episode" && (link.type == "Torrent" || link.type == "Magnet")) {
-                torrentStream.startStream(link.link)
-                binding.progressBarHolder.visibility = View.VISIBLE
-            } else {
-                val intent = Intent(Intent.ACTION_VIEW)
-                intent.addCategory(Intent.CATEGORY_BROWSABLE)
-                intent.data = Uri.parse(link.link)
-                startActivity(intent)
-            }
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.addCategory(Intent.CATEGORY_BROWSABLE)
+            intent.data = Uri.parse(link.link)
+            startActivity(intent)
         } catch (e: Exception) {
             Toast.makeText(this, "Service unavailable", Toast.LENGTH_SHORT).show()
             e.printStackTrace()
         }
     }
 
+    private var repeatUrl: String? = null
+
+    private fun streamEpisode(url: String?) {
+        repeatUrl = url
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                0
+            )
+        } else {
+            if (url != null) {
+                torrentStream.startStream(url)
+                binding.progressBar.isIndeterminate = true
+                binding.progressBarHolder.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == 0) {
+            if (grantResults.size == 1
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED
+            ) {
+                // We can now safely use the API we requested access to
+                streamEpisode(repeatUrl)
+            } else {
+                // Permission was denied or request was cancelled
+                Toast.makeText(
+                    this,
+                    "You need to give permission to write on external storage to stream an episode",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+
     override fun onStreamReady(torrent: Torrent?) {
         if (BuildConfig.Logging) Timber.i("onStreamReady")
         binding.progressBar.progress = 100
+        binding.progressTextView.text = "100%"
         binding.progressBarHolder.visibility = View.GONE
 
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(torrent?.videoFile.toString()))
-        intent.setDataAndType(Uri.parse(torrent?.videoFile.toString()), "video/mp4")
-        startActivity(intent)
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(torrent?.videoFile.toString()))
+            intent.setDataAndType(Uri.parse(torrent?.videoFile.toString()), "video/mp4")
+            startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(this, "Service unavailable", Toast.LENGTH_SHORT).show()
+            e.printStackTrace()
+        }
     }
 
     override fun onStreamPrepared(torrent: Torrent?) {
@@ -166,6 +239,7 @@ class EpisodeActivity : AppCompatActivity(), TorrentListener {
             if (BuildConfig.Logging) Timber.i("Progress: " + status?.bufferProgress)
             binding.progressBar.isIndeterminate = false
             binding.progressBar.progress = status.bufferProgress
+            binding.progressTextView.text = "${status.bufferProgress}%"
         }
     }
 
@@ -207,17 +281,17 @@ class EpisodeActivity : AppCompatActivity(), TorrentListener {
 
     override fun onResume() {
         super.onResume()
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                0
-            )
-        }
+//        if (ActivityCompat.checkSelfPermission(
+//                this,
+//                Manifest.permission.WRITE_EXTERNAL_STORAGE
+//            ) != PackageManager.PERMISSION_GRANTED
+//        ) {
+//            ActivityCompat.requestPermissions(
+//                this,
+//                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+//                0
+//            )
+//        }
     }
 
     override fun onDestroy() {
