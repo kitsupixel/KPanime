@@ -1,8 +1,10 @@
 package pt.kitsupixel.kpanime.ui.main
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -14,6 +16,10 @@ import kotlin.system.exitProcess
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
+
+    lateinit var navController: NavController
+
+    var lastAdShown: Long = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +34,7 @@ class MainActivity : AppCompatActivity() {
      * Setup Navigation for this Activity
      */
     private fun setupNavigation() {
-        val navController = this.findNavController(R.id.nav_host_fragment)
+        navController = this.findNavController(R.id.nav_host_fragment)
         val bottomNavigation: BottomNavigationView = binding.navView
 
         NavigationUI.setupWithNavController(bottomNavigation, navController)
@@ -39,6 +45,13 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp()
     }
 
+    fun getTimeLastAd(): Long {
+        return lastAdShown
+    }
+
+    fun setTimeLastAd() {
+        lastAdShown = System.currentTimeMillis()
+    }
 
     override fun onDestroy() {
         super.onDestroy()

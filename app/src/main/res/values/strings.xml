@@ -20,4 +20,9 @@
     <string name="loading">Loading…</string>
     <string name="warning">Warning: This feature is experimental and can cause a crash on the application.\nThe Video stream is treated as a torrent download, and can stop playing at any given time depending on the total number of seeds or the internet speed.\nThe use of VLC player is recommended.
     </string>
+    <string name="quality480p">480p</string>
+    <string name="quality720p">720p</string>
+    <string name="quality1080p">1080p</string>
+    <string name="click_link">Click a link from the list bellow to download</string>
+    <string name="delete_episode_after_exiting">Delete episode after exiting this screen</string>
 </resources>

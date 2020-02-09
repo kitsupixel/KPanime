@@ -6,8 +6,6 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -15,15 +13,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.github.se_bastiaan.torrentstream.StreamStatus
-import com.github.se_bastiaan.torrentstream.Torrent
-import com.github.se_bastiaan.torrentstream.TorrentOptions
-import com.github.se_bastiaan.torrentstream.TorrentStream
-import com.github.se_bastiaan.torrentstream.listeners.TorrentListener
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
 import pt.kitsupixel.kpanime.BuildConfig
+import pt.kitsupixel.kpanime.KPApplication
 import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.adapters.LinkItemAdapter
 import pt.kitsupixel.kpanime.adapters.LinkItemClickListener
@@ -32,7 +26,7 @@ import pt.kitsupixel.kpanime.domain.Link
 import timber.log.Timber
 
 
-class EpisodeActivity : AppCompatActivity(), TorrentListener {
+class EpisodeActivity : AppCompatActivity() {
 
     private val viewModel: EpisodeViewModel by lazy {
         ViewModelProvider(this, EpisodeViewModel.Factory(this.application, showId, episodeId))
@@ -44,8 +38,6 @@ class EpisodeActivity : AppCompatActivity(), TorrentListener {
     private lateinit var binding: ActivityEpisodeBinding
 
     private lateinit var viewModelAdapter: LinkItemAdapter
-
-    private lateinit var torrentStream: TorrentStream
 
     private var showId: Long = 0L
 
@@ -74,16 +66,32 @@ class EpisodeActivity : AppCompatActivity(), TorrentListener {
         setSwipeRefresh()
 
         if (!BuildConfig.noAds) {
-            setInterstitialAd()
+            val lastAdShown = (application as KPApplication).getTimeLastAd()
+            val now = System.currentTimeMillis()
+            if (lastAdShown + 60000 < now) {
+                setInterstitialAd()
+                (application as KPApplication).setTimeLastAd()
+            }
         }
 
-        val torrentOptions: TorrentOptions = TorrentOptions.Builder()
-            .saveLocation(applicationContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS))
-            .removeFilesAfterStop(true)
-            .build()
+        setTorrentStreamListner()
+    }
 
-        torrentStream = TorrentStream.init(torrentOptions)
-        torrentStream.addListener(this)
+    private fun setTorrentStreamListner() {
+        viewModel.torrent.observe(this, Observer { torrent ->
+            if (torrent != null) {
+                try {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(torrent.videoFile.toString()))
+                    intent.setDataAndType(Uri.parse(torrent.videoFile.toString()), "video/mp4")
+                    startActivity(intent)
+
+                    viewModel.endLoading()
+                } catch (e: Exception) {
+                    Toast.makeText(this, "Service unavailable", Toast.LENGTH_SHORT).show()
+                    e.printStackTrace()
+                }
+            }
+        })
     }
 
     private fun setRecyclerView() {
@@ -103,16 +111,18 @@ class EpisodeActivity : AppCompatActivity(), TorrentListener {
             links?.apply {
                 viewModelAdapter.submitList(links)
 
-                for (link in links) {
-                    if (link.quality == "480p" && (link.type == "Torrent" || (link.type == "Magnet" && viewModel.torrent480p.value == null))) {
-                        viewModel.setTorrent480Link(link.link)
-                        viewModel.setTextViewable(true)
-                    } else if (link.quality == "720p" && (link.type == "Torrent" || (link.type == "Magnet" && viewModel.torrent720p.value == null))) {
-                        viewModel.setTorrent720Link(link.link)
-                        viewModel.setTextViewable(true)
-                    } else if (link.quality == "1080p" && (link.type == "Torrent" || (link.type == "Magnet" && viewModel.torrent1080p.value == null))) {
-                        viewModel.setTorrent1080Link(link.link)
-                        viewModel.setTextViewable(true)
+                if (viewModel.episode.value?.type == "episode") {
+                    for (link in links) {
+                        if (link.quality == "480p" && (link.type == "Torrent" || (link.type == "Magnet" && viewModel.torrent480p.value == null))) {
+                            viewModel.setTorrent480Link(link.link)
+                            viewModel.setTextViewable(true)
+                        } else if (link.quality == "720p" && (link.type == "Torrent" || (link.type == "Magnet" && viewModel.torrent720p.value == null))) {
+                            viewModel.setTorrent720Link(link.link)
+                            viewModel.setTextViewable(true)
+                        } else if (link.quality == "1080p" && (link.type == "Torrent" || (link.type == "Magnet" && viewModel.torrent1080p.value == null))) {
+                            viewModel.setTorrent1080Link(link.link)
+                            viewModel.setTextViewable(true)
+                        }
                     }
                 }
             }
@@ -147,7 +157,6 @@ class EpisodeActivity : AppCompatActivity(), TorrentListener {
         }
     }
 
-
     private fun linkClicked(link: Link) {
         try {
             val intent = Intent(Intent.ACTION_VIEW)
@@ -176,9 +185,7 @@ class EpisodeActivity : AppCompatActivity(), TorrentListener {
             )
         } else {
             if (url != null) {
-                torrentStream.startStream(url)
-                binding.progressBar.isIndeterminate = true
-                binding.progressBarHolder.visibility = View.VISIBLE
+                viewModel.startStream(url)
             }
         }
     }
@@ -205,47 +212,6 @@ class EpisodeActivity : AppCompatActivity(), TorrentListener {
         }
     }
 
-    override fun onStreamReady(torrent: Torrent?) {
-        if (BuildConfig.Logging) Timber.i("onStreamReady")
-        binding.progressBar.progress = 100
-        binding.progressTextView.text = "100%"
-        binding.progressBarHolder.visibility = View.GONE
-
-        try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(torrent?.videoFile.toString()))
-            intent.setDataAndType(Uri.parse(torrent?.videoFile.toString()), "video/mp4")
-            startActivity(intent)
-        } catch (e: Exception) {
-            Toast.makeText(this, "Service unavailable", Toast.LENGTH_SHORT).show()
-            e.printStackTrace()
-        }
-    }
-
-    override fun onStreamPrepared(torrent: Torrent?) {
-        if (BuildConfig.Logging) Timber.i("onStreamPrepared")
-    }
-
-    override fun onStreamStopped() {
-        if (BuildConfig.Logging) Timber.i("onStreamStopped")
-
-    }
-
-    override fun onStreamStarted(torrent: Torrent?) {
-        if (BuildConfig.Logging) Timber.i("onStreamStarted")
-    }
-
-    override fun onStreamProgress(torrent: Torrent?, status: StreamStatus?) {
-        if (status != null && binding.progressBar.progress != status.bufferProgress) {
-            if (BuildConfig.Logging) Timber.i("Progress: " + status?.bufferProgress)
-            binding.progressBar.isIndeterminate = false
-            binding.progressBar.progress = status.bufferProgress
-            binding.progressTextView.text = "${status.bufferProgress}%"
-        }
-    }
-
-    override fun onStreamError(torrent: Torrent?, e: java.lang.Exception?) {
-        if (BuildConfig.Logging) Timber.i("onStreamError")
-    }
 
     private fun setSwipeRefresh() {
         binding.episodeSwipeRefresh.setOnRefreshListener {
@@ -279,24 +245,4 @@ class EpisodeActivity : AppCompatActivity(), TorrentListener {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-//        if (ActivityCompat.checkSelfPermission(
-//                this,
-//                Manifest.permission.WRITE_EXTERNAL_STORAGE
-//            ) != PackageManager.PERMISSION_GRANTED
-//        ) {
-//            ActivityCompat.requestPermissions(
-//                this,
-//                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-//                0
-//            )
-//        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        if (BuildConfig.Logging) Timber.i("onDestroy")
-        torrentStream.stopStream()
-    }
 }

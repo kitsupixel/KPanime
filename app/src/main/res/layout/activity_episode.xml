@@ -23,9 +23,9 @@
             android:id="@+id/episode_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/lgPadding"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="@dimen/lgPadding"
             android:text="@string/loading"
             android:textAppearance="@style/CustomHeadline5"
             android:textColor="@color/colorTextPrimaryDark"
@@ -38,9 +38,9 @@
             android:id="@+id/whatch_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="@dimen/lgPadding"
+            android:layout_marginTop="@dimen/lgPadding"
+            android:layout_marginEnd="@dimen/lgPadding"
             android:text="To watch the episode choose a quality (experimental)"
             android:textColor="@color/colorTextPrimaryDark"
             android:visibility="gone"
@@ -55,8 +55,8 @@
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_width="wrap_content"
             android:layout_height="42dp"
-            android:layout_marginTop="16dp"
-            android:text="480p"
+            android:layout_marginTop="@dimen/lgPadding"
+            android:text="@string/quality480p"
             android:visibility="gone"
             app:disabledIfNull="@{viewModel.torrent480p}"
             app:goneIfFalse="@{viewModel.textViewable}"
@@ -73,7 +73,7 @@
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_width="wrap_content"
             android:layout_height="42dp"
-            android:text="720p"
+            android:text="@string/quality720p"
             android:visibility="gone"
             app:disabledIfNull="@{viewModel.torrent720p}"
             app:goneIfFalse="@{viewModel.textViewable}"
@@ -89,7 +89,7 @@
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_width="wrap_content"
             android:layout_height="42dp"
-            android:text="1080p"
+            android:text="@string/quality1080p"
             android:visibility="gone"
             app:disabledIfNull="@{viewModel.torrent1080p}"
             app:goneIfFalse="@{viewModel.textViewable}"
@@ -104,10 +104,10 @@
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="Click a link from the list bellow to download"
+            android:layout_marginStart="@dimen/lgPadding"
+            android:layout_marginTop="@dimen/lgPadding"
+            android:layout_marginEnd="@dimen/lgPadding"
+            android:text="@string/click_link"
             android:textColor="@color/colorTextPrimaryDark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -117,7 +117,7 @@
             android:id="@+id/episode_swipe_refresh"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/mdPadding"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2">
@@ -141,12 +141,12 @@
             android:clickable="true"
             android:focusable="true"
             android:keepScreenOn="true"
-            android:visibility="gone"
+            app:goneIfFalse="@{viewModel.loadingTorrent}"
             app:layout_constraintBottom_toBottomOf="@+id/episode_swipe_refresh"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_720"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -183,16 +183,30 @@
                         android:layout_marginTop="@dimen/lgPadding"
                         android:clickable="false"
                         android:indeterminate="true"
-                        android:visibility="visible" />
+                        android:visibility="visible"
+                        app:progressIndicator="@{viewModel.progressTorrent}" />
 
                     <TextView
                         android:id="@+id/progress_text_view"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/progress_bar"
+                        android:layout_alignEnd="@id/progress_bar"
+                        app:progressText="@{viewModel.progressTorrent}"
                         android:textAlignment="center"
                         android:textColor="@color/colorTextPrimaryDark"
-                        tools:text="50% " />
+                        tools:text="50%" />
+
+                    <TextView
+                        android:id="@+id/progress_status_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/progress_bar"
+                        android:layout_alignStart="@id/progress_bar"
+                        android:text="@{viewModel.progressTorrentText}"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorTextPrimaryDark"
+                        tools:text="50%" />
 
                     <TextView
                         android:id="@+id/warning_text_view"
@@ -207,6 +221,8 @@
             </androidx.cardview.widget.CardView>
 
         </FrameLayout>
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

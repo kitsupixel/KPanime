@@ -1,6 +1,9 @@
 package pt.kitsupixel.kpanime
 
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.os.Build
 import androidx.work.*
 import com.google.android.gms.ads.MobileAds
@@ -18,22 +21,21 @@ class KPApplication : Application() {
 
     private val applicationScope = CoroutineScope(Dispatchers.Default)
 
+    private lateinit var showsRepository: ShowsRepository
+
     var lastAdShown: Long = 0L
 
     private fun delayedInit() {
         applicationScope.launch {
-            setupRecurringWork()
-            if (firstTime) {
-                showsRepository.refreshShows()
-            }
-        }
+            //setupRecurringWork()
 
-        MobileAds.initialize(this, "ca-app-pub-7666356884507044~9085371469")
+            showsRepository.refreshShows()
+
+            MobileAds.initialize(applicationContext, "ca-app-pub-7666356884507044~9085371469")
+        }
     }
 
-    private lateinit var showsRepository: ShowsRepository
 
-    private var firstTime: Boolean = true
 
     private fun setupRecurringWork() {
         val constraints = Constraints.Builder()

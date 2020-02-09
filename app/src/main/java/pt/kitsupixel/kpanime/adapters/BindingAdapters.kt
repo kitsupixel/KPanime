@@ -4,6 +4,7 @@ import android.os.Build
 import android.text.Html
 import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
@@ -96,4 +97,18 @@ fun formatEpisodeText(textView: TextView, episode: Episode?) {
     if (episode != null) {
         textView.text = episode.type.capitalize() + " " + episode.number
     }
+}
+
+@BindingAdapter("progressIndicator")
+fun progressIndicator(progressBar: ProgressBar, value: Int) {
+    if (value == 0) progressBar.isIndeterminate = true
+    else {
+        progressBar.isIndeterminate = false
+        progressBar.progress = value
+    }
+}
+
+@BindingAdapter("progressText")
+fun progressText(textView: TextView, value: Int) {
+    textView.text = "${value}%"
 }

@@ -7,7 +7,8 @@
         android:icon="@drawable/ic_search"
         android:title="@string/search"
         android:tooltipText="@string/search_shows"
+        android:visible="false"
         app:actionViewClass="android.widget.SearchView"
-        app:tint="@android:color/white"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        app:tint="@android:color/white" />
 </menu>
