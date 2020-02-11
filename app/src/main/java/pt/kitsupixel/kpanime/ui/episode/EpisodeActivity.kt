@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.github.se_bastiaan.torrentstream.Torrent
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
@@ -74,21 +75,25 @@ class EpisodeActivity : AppCompatActivity() {
             }
         }
 
-        setTorrentStreamListner()
+        setTorrentStreamListener()
     }
 
-    private fun setTorrentStreamListner() {
-        viewModel.torrent.observe(this, Observer { torrent ->
-            if (torrent != null) {
-                try {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(torrent.videoFile.toString()))
-                    intent.setDataAndType(Uri.parse(torrent.videoFile.toString()), "video/mp4")
-                    startActivity(intent)
+    private fun setTorrentStreamListener() {
+        viewModel.openPlayer.observe(this, Observer { isOpenPlayer ->
+            if (isOpenPlayer == true) {
+                val torrent: Torrent? = viewModel.torrent.value
+                if (torrent != null) {
+                    try {
+                        val intent =
+                            Intent(Intent.ACTION_VIEW, Uri.parse(torrent.videoFile.toString()))
+                        intent.setDataAndType(Uri.parse(torrent.videoFile.toString()), "video/mp4")
+                        startActivity(intent)
 
-                    viewModel.endLoading()
-                } catch (e: Exception) {
-                    Toast.makeText(this, "Service unavailable", Toast.LENGTH_SHORT).show()
-                    e.printStackTrace()
+                        viewModel.endLoading()
+                    } catch (e: Exception) {
+                        Toast.makeText(this, "Service unavailable", Toast.LENGTH_SHORT).show()
+                        e.printStackTrace()
+                    }
                 }
             }
         })

@@ -1,7 +1,9 @@
 package pt.kitsupixel.kpanime.ui.episode
 
 import android.app.Application
+import android.os.Build
 import android.os.Environment
+import android.provider.MediaStore
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -57,7 +59,11 @@ class EpisodeViewModel(
     val loadingTorrent: LiveData<Boolean>
         get() = _loadingTorrent
 
-    private var _progressTorrent = MutableLiveData<Int>(0)
+    private var _openPlayer = MutableLiveData<Boolean>(false)
+    val openPlayer: LiveData<Boolean>
+        get() = _openPlayer
+
+    private var _progressTorrent = MutableLiveData(0)
     val progressTorrent: LiveData<Int>
         get() = _progressTorrent
 
@@ -72,10 +78,18 @@ class EpisodeViewModel(
             refresh()
         }
 
-        val torrentOptions: TorrentOptions = TorrentOptions.Builder()
-            .saveLocation(application.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS))
-            .removeFilesAfterStop(true)
-            .build()
+        val torrentOptions = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
+            TorrentOptions.Builder()
+                .saveLocation(MediaStore.Downloads.EXTERNAL_CONTENT_URI.toString())
+                .removeFilesAfterStop(true)
+                .build()
+        } else {
+            TorrentOptions.Builder()
+                .saveLocation(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS))
+                .removeFilesAfterStop(true)
+                .build()
+        }
+
 
         torrentStream = TorrentStream.init(torrentOptions)
         torrentStream.addListener(this)
@@ -101,12 +115,18 @@ class EpisodeViewModel(
 
     fun setTorrentOptions(removeAfterStop: Boolean) {
         Timber.i("setTorrentOptions:" + removeAfterStop.toString())
-        val torrentOptions: TorrentOptions = TorrentOptions.Builder()
-            .saveLocation(application.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS))
-            .removeFilesAfterStop(removeAfterStop)
-            .build()
 
-        torrentStream.options = torrentOptions
+        torrentStream.options = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
+            TorrentOptions.Builder()
+                .saveLocation(MediaStore.Downloads.EXTERNAL_CONTENT_URI.toString())
+                .removeFilesAfterStop(true)
+                .build()
+        } else {
+            TorrentOptions.Builder()
+                .saveLocation(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS))
+                .removeFilesAfterStop(true)
+                .build()
+        }
     }
 
     fun setTorrent480Link(url: String) {
@@ -148,6 +168,7 @@ class EpisodeViewModel(
         if (BuildConfig.Logging) Timber.i("onStreamReady")
         setProgress(100)
         _torrent.value = torrent
+        _openPlayer.value = true
     }
 
     override fun onStreamPrepared(torrent: Torrent?) {
@@ -167,7 +188,8 @@ class EpisodeViewModel(
         if (status != null && _progressTorrent.value != status.bufferProgress) {
             if (BuildConfig.Logging) Timber.i("Progress: " + status?.bufferProgress)
             _progressTorrent.value = status?.bufferProgress
-            _progressTorrentText.value = "Down. Speed: ${humanReadableByteCountSI(status?.downloadSpeed.toLong())}"
+            _progressTorrentText.value =
+                "Down. Speed: ${humanReadableByteCountSI(status?.downloadSpeed.toLong())}"
         }
     }
 
