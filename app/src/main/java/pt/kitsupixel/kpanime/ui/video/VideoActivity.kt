@@ -15,12 +15,12 @@ class VideoActivity : AppCompatActivity() {
 
     private val USE_TEXTURE_VIEW = false
     private val ENABLE_SUBTITLES = true
-    private var ASSET_FILENAME: String? = null
+    private lateinit var ASSET_FILENAME: String
 
-    private var mVideoLayout: VLCVideoLayout? = null
+    private lateinit var mVideoLayout: VLCVideoLayout
 
-    private var mLibVLC: LibVLC? = null
-    private var mMediaPlayer: MediaPlayer? = null
+    private lateinit var mLibVLC: LibVLC
+    private lateinit var mMediaPlayer: MediaPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,36 +30,35 @@ class VideoActivity : AppCompatActivity() {
 
         Timber.i("FileName: $ASSET_FILENAME")
 
-        val args: ArrayList<String> = ArrayList()
-        args.add("-vvv")
-        mLibVLC = LibVLC(this, args)
+        mLibVLC = LibVLC(this)
         mMediaPlayer = MediaPlayer(mLibVLC)
         mVideoLayout = findViewById(R.id.video_layout)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mMediaPlayer?.release()
-        mLibVLC!!.release()
+        mMediaPlayer.release()
+        mLibVLC.release()
     }
 
     override fun onStart() {
         super.onStart()
-//        mMediaPlayer?.attachViews(mVideoLayout!!, null, ENABLE_SUBTITLES, USE_TEXTURE_VIEW)
-//        try {
-//            val media = Media(mLibVLC, assets.openFd(ASSET_FILENAME))
-//            mMediaPlayer?.setMedia(media)
-//            media.release()
-//        } catch (e: IOException) {
-//            throw RuntimeException("Invalid asset folder")
-//        }
-//        mMediaPlayer?.play()
+        mMediaPlayer.attachViews(mVideoLayout, null, ENABLE_SUBTITLES, USE_TEXTURE_VIEW)
+        try {
+            val media = Media(mLibVLC, assets.openFd(ASSET_FILENAME))
+            mMediaPlayer.setMedia(media)
+            media.release()
+        } catch (e: IOException) {
+            throw RuntimeException("Invalid asset folder")
+        }
+
+        mMediaPlayer.play()
     }
 
     override fun onStop() {
         super.onStop()
-        mMediaPlayer?.stop()
-        mMediaPlayer?.detachViews()
+        mMediaPlayer.stop()
+        mMediaPlayer.detachViews()
     }
 
 }

@@ -80,27 +80,24 @@ class EpisodeActivity : AppCompatActivity() {
     }
 
     private fun setTorrentStreamListener() {
-        viewModel.openPlayer.observe(this, Observer { isOpenPlayer ->
-            if (isOpenPlayer == true) {
-                val torrent: Torrent? = viewModel.torrent.value
-                if (torrent != null) {
-                    try {
-                        Timber.i("file: %s", torrent.videoFile.toString())
-                        startActivity(
-                            Intent(this, VideoActivity::class.java)
-                                .putExtra("filePath", torrent.videoFile.toString())
-                        )
+        viewModel.torrent.observe(this, Observer { torrent ->
+            if (torrent?.videoFile != null) {
+                try {
+                    Timber.i("file: %s", torrent.videoFile.toString())
+                    startActivity(
+                        Intent(this, VideoActivity::class.java)
+                            .putExtra("filePath", torrent.videoFile.toString())
+                    )
 
 //                        val intent =
 //                            Intent(Intent.ACTION_VIEW, Uri.parse(torrent.videoFile.toString()))
 //                        intent.setDataAndType(Uri.parse(torrent.videoFile.toString()), "video/mp4")
 //                        startActivity(intent)
 
-                        viewModel.endLoading()
-                    } catch (e: Exception) {
-                        Toast.makeText(this, "Service unavailable", Toast.LENGTH_SHORT).show()
-                        e.printStackTrace()
-                    }
+                    viewModel.endLoading()
+                } catch (e: Exception) {
+                    Toast.makeText(this, "Service unavailable", Toast.LENGTH_SHORT).show()
+                    e.printStackTrace()
                 }
             }
         })
