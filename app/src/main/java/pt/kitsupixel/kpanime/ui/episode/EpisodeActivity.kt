@@ -24,6 +24,7 @@ import pt.kitsupixel.kpanime.adapters.LinkItemAdapter
 import pt.kitsupixel.kpanime.adapters.LinkItemClickListener
 import pt.kitsupixel.kpanime.databinding.ActivityEpisodeBinding
 import pt.kitsupixel.kpanime.domain.Link
+import pt.kitsupixel.kpanime.ui.video.VideoActivity
 import timber.log.Timber
 
 
@@ -84,10 +85,16 @@ class EpisodeActivity : AppCompatActivity() {
                 val torrent: Torrent? = viewModel.torrent.value
                 if (torrent != null) {
                     try {
-                        val intent =
-                            Intent(Intent.ACTION_VIEW, Uri.parse(torrent.videoFile.toString()))
-                        intent.setDataAndType(Uri.parse(torrent.videoFile.toString()), "video/mp4")
-                        startActivity(intent)
+                        Timber.i("file: %s", torrent.videoFile.toString())
+                        startActivity(
+                            Intent(this, VideoActivity::class.java)
+                                .putExtra("filePath", torrent.videoFile.toString())
+                        )
+
+//                        val intent =
+//                            Intent(Intent.ACTION_VIEW, Uri.parse(torrent.videoFile.toString()))
+//                        intent.setDataAndType(Uri.parse(torrent.videoFile.toString()), "video/mp4")
+//                        startActivity(intent)
 
                         viewModel.endLoading()
                     } catch (e: Exception) {

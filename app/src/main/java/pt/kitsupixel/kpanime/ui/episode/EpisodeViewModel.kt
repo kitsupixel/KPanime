@@ -23,6 +23,7 @@ import pt.kitsupixel.kpanime.repository.ShowsRepository
 import pt.kitsupixel.kpanime.utils.humanReadableByteCountSI
 import timber.log.Timber
 
+@Suppress("DEPRECATION")
 class EpisodeViewModel(
     private val application: Application,
     private val showId: Long,
@@ -114,7 +115,7 @@ class EpisodeViewModel(
     }
 
     fun setTorrentOptions(removeAfterStop: Boolean) {
-        Timber.i("setTorrentOptions:" + removeAfterStop.toString())
+        Timber.i("setTorrentOptions:%s", removeAfterStop.toString())
 
         torrentStream.options = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
             TorrentOptions.Builder()
@@ -186,10 +187,10 @@ class EpisodeViewModel(
 
     override fun onStreamProgress(torrent: Torrent?, status: StreamStatus?) {
         if (status != null && _progressTorrent.value != status.bufferProgress) {
-            if (BuildConfig.Logging) Timber.i("Progress: " + status?.bufferProgress)
-            _progressTorrent.value = status?.bufferProgress
+            if (BuildConfig.Logging) Timber.i("Progress: %s", status.bufferProgress)
+            _progressTorrent.value = status.bufferProgress
             _progressTorrentText.value =
-                "Down. Speed: ${humanReadableByteCountSI(status?.downloadSpeed.toLong())}"
+                "Down. Speed: ${humanReadableByteCountSI(status.downloadSpeed.toLong())}"
         }
     }
 
