@@ -1,21 +1,21 @@
 package pt.kitsupixel.kpanime.ui.video
 
 import android.app.Application
+import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.videolan.libvlc.LibVLC
 import org.videolan.libvlc.Media
 import org.videolan.libvlc.MediaPlayer
 import org.videolan.libvlc.util.VLCVideoLayout
-import pt.kitsupixel.kpanime.database.getDatabase
-import pt.kitsupixel.kpanime.repository.ShowsRepository
 import java.io.IOException
+import java.util.*
+import android.os.Handler
+import timber.log.Timber
+
 
 class PlayerViewModel(application: Application) : ViewModel() {
 
@@ -64,7 +64,23 @@ class PlayerViewModel(application: Application) : ViewModel() {
 
         _size.value = mMediaPlayer.length.toInt()
         _time.value = mMediaPlayer.time.toInt()
+
+        val mainHandler = Handler(Looper.getMainLooper())
+
+        mainHandler.post(object : Runnable {
+            override fun run() {
+                updateTimers()
+                mainHandler.postDelayed(this, 1000)
+            }
+        })
+
         mMediaPlayer.play()
+    }
+
+    private fun updateTimers() {
+        _size.value = mMediaPlayer.length.toInt()
+        _time.value = mMediaPlayer.time.toInt()
+        Timber.i("size: ${_size.value.toString()} | time: ${_time.value.toString()}")
     }
 
     fun togglePlay() {
