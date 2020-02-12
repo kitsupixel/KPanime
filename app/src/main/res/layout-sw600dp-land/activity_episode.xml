@@ -118,17 +118,17 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/mdPadding"
-            app:refreshing="@{viewModel.refreshing}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2">
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            app:refreshing="@{viewModel.refreshing}">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/episode_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="2"
+                app:spanCount="5"
                 tools:listitem="@layout/link_item" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
@@ -147,7 +147,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_720"
-            tools:visibility="visible">
+            tools:visibility="gone">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -193,9 +193,9 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/progress_bar"
                         android:layout_alignEnd="@id/progress_bar"
-                        app:progressText="@{viewModel.progressTorrent}"
                         android:textAlignment="center"
                         android:textColor="@color/colorTextPrimaryDark"
+                        app:progressText="@{viewModel.progressTorrent}"
                         tools:text="50%" />
 
                     <TextView

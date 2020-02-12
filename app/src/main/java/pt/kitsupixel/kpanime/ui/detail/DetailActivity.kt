@@ -57,8 +57,6 @@ class DetailActivity : AppCompatActivity() {
     private fun setRecyclerView() {
         binding.detailEpisodesRecyclerview.apply {
             //setHasFixedSize(true)
-
-            layoutManager = LinearLayoutManager(context)
             adapter = viewModelAdapter
         }
 

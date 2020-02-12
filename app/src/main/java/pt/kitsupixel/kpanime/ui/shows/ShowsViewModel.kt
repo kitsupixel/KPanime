@@ -11,6 +11,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import pt.kitsupixel.kpanime.database.getDatabase
 import pt.kitsupixel.kpanime.repository.ShowsRepository
+import timber.log.Timber
 
 class ShowsViewModel(application: Application) : ViewModel() {
 
@@ -21,27 +22,21 @@ class ShowsViewModel(application: Application) : ViewModel() {
 
     val shows = showsRepository.shows
 
-    init {
-        viewModelScope.launch {
-            _refreshing.value = false
-        }
-    }
+    private val _refreshing = MutableLiveData<Boolean>(false)
+    val refreshing: LiveData<Boolean>
+        get() = _refreshing
 
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
     }
 
-    private val _refreshing = MutableLiveData<Boolean?>()
-    val refreshing: LiveData<Boolean?>
-        get() = _refreshing
-
     fun refresh() {
-        _refreshing.value = true
         viewModelScope.launch {
+            _refreshing.value = true
             showsRepository.refreshShows()
+            _refreshing.value = false
         }
-        _refreshing.value = false
     }
 
     class Factory(val app: Application) : ViewModelProvider.Factory {

@@ -11,6 +11,7 @@
             type="pt.kitsupixel.kpanime.ui.detail.DetailViewModel" />
     </data>
 
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -91,7 +92,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/lgPadding"
-                    app:goneIfNotNull="@{viewModel.episodes}"
+                    app:goneIfFalse="@{viewModel.refreshing}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
@@ -108,6 +109,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/loadingSpinner"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="10"
                     tools:listitem="@layout/episode_item">
 
@@ -125,12 +127,12 @@
             android:layout_margin="16dp"
             android:layout_marginTop="8dp"
             android:onClick="@{() -> viewModel.toggleFavorite()}"
-            app:srcCompat="@drawable/ic_unfavourite"
-            app:tint="@android:color/white"
             app:backgroundTint="@color/colorPrimary"
             app:layout_anchor="@id/detail_appbar"
             app:layout_anchorGravity="bottom|end"
-            app:rippleColor="@color/colorAccent"/>
+            app:rippleColor="@color/colorAccent"
+            app:srcCompat="@drawable/ic_unfavourite"
+            app:tint="@android:color/white" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

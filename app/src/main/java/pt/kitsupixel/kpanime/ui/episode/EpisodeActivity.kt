@@ -102,12 +102,6 @@ class EpisodeActivity : AppCompatActivity() {
     private fun setRecyclerView() {
         binding.episodeRecyclerView.apply {
             setHasFixedSize(true)
-
-            layoutManager =
-                if (this.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT)
-                    GridLayoutManager(context, 2)
-                else
-                    GridLayoutManager(context, 4)
             adapter = viewModelAdapter
         }
 
@@ -223,12 +217,6 @@ class EpisodeActivity : AppCompatActivity() {
             if (BuildConfig.Logging) Timber.i("onRefresh called from SwipeRefreshLayout")
             viewModel.refresh()
         }
-
-        viewModel.refreshing.observe(this, Observer { refreshing ->
-            refreshing?.apply {
-                binding.episodeSwipeRefresh.isRefreshing = refreshing
-            }
-        })
     }
 
     private fun setInterstitialAd() {

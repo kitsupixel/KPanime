@@ -38,6 +38,9 @@ class EpisodeViewModel(
 
     var links = showsRepository.getLinks(episodeId)
 
+    private val _refreshing = MutableLiveData<Boolean>(false)
+    val refreshing: LiveData<Boolean>
+        get() = _refreshing
 
     private var _torrent480 = MutableLiveData<String?>()
     val torrent480p: LiveData<String?>
@@ -101,16 +104,12 @@ class EpisodeViewModel(
         torrentStream.stopStream()
     }
 
-    private val _refreshing = MutableLiveData<Boolean?>()
-    val refreshing: LiveData<Boolean?>
-        get() = _refreshing
-
     fun refresh() {
-        _refreshing.value = true
         viewModelScope.launch {
+            _refreshing.value = true
             showsRepository.refreshLinks(showId, episodeId)
+            _refreshing.value = false
         }
-        _refreshing.value = false
     }
 
     fun setTorrentOptions(removeAfterStop: Boolean) {
@@ -177,7 +176,6 @@ class EpisodeViewModel(
 
     override fun onStreamStopped() {
         if (BuildConfig.Logging) Timber.i("onStreamStopped")
-
     }
 
     override fun onStreamStarted(torrent: Torrent?) {

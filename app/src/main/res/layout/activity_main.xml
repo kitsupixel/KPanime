@@ -39,9 +39,10 @@
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/nav_view"
+                style="@style/AppTheme.BottomNavigationBar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                style="@style/AppTheme.BottomNavigationBar"
+                app:itemHorizontalTranslationEnabled="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

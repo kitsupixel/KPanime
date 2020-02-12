@@ -17,7 +17,8 @@
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/current_swipe_refresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:refreshing="@{viewModel.refreshing}">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/current_recycler_view"

@@ -60,8 +60,6 @@ class LatestFragment : Fragment() {
     private fun setRecyclerView() {
         binding.latestRecyclerView.apply {
             setHasFixedSize(true)
-
-            layoutManager = LinearLayoutManager(context)
             adapter = viewModelAdapter
         }
 
@@ -99,12 +97,6 @@ class LatestFragment : Fragment() {
             if (BuildConfig.Logging) Timber.i("onRefresh called from SwipeRefreshLayout")
             viewModel.refresh()
         }
-
-        viewModel.refreshing.observe(viewLifecycleOwner, Observer { refreshing ->
-            refreshing?.apply {
-                binding.latestSwipeRefresh.isRefreshing = refreshing
-            }
-        })
     }
 
 }

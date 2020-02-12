@@ -65,13 +65,6 @@ class HomeFragment : Fragment() {
     private fun setRecyclerView() {
         binding.homeRecyclerView.apply {
             setHasFixedSize(true)
-
-            layoutManager =
-                if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT)
-                    GridLayoutManager(context, 3)
-                else
-                    GridLayoutManager(context, 5)
-
             adapter = viewModelAdapter
         }
 
@@ -125,12 +118,6 @@ class HomeFragment : Fragment() {
             if (BuildConfig.Logging) Timber.i("onRefresh called from SwipeRefreshLayout")
             viewModel.refresh()
         }
-
-        viewModel.refreshing.observe(viewLifecycleOwner, Observer { refreshing ->
-            refreshing?.apply {
-                binding.homeSwipeRefresh.isRefreshing = refreshing
-            }
-        })
     }
 
     fun filterResults(query: String?) {

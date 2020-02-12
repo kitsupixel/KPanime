@@ -21,12 +21,12 @@ class LatestViewModel(application: Application) : ViewModel() {
 
     val episodes = showsRepository.latest
 
+    private val _refreshing = MutableLiveData<Boolean>(false)
+    val refreshing: LiveData<Boolean>
+        get() = _refreshing
+
     init {
-        viewModelScope.launch {
-            _refreshing.value = true
-            showsRepository.refreshLatest()
-            _refreshing.value = false
-        }
+        refresh()
     }
 
     override fun onCleared() {
@@ -34,16 +34,12 @@ class LatestViewModel(application: Application) : ViewModel() {
         viewModelJob.cancel()
     }
 
-    private val _refreshing = MutableLiveData<Boolean?>()
-    val refreshing: LiveData<Boolean?>
-        get() = _refreshing
-
     fun refresh() {
-        _refreshing.value = true
         viewModelScope.launch {
+            _refreshing.value = true
             showsRepository.refreshLatest()
+            _refreshing.value = false
         }
-        _refreshing.value = false
     }
 
     class Factory(val app: Application) : ViewModelProvider.Factory {
