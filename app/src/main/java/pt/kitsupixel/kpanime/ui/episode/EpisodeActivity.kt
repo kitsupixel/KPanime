@@ -13,7 +13,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.github.se_bastiaan.torrentstream.Torrent
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
@@ -24,7 +23,7 @@ import pt.kitsupixel.kpanime.adapters.LinkItemAdapter
 import pt.kitsupixel.kpanime.adapters.LinkItemClickListener
 import pt.kitsupixel.kpanime.databinding.ActivityEpisodeBinding
 import pt.kitsupixel.kpanime.domain.Link
-import pt.kitsupixel.kpanime.ui.video.VideoActivity
+import pt.kitsupixel.kpanime.ui.video.PlayerActivity
 import timber.log.Timber
 
 
@@ -85,7 +84,7 @@ class EpisodeActivity : AppCompatActivity() {
                 try {
                     Timber.i("file: %s", torrent.videoFile.toString())
                     startActivity(
-                        Intent(this, VideoActivity::class.java)
+                        Intent(this, PlayerActivity::class.java)
                             .putExtra("filePath", torrent.videoFile.toString())
                     )
 
