@@ -66,15 +66,6 @@ class EpisodeActivity : AppCompatActivity() {
 
         setSwipeRefresh()
 
-        if (!BuildConfig.noAds) {
-            val lastAdShown = (application as KPApplication).getTimeLastAd()
-            val now = System.currentTimeMillis()
-            if (lastAdShown + 60000 < now) {
-                setInterstitialAd()
-                (application as KPApplication).setTimeLastAd()
-            }
-        }
-
         setTorrentStreamListener()
     }
 
@@ -216,25 +207,6 @@ class EpisodeActivity : AppCompatActivity() {
         binding.episodeSwipeRefresh.setOnRefreshListener {
             if (BuildConfig.Logging) Timber.i("onRefresh called from SwipeRefreshLayout")
             viewModel.refresh()
-        }
-    }
-
-    private fun setInterstitialAd() {
-        val mInterstitialAd = InterstitialAd(this)
-
-        if (BuildConfig.AdmobTest) {
-            if (BuildConfig.Logging) Timber.i("Using test ad")
-            mInterstitialAd.adUnitId = "ca-app-pub-3940256099942544/1033173712" // Test Ads
-        } else {
-            mInterstitialAd.adUnitId = "ca-app-pub-7666356884507044/7588812185" // Prod Ads
-        }
-
-        mInterstitialAd.loadAd(AdRequest.Builder().build())
-
-        mInterstitialAd.adListener = object : AdListener() {
-            override fun onAdLoaded() {
-                mInterstitialAd.show()
-            }
         }
     }
 
