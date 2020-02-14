@@ -53,8 +53,8 @@ class MainActivity : AppCompatActivity() {
         lastAdShown = System.currentTimeMillis()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        exitProcess(0)
-    }
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        exitProcess(0)
+//    }
 }
