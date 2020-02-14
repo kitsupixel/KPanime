@@ -78,7 +78,7 @@ class EpisodeActivity : AppCompatActivity() {
                     try {
                         val intent =
                             Intent(Intent.ACTION_VIEW, Uri.parse(torrent.videoFile.toString()))
-                        intent.setDataAndType(Uri.parse(torrent.videoFile.toString()), "video/mp4")
+                        intent.setDataAndType(Uri.parse(torrent.videoFile.toString()), "video/*")
                         startActivity(intent)
 
                         //viewModel.endLoading()

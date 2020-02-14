@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.frostwire.jlibtorrent.AlertListener
 import com.frostwire.jlibtorrent.alerts.Alert
 import com.frostwire.jlibtorrent.alerts.Alerts
 import com.github.se_bastiaan.torrentstream.StreamStatus
@@ -31,8 +32,16 @@ class EpisodeViewModel(
     private val showId: Long,
     private val episodeId: Long
 ) : ViewModel(),
-    TorrentListener {
+    TorrentListener, AlertListener {
     private val viewModelJob = SupervisorJob()
+    override fun alert(alert: Alert<*>?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun types(): IntArray {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     private val viewModelScope = CoroutineScope(viewModelJob + Dispatchers.Main)
     private val database = getDatabase(application)
     private val showsRepository = ShowsRepository(database)
@@ -224,10 +233,11 @@ class EpisodeViewModel(
             _realProgressTorrentText.value = "Seeds: ${status.seeds}"
             _progressTorrentText.value =
                 "Down. Speed: ${humanReadableByteCountSI(status.downloadSpeed.toLong())}"
-            if (status.progress == 100f) {
+            if (status.progress in 99.85f..100f) {
                 torrentStream.stopStream()
                 endLoading()
                 (application as KPApplication).setIsDownloading(false)
+                Timber.i("DOWNLOAD FINISHED!!!!")
             }
         }
 
