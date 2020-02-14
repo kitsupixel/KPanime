@@ -121,7 +121,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2"
-            app:refreshing="@{viewModel.refreshing}">
+            app:refreshing="@{safeUnbox(viewModel.refreshing)}">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/episode_recycler_view"
@@ -185,7 +185,7 @@
                         android:clickable="false"
                         android:indeterminate="true"
                         android:visibility="visible"
-                        app:progressIndicator="@{viewModel.progressTorrent}" />
+                        app:progressIndicator="@{safeUnbox(viewModel.progressTorrent)}" />
 
                     <TextView
                         android:id="@+id/progress_text_view"
@@ -195,7 +195,7 @@
                         android:layout_alignEnd="@id/progress_bar"
                         android:textAlignment="center"
                         android:textColor="@color/colorTextPrimaryDark"
-                        app:progressText="@{viewModel.progressTorrent}"
+                        app:progressText="@{safeUnbox(viewModel.progressTorrent)}"
                         tools:text="50%" />
 
                     <TextView

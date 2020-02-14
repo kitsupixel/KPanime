@@ -25,4 +25,5 @@
     <string name="quality1080p">1080p</string>
     <string name="click_link">Click a link from the list bellow to download</string>
     <string name="delete_episode_after_exiting">Delete episode after exiting this screen</string>
+    <string name="episode_choose_quality">To watch the episode choose a quality (experimental)</string>
 </resources>
