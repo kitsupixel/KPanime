@@ -35,13 +35,13 @@
             tools:text="Episode 001" />
 
         <TextView
-            android:id="@+id/whatch_text"
+            android:id="@+id/watch_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/lgPadding"
             android:layout_marginTop="@dimen/lgPadding"
             android:layout_marginEnd="@dimen/lgPadding"
-            android:text="To watch the episode choose a quality (experimental)"
+            android:text="@string/episode_choose_quality"
             android:textColor="@color/colorTextPrimaryDark"
             android:visibility="gone"
             app:goneIfFalse="@{viewModel.textViewable}"
@@ -65,7 +65,7 @@
             app:layout_constraintEnd_toStartOf="@+id/button_720"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/whatch_text"
+            app:layout_constraintTop_toBottomOf="@+id/watch_text"
             tools:visibility="visible" />
 
         <Button
@@ -118,7 +118,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/mdPadding"
-            app:refreshing="@{viewModel.refreshing}"
+            app:refreshing="@{safeUnbox(viewModel.refreshing)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2">
@@ -169,10 +169,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="@string/loading"
+                        android:text="Progress to start streaming"
                         android:textAlignment="center"
                         android:textColor="@color/colorTextPrimaryDark"
-                        android:textSize="30sp" />
+                        android:textSize="14sp" />
 
                     <ProgressBar
                         android:id="@+id/progress_bar"
@@ -185,7 +185,7 @@
                         android:clickable="false"
                         android:indeterminate="true"
                         android:visibility="visible"
-                        app:progressIndicator="@{viewModel.progressTorrent}" />
+                        app:progressIndicator="@{safeUnbox(viewModel.progressTorrent)}" />
 
                     <TextView
                         android:id="@+id/progress_text_view"
@@ -193,7 +193,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/progress_bar"
                         android:layout_alignEnd="@id/progress_bar"
-                        app:progressText="@{viewModel.progressTorrent}"
+                        app:progressText="@{safeUnbox(viewModel.progressTorrent)}"
                         android:textAlignment="center"
                         android:textColor="@color/colorTextPrimaryDark"
                         tools:text="50%" />
@@ -207,16 +207,75 @@
                         android:text="@{viewModel.progressTorrentText}"
                         android:textAlignment="center"
                         android:textColor="@color/colorTextPrimaryDark"
+                        tools:text="Connecting..." />
+
+                    <TextView
+                        android:id="@+id/loading_indicator2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/progress_status_text_view"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/mdPadding"
+                        android:text="Progress of the download"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorTextPrimaryDark"
+                        android:textSize="14sp" />
+
+                    <ProgressBar
+                        android:id="@+id/real_progress_bar"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/loading_indicator2"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/lgPadding"
+                        android:clickable="false"
+                        android:indeterminate="true"
+                        android:visibility="visible"
+                        app:progressIndicator="@{safeUnbox(viewModel.realProgressTorrent)}" />
+
+                    <TextView
+                        android:id="@+id/real_progress_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/real_progress_bar"
+                        android:layout_alignEnd="@id/real_progress_bar"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorTextPrimaryDark"
+                        app:progressText="@{safeUnbox(viewModel.realProgressTorrent)}"
                         tools:text="50%" />
+
+                    <TextView
+                        android:id="@+id/real_progress_status_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/real_progress_bar"
+                        android:layout_alignStart="@id/real_progress_bar"
+                        android:text="@{viewModel.realProgressTorrentText}"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorTextPrimaryDark"
+                        tools:text="Connecting..." />
 
                     <TextView
                         android:id="@+id/warning_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/progress_text_view"
+                        android:layout_below="@id/real_progress_text_view"
                         android:layout_marginTop="@dimen/lgPadding"
                         android:text="@string/warning"
                         android:textColor="@color/colorTextPrimaryDark" />
+
+                    <Button
+                        android:id="@+id/button"
+                        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_below="@id/warning_text_view"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center"
+                        android:layout_marginTop="@dimen/lgPadding"
+                        android:onClick="@{() -> viewModel.setDownloadInBackground()}"
+                        android:text="Download in background"/>
                 </RelativeLayout>
 
             </androidx.cardview.widget.CardView>

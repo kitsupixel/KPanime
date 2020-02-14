@@ -17,6 +17,7 @@ import com.github.se_bastiaan.torrentstream.Torrent
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
+import com.google.android.material.snackbar.Snackbar
 import pt.kitsupixel.kpanime.BuildConfig
 import pt.kitsupixel.kpanime.KPApplication
 import pt.kitsupixel.kpanime.R
@@ -73,14 +74,14 @@ class EpisodeActivity : AppCompatActivity() {
         viewModel.openPlayer.observe(this, Observer { isOpenPlayer ->
             if (isOpenPlayer == true) {
                 val torrent: Torrent? = viewModel.torrent.value
-                if (torrent != null) {
+                if (torrent != null && !viewModel.getIsDownloadInBackground()) {
                     try {
                         val intent =
                             Intent(Intent.ACTION_VIEW, Uri.parse(torrent.videoFile.toString()))
                         intent.setDataAndType(Uri.parse(torrent.videoFile.toString()), "video/mp4")
                         startActivity(intent)
 
-                        viewModel.endLoading()
+                        //viewModel.endLoading()
                     } catch (e: Exception) {
                         Toast.makeText(this, "Service unavailable", Toast.LENGTH_SHORT).show()
                         e.printStackTrace()
@@ -134,16 +135,21 @@ class EpisodeActivity : AppCompatActivity() {
                 linkClicked(link)
             })
 
-        binding.button480.setOnClickListener {
-            streamEpisode(viewModel.torrent480p.value)
-        }
+        if (!(application as KPApplication).getIsDownloading()) {
+            binding.button480.setOnClickListener {
+                streamEpisode(viewModel.torrent480p.value)
+            }
 
-        binding.button720.setOnClickListener {
-            streamEpisode(viewModel.torrent720p.value)
-        }
+            binding.button720.setOnClickListener {
+                streamEpisode(viewModel.torrent720p.value)
+            }
 
-        binding.button1080.setOnClickListener {
-            streamEpisode(viewModel.torrent1080p.value)
+            binding.button1080.setOnClickListener {
+                streamEpisode(viewModel.torrent1080p.value)
+            }
+        } else {
+            viewModel.clearTorrentButtons()
+            callSnackbar()
         }
     }
 
@@ -208,6 +214,14 @@ class EpisodeActivity : AppCompatActivity() {
             if (BuildConfig.Logging) Timber.i("onRefresh called from SwipeRefreshLayout")
             viewModel.refresh()
         }
+    }
+
+    private fun callSnackbar() {
+        Snackbar.make(
+            this.findViewById(android.R.id.content)!!,
+            "There is a file currently downloading. I can only download one at a time...",
+            Snackbar.LENGTH_INDEFINITE
+        ).show()
     }
 
 }

@@ -8,6 +8,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.frostwire.jlibtorrent.alerts.Alert
+import com.frostwire.jlibtorrent.alerts.Alerts
 import com.github.se_bastiaan.torrentstream.StreamStatus
 import com.github.se_bastiaan.torrentstream.Torrent
 import com.github.se_bastiaan.torrentstream.TorrentOptions
@@ -18,6 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import pt.kitsupixel.kpanime.BuildConfig
+import pt.kitsupixel.kpanime.KPApplication
 import pt.kitsupixel.kpanime.database.getDatabase
 import pt.kitsupixel.kpanime.repository.ShowsRepository
 import pt.kitsupixel.kpanime.utils.humanReadableByteCountSI
@@ -42,6 +45,7 @@ class EpisodeViewModel(
     val refreshing: LiveData<Boolean>
         get() = _refreshing
 
+    // Buttons
     private var _torrent480 = MutableLiveData<String?>()
     val torrent480p: LiveData<String?>
         get() = _torrent480
@@ -58,6 +62,7 @@ class EpisodeViewModel(
     val textViewable: LiveData<Boolean>
         get() = _textViewable
 
+    // Torrent
     private var _loadingTorrent = MutableLiveData<Boolean>(false)
     val loadingTorrent: LiveData<Boolean>
         get() = _loadingTorrent
@@ -74,7 +79,18 @@ class EpisodeViewModel(
     val progressTorrentText: LiveData<String?>
         get() = _progressTorrentText
 
+    private var _realProgressTorrent = MutableLiveData(0)
+    val realProgressTorrent: LiveData<Int>
+        get() = _realProgressTorrent
+
+    private var _realProgressTorrentText = MutableLiveData<String>("Seeds: 0")
+    val realProgressTorrentText: LiveData<String>
+        get() = _realProgressTorrentText
+
     var torrentStream: TorrentStream
+
+
+    private var downloadInBackground = false
 
     init {
         viewModelScope.launch {
@@ -84,12 +100,14 @@ class EpisodeViewModel(
         val torrentOptions = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
             TorrentOptions.Builder()
                 .saveLocation(MediaStore.Downloads.EXTERNAL_CONTENT_URI.toString())
-                .removeFilesAfterStop(true)
+                .removeFilesAfterStop(false)
+                .autoDownload(true)
                 .build()
         } else {
             TorrentOptions.Builder()
                 .saveLocation(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS))
-                .removeFilesAfterStop(true)
+                .removeFilesAfterStop(false)
+                .autoDownload(true)
                 .build()
         }
 
@@ -101,7 +119,10 @@ class EpisodeViewModel(
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
-        torrentStream.stopStream()
+        if (!downloadInBackground) {
+            torrentStream.stopStream()
+            (application as KPApplication).setIsDownloading(false)
+        }
     }
 
     fun refresh() {
@@ -113,17 +134,17 @@ class EpisodeViewModel(
     }
 
     fun setTorrentOptions(removeAfterStop: Boolean) {
-        Timber.i("setTorrentOptions:" + removeAfterStop.toString())
+        Timber.i("setTorrentOptions: $removeAfterStop")
 
         torrentStream.options = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
             TorrentOptions.Builder()
                 .saveLocation(MediaStore.Downloads.EXTERNAL_CONTENT_URI.toString())
-                .removeFilesAfterStop(true)
+                .removeFilesAfterStop(removeAfterStop)
                 .build()
         } else {
             TorrentOptions.Builder()
                 .saveLocation(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS))
-                .removeFilesAfterStop(true)
+                .removeFilesAfterStop(removeAfterStop)
                 .build()
         }
     }
@@ -140,6 +161,18 @@ class EpisodeViewModel(
         _torrent1080p.value = url
     }
 
+    fun clearTorrent480Link() {
+        _torrent480.value = null
+    }
+
+    fun clearTorrent720Link() {
+        _torrent720.value = null
+    }
+
+    fun clearTorrent1080Link() {
+        _torrent1080p.value = null
+    }
+
     fun setTextViewable(value: Boolean) {
         _textViewable.value = value
     }
@@ -149,13 +182,9 @@ class EpisodeViewModel(
         _loadingTorrent.value = true
     }
 
-    fun setProgress(value: Int) {
-        _progressTorrent.value = value
-    }
-
     fun endLoading() {
         _loadingTorrent.value = false
-        setProgress(0)
+        _progressTorrent.value = 0
     }
 
     // TORRENT HANDLING
@@ -165,7 +194,7 @@ class EpisodeViewModel(
 
     override fun onStreamReady(torrent: Torrent?) {
         if (BuildConfig.Logging) Timber.i("onStreamReady")
-        setProgress(100)
+        _progressTorrent.value = 100
         _torrent.value = torrent
         _openPlayer.value = true
     }
@@ -180,19 +209,49 @@ class EpisodeViewModel(
 
     override fun onStreamStarted(torrent: Torrent?) {
         if (BuildConfig.Logging) Timber.i("onStreamStarted")
+        (application as KPApplication).setIsDownloading(true)
     }
 
     override fun onStreamProgress(torrent: Torrent?, status: StreamStatus?) {
         if (status != null && _progressTorrent.value != status.bufferProgress) {
-            if (BuildConfig.Logging) Timber.i("Progress: " + status?.bufferProgress)
-            _progressTorrent.value = status?.bufferProgress
-            _progressTorrentText.value =
-                "Down. Speed: ${humanReadableByteCountSI(status?.downloadSpeed.toLong())}"
+            if (BuildConfig.Logging) Timber.i("Progress: %s", status.bufferProgress)
+            _progressTorrent.value = status.bufferProgress
+
         }
+        if (status != null) {
+            if (BuildConfig.Logging) Timber.i("RealProgress: %f", status.progress)
+            _realProgressTorrent.value = status.progress.toInt()
+            _realProgressTorrentText.value = "Seeds: ${status.seeds}"
+            _progressTorrentText.value =
+                "Down. Speed: ${humanReadableByteCountSI(status.downloadSpeed.toLong())}"
+            if (status.progress == 100f) {
+                torrentStream.stopStream()
+                endLoading()
+                (application as KPApplication).setIsDownloading(false)
+            }
+        }
+
     }
 
-    override fun onStreamError(torrent: Torrent?, e: java.lang.Exception?) {
-        if (BuildConfig.Logging) Timber.i("onStreamError")
+    override fun onStreamError(torrent: Torrent?, e: Exception?) {
+        if (BuildConfig.Logging) Timber.e("onStreamError")
+        e?.printStackTrace()
+    }
+
+    fun setDownloadInBackground() {
+        downloadInBackground = true
+        (application as KPApplication).setIsDownloading(true)
+        endLoading()
+    }
+
+    fun getIsDownloadInBackground(): Boolean {
+        return downloadInBackground
+    }
+
+    fun clearTorrentButtons() {
+        clearTorrent480Link()
+        clearTorrent720Link()
+        clearTorrent1080Link()
     }
 
     class Factory(val app: Application, val showId: Long, val episodeId: Long) :

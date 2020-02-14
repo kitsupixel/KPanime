@@ -4,6 +4,7 @@ import android.app.Application
 import android.os.Build
 import androidx.work.*
 import com.google.android.gms.ads.MobileAds
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,15 +21,13 @@ class KPApplication : Application() {
 
     private lateinit var showsRepository: ShowsRepository
 
-    var lastAdShown: Long = 0L
+    var isDownloading = false
 
     private fun delayedInit() {
         applicationScope.launch {
             showsRepository.refreshShows()
 
-            setupRecurringWork()
-
-            MobileAds.initialize(applicationContext, "ca-app-pub-7666356884507044~9085371469")
+            //setupRecurringWork()
         }
     }
 
@@ -66,12 +65,14 @@ class KPApplication : Application() {
         delayedInit()
     }
 
-    fun getTimeLastAd(): Long {
-        return lastAdShown
+    fun getIsDownloading(): Boolean {
+        Timber.i("$isDownloading")
+        return isDownloading
     }
 
-    fun setTimeLastAd() {
-        lastAdShown = System.currentTimeMillis()
+    fun setIsDownloading(flag: Boolean) {
+        isDownloading = flag
+        Timber.i("$isDownloading")
     }
 
 }
