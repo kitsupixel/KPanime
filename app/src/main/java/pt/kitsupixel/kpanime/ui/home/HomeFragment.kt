@@ -1,5 +1,6 @@
 package pt.kitsupixel.kpanime.ui.home
 
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.*
@@ -17,6 +18,7 @@ import pt.kitsupixel.kpanime.adapters.ShowItemAdapter
 import pt.kitsupixel.kpanime.adapters.ShowItemClickListener
 import pt.kitsupixel.kpanime.databinding.HomeFragmentBinding
 import pt.kitsupixel.kpanime.domain.Show
+import pt.kitsupixel.kpanime.ui.main.MainActivity
 import timber.log.Timber
 import java.util.*
 
@@ -51,24 +53,12 @@ class HomeFragment : Fragment() {
         )
 
         binding.lifecycleOwner = viewLifecycleOwner
+
         binding.viewModel = viewModel
 
-        setClickListener()
-
-        setRecyclerView()
-
-        setSwipeRefresh()
+        setupViews()
 
         return binding.root
-    }
-
-    private fun setRecyclerView() {
-        binding.homeRecyclerView.apply {
-            setHasFixedSize(true)
-            adapter = viewModelAdapter
-        }
-
-        setAdapterToShows()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -101,23 +91,37 @@ class HomeFragment : Fragment() {
         })
     }
 
-
-
-    private fun setClickListener() {
+    private fun setupViews() {
+        // Click Listener for Recycler View
         viewModelAdapter = ShowItemAdapter(ShowItemClickListener { showId ->
             Navigation.findNavController(this.view!!)
                 .navigate(
-                    HomeFragmentDirections.actionGlobalDetailActivity()
+                    HomeFragmentDirections.actionGlobalDetailFragment()
                         .setShowId(showId)
                 )
         })
-    }
 
-    private fun setSwipeRefresh() {
+        // Initialize Recycler View
+        binding.homeRecyclerView.apply {
+            setHasFixedSize(true)
+            adapter = viewModelAdapter
+        }
+
+        setAdapterToShows()
+
+        // Set action of swipe to refresh
         binding.homeSwipeRefresh.setOnRefreshListener {
             if (BuildConfig.Logging) Timber.i("onRefresh called from SwipeRefreshLayout")
             viewModel.refresh()
         }
+    }
+
+    private fun setAdapterToShows() {
+        viewModel.shows.observe(viewLifecycleOwner, Observer { shows ->
+            shows?.apply {
+                viewModelAdapter.submitList(shows)
+            }
+        })
     }
 
     fun filterResults(query: String?) {
@@ -140,14 +144,6 @@ class HomeFragment : Fragment() {
         } else {
             setAdapterToShows()
         }
-    }
-
-    private fun setAdapterToShows() {
-        viewModel.shows.observe(viewLifecycleOwner, Observer { shows ->
-            shows?.apply {
-                viewModelAdapter.submitList(shows)
-            }
-        })
     }
 
 }

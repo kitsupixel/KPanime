@@ -1,5 +1,6 @@
 package pt.kitsupixel.kpanime.ui.latest
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.databinding.DataBindingUtil
@@ -13,6 +14,7 @@ import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.adapters.ReleaseItemAdapter
 import pt.kitsupixel.kpanime.adapters.ReleaseItemClickListener
 import pt.kitsupixel.kpanime.databinding.LatestFragmentBinding
+import pt.kitsupixel.kpanime.ui.main.MainActivity
 import timber.log.Timber
 
 
@@ -46,30 +48,12 @@ class LatestFragment : Fragment() {
         )
 
         binding.lifecycleOwner = viewLifecycleOwner
+
         binding.viewModel = viewModel
 
-        setClickListener()
-
-        setRecyclerView()
-
-        setSwipeRefresh()
+        setupView()
 
         return binding.root
-    }
-
-    private fun setRecyclerView() {
-        binding.latestRecyclerView.apply {
-            setHasFixedSize(true)
-            adapter = viewModelAdapter
-        }
-
-        viewModel.episodes.observe(viewLifecycleOwner, Observer { episodes ->
-            episodes?.apply {
-                viewModelAdapter.submitList(episodes)
-            }
-
-            if (BuildConfig.Logging) Timber.i(episodes.size.toString())
-        })
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -82,17 +66,31 @@ class LatestFragment : Fragment() {
         inflater.inflate(R.menu.toolbar_menu, menu)
     }
 
-    private fun setClickListener() {
-        viewModelAdapter = ReleaseItemAdapter(ReleaseItemClickListener { showId ->
+    private fun setupView() {
+        // Click Listener for Recycler View
+        viewModelAdapter = ReleaseItemAdapter(ReleaseItemClickListener { showId, episodeId ->
             Navigation.findNavController(this.view!!)
                 .navigate(
-                    LatestFragmentDirections.actionGlobalDetailActivity()
+                    LatestFragmentDirections.actionGlobalDetailFragment()
                         .setShowId(showId)
                 )
         })
-    }
 
-    private fun setSwipeRefresh() {
+        // Initialize Recycler View
+        binding.latestRecyclerView.apply {
+            setHasFixedSize(true)
+            adapter = viewModelAdapter
+        }
+
+        viewModel.episodes.observe(viewLifecycleOwner, Observer { episodes ->
+            episodes?.apply {
+                viewModelAdapter.submitList(episodes)
+            }
+
+            if (BuildConfig.Logging) Timber.i(episodes.size.toString())
+        })
+
+        // Set action of swipe to refresh
         binding.latestSwipeRefresh.setOnRefreshListener {
             if (BuildConfig.Logging) Timber.i("onRefresh called from SwipeRefreshLayout")
             viewModel.refresh()

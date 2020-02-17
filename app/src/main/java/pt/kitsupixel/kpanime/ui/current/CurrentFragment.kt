@@ -1,5 +1,6 @@
 package pt.kitsupixel.kpanime.ui.current
 
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.*
@@ -15,6 +16,7 @@ import pt.kitsupixel.kpanime.adapters.ShowItemAdapter
 import pt.kitsupixel.kpanime.adapters.ShowItemClickListener
 import pt.kitsupixel.kpanime.databinding.CurrentFragmentBinding
 import pt.kitsupixel.kpanime.domain.Show
+import pt.kitsupixel.kpanime.ui.main.MainActivity
 import timber.log.Timber
 import java.util.*
 
@@ -50,78 +52,17 @@ class CurrentFragment : Fragment() {
         )
 
         binding.lifecycleOwner = viewLifecycleOwner
+
         binding.viewModel = viewModel
 
-        setClickListener()
-
-        setRecyclerView()
-
-        setSwipeRefresh()
+        setupViews()
 
         return binding.root
-    }
-
-    private fun setRecyclerView() {
-        binding.currentRecyclerView.apply {
-            setHasFixedSize(true)
-            adapter = viewModelAdapter
-        }
-
-        setAdapterToShows()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
-    }
-
-    private fun setAdapterToShows() {
-        viewModel.shows.observe(viewLifecycleOwner, Observer { shows ->
-            shows?.apply {
-                viewModelAdapter.submitList(shows)
-            }
-        })
-    }
-
-    private fun setClickListener() {
-        viewModelAdapter = ShowItemAdapter(ShowItemClickListener { showId ->
-            Navigation.findNavController(this.view!!)
-                .navigate(
-                    CurrentFragmentDirections.actionGlobalDetailActivity()
-                        .setShowId(showId)
-                )
-        })
-    }
-
-    private fun setSwipeRefresh() {
-        binding.currentSwipeRefresh.setOnRefreshListener {
-            if (BuildConfig.Logging) Timber.i("onRefresh called from SwipeRefreshLayout")
-            viewModel.refresh()
-        }
-    }
-
-    fun filterResults(query: String?) {
-
-        if (query != null || query != "") {
-            viewModel.shows.removeObservers(viewLifecycleOwner)
-
-            val queryLower = query?.toLowerCase(Locale.getDefault()).toString()
-            val filteredList: MutableList<Show> = mutableListOf()
-            val currentShows = viewModel.shows.value
-            if (currentShows != null) {
-                for (show in currentShows) {
-                    if (show.title.toLowerCase(Locale.getDefault()).contains(queryLower)) {
-                        filteredList.add(show)
-                    }
-                }
-            }
-
-            viewModelAdapter.submitList(filteredList)
-        } else {
-            setAdapterToShows()
-        }
-
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -147,6 +88,61 @@ class CurrentFragment : Fragment() {
                 return true
             }
         })
+    }
+
+    private fun setupViews() {
+        // Click Listener for Recycler View
+        viewModelAdapter = ShowItemAdapter(ShowItemClickListener { showId ->
+            Navigation.findNavController(this.view!!)
+                .navigate(
+                    CurrentFragmentDirections.actionGlobalDetailFragment()
+                        .setShowId(showId)
+                )
+        })
+
+        // Initialize Recycler View
+        binding.currentRecyclerView.apply {
+            setHasFixedSize(true)
+            adapter = viewModelAdapter
+        }
+
+        setAdapterToShows()
+
+        // Set action of swipe to refresh
+        binding.currentSwipeRefresh.setOnRefreshListener {
+            if (BuildConfig.Logging) Timber.i("onRefresh called from SwipeRefreshLayout")
+            viewModel.refresh()
+        }
+
+    }
+
+    private fun setAdapterToShows() {
+        viewModel.shows.observe(viewLifecycleOwner, Observer { shows ->
+            shows?.apply {
+                viewModelAdapter.submitList(shows)
+            }
+        })
+    }
+
+    fun filterResults(query: String?) {
+        if (query != null || query != "") {
+            viewModel.shows.removeObservers(viewLifecycleOwner)
+
+            val queryLower = query?.toLowerCase(Locale.getDefault()).toString()
+            val filteredList: MutableList<Show> = mutableListOf()
+            val currentShows = viewModel.shows.value
+            if (currentShows != null) {
+                for (show in currentShows) {
+                    if (show.title.toLowerCase(Locale.getDefault()).contains(queryLower)) {
+                        filteredList.add(show)
+                    }
+                }
+            }
+
+            viewModelAdapter.submitList(filteredList)
+        } else {
+            setAdapterToShows()
+        }
     }
 
 }

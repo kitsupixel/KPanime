@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.databinding.ReleaseItemBinding
+import pt.kitsupixel.kpanime.domain.Episode
 import pt.kitsupixel.kpanime.domain.EpisodeAndShow
 import pt.kitsupixel.kpanime.domain.Show
 
@@ -36,8 +37,8 @@ class ReleaseItemAdapter(val clickListener: ReleaseItemClickListener) :
 }
 
 
-class ReleaseItemClickListener(val clickListener: (showId: Long) -> Unit) {
-    fun onClick(show: Show) = clickListener(show.id)
+class ReleaseItemClickListener(val clickListener: (showId: Long, episodeId: Long) -> Unit) {
+    fun onClick(showId: Long, episodeId: Long) = clickListener(showId, episodeId)
 }
 
 class ReleaseItemViewHolder(val viewDataBinding: ReleaseItemBinding) :

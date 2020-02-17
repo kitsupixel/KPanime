@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_nav_graph.xml"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="pt.kitsupixel.kpanime.ui.home.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/home_fragment" />
+    <fragment
+        android:id="@+id/latestFragment"
+        android:name="pt.kitsupixel.kpanime.ui.latest.LatestFragment"
+        android:label="Latest Releases"
+        tools:layout="@layout/latest_fragment" />
+    <fragment
+        android:id="@+id/showsFragment"
+        android:name="pt.kitsupixel.kpanime.ui.shows.ShowsFragment"
+        android:label="All Shows"
+        tools:layout="@layout/shows_fragment" />
+    <fragment
+        android:id="@+id/currentFragment"
+        android:name="pt.kitsupixel.kpanime.ui.current.CurrentFragment"
+        android:label="Current Season"
+        tools:layout="@layout/current_fragment" />
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="pt.kitsupixel.kpanime.ui.detail.DetailFragment"
+        android:label="Show Detail"
+        tools:layout="@layout/detail_fragment">
+        <argument
+            android:name="showId"
+            android:defaultValue="0L"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_detailFragment_to_episodeFragment"
+            app:destination="@id/episodeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_detailFragment"
+        app:destination="@id/detailFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:launchSingleTop="true"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+    <fragment
+        android:id="@+id/episodeFragment"
+        android:name="pt.kitsupixel.kpanime.ui.episode.EpisodeFragment"
+        android:label="Episode"
+        tools:layout="@layout/episode_fragment">
+        <argument
+            android:name="showId"
+            android:defaultValue="0L"
+            app:argType="long" />
+        <argument
+            android:name="episodeId"
+            android:defaultValue="0L"
+            app:argType="long" />
+    </fragment>
+</navigation>

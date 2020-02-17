@@ -46,13 +46,13 @@ class ShowsRepository(private val database: AppDatabase) {
 
     fun getEpisodesByShow(showId: Long): LiveData<List<Episode>?> {
         return Transformations.map(database.episodeDao.getByShow(showId)) {
-            it?.episodeAsDomainModel()
+            it?.episodeMetaAsDomainModel()
         }
     }
 
     fun getEpisode(episodeId: Long): LiveData<Episode?> {
         return Transformations.map(database.episodeDao.get(episodeId)) {
-            it?.episodeAsDomainModel()
+            it?.episodeMetaAsDomainModel()
         }
     }
 

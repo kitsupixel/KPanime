@@ -1,16 +1,19 @@
 package pt.kitsupixel.kpanime.ui.main
 
 import android.os.Bundle
-import android.view.MenuItem
+import android.os.Handler
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.postDelayed
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.databinding.ActivityMainBinding
-import kotlin.system.exitProcess
 
 
 class MainActivity : AppCompatActivity() {
@@ -19,42 +22,64 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var navController: NavController
 
-    var lastAdShown: Long = 0L
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        setupNavigation()
+        // Finding the Navigation Controller
+        navController = findNavController(R.id.nav_host_fragment)
 
-        setSupportActionBar(binding.toolbar)
+        setupViews()
     }
 
-    /**
-     * Setup Navigation for this Activity
-     */
-    private fun setupNavigation() {
-        navController = this.findNavController(R.id.nav_host_fragment)
-        val bottomNavigation: BottomNavigationView = binding.navView
+    private fun setupViews() {
+        // Setting Navigation Controller with the BottomNavigationView
+        binding.bottomNavView.setupWithNavController(navController)
 
-        NavigationUI.setupWithNavController(bottomNavigation, navController)
+        // Setting Up ActionBar with Navigation Controller
+        // Pass the IDs of top-level destinations in AppBarConfiguration
+        val appBarConfiguration = AppBarConfiguration(
+            topLevelDestinationIds = setOf(
+                R.id.homeFragment,
+                R.id.latestFragment,
+                R.id.currentFragment,
+                R.id.showsFragment
+            )
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+    }
+
+    private var backPressedOnce = false
+
+    override fun onBackPressed() {
+        // Check if the current destination is actually the start destination (Home screen)
+        if (navController.graph.startDestination == navController.currentDestination?.id) {
+            // Check if back is already pressed. If yes, then exit the app.
+            if (backPressedOnce) {
+                super.onBackPressed()
+                return
+            }
+
+            backPressedOnce = true
+            Toast.makeText(this, "Press BACK again to exit", Toast.LENGTH_SHORT).show()
+
+            Handler().postDelayed(2000) {
+                backPressedOnce = false
+            }
+        } else {
+            super.onBackPressed()
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController = this.findNavController(R.id.nav_host_fragment)
         return navController.navigateUp()
     }
 
-    fun getTimeLastAd(): Long {
-        return lastAdShown
+    fun showBottomNavigation() {
+        binding.bottomNavView.visibility = View.VISIBLE
     }
 
-    fun setTimeLastAd() {
-        lastAdShown = System.currentTimeMillis()
+    fun hideBottomNavigation() {
+        binding.bottomNavView.visibility = View.GONE
     }
-
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        exitProcess(0)
-//    }
 }

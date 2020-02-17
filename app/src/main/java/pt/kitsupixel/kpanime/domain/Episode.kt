@@ -7,7 +7,9 @@ data class Episode(
     val show_id: Long,
     val number: String,
     val type: String,
-    val released_on: String
+    val released_on: String,
+    val downloaded: Boolean = false,
+    val watched: Boolean = false
 ) {
     fun releasedToLocalDate(): String {
         return DateTime.parse(this.released_on).toLocalDate().toString()

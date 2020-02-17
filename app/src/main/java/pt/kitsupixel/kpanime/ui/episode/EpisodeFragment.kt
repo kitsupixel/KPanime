@@ -1,42 +1,45 @@
 package pt.kitsupixel.kpanime.ui.episode
 
-import android.Manifest
+import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.github.se_bastiaan.torrentstream.Torrent
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.InterstitialAd
 import pt.kitsupixel.kpanime.BuildConfig
-import pt.kitsupixel.kpanime.KPApplication
 import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.adapters.LinkItemAdapter
 import pt.kitsupixel.kpanime.adapters.LinkItemClickListener
-import pt.kitsupixel.kpanime.databinding.ActivityEpisodeBinding
+import pt.kitsupixel.kpanime.databinding.EpisodeFragmentBinding
 import pt.kitsupixel.kpanime.domain.Link
+import pt.kitsupixel.kpanime.ui.main.MainActivity
 import timber.log.Timber
 
 
-class EpisodeActivity : AppCompatActivity() {
+class EpisodeFragment : Fragment() {
 
     private val viewModel: EpisodeViewModel by lazy {
-        ViewModelProvider(this, EpisodeViewModel.Factory(this.application, showId, episodeId))
+        val activity = requireNotNull(this.activity) {
+            "You can only access the viewModel after onActivityCreated()"
+        }
+        ViewModelProvider(this, EpisodeViewModel.Factory(activity.application, showId, episodeId))
             .get(
                 EpisodeViewModel::class.java
             )
     }
 
-    private lateinit var binding: ActivityEpisodeBinding
+    private val args: EpisodeFragmentArgs by navArgs()
+
+    private lateinit var binding: EpisodeFragmentBinding
 
     private lateinit var viewModelAdapter: LinkItemAdapter
 
@@ -44,17 +47,20 @@ class EpisodeActivity : AppCompatActivity() {
 
     private var episodeId: Long = 0L
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        // Create the slide in animation
-        overridePendingTransition(
-            R.anim.slide_in_right,
-            R.anim.slide_out_left
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.episode_fragment,
+            container,
+            false
         )
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_episode)
 
-        showId = intent.getLongExtra("showId", 0L)
-        episodeId = intent.getLongExtra("episodeId", 0L)
+        showId = args.showId
+        episodeId = args.episodeId
 
         binding.lifecycleOwner = this
 
@@ -67,10 +73,17 @@ class EpisodeActivity : AppCompatActivity() {
         setSwipeRefresh()
 
         setTorrentStreamListener()
+
+        viewModel.episode.observe(viewLifecycleOwner, Observer { episode ->
+            if (episode != null)
+                this.activity?.title = episode.type.capitalize() + " " + episode.number
+        })
+
+        return binding.root
     }
 
     private fun setTorrentStreamListener() {
-        viewModel.openPlayer.observe(this, Observer { isOpenPlayer ->
+        viewModel.openPlayer.observe(viewLifecycleOwner, Observer { isOpenPlayer ->
             if (isOpenPlayer == true) {
                 val torrent: Torrent? = viewModel.torrent.value
                 if (torrent != null) {
@@ -82,7 +95,7 @@ class EpisodeActivity : AppCompatActivity() {
 
                         viewModel.endLoading()
                     } catch (e: Exception) {
-                        Toast.makeText(this, "Service unavailable", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Service unavailable", Toast.LENGTH_SHORT).show()
                         e.printStackTrace()
                     }
                 }
@@ -96,7 +109,7 @@ class EpisodeActivity : AppCompatActivity() {
             adapter = viewModelAdapter
         }
 
-        viewModel.links.observe(this, Observer { links ->
+        viewModel.links.observe(viewLifecycleOwner, Observer { links ->
 
             links?.apply {
                 viewModelAdapter.submitList(links)
@@ -117,15 +130,6 @@ class EpisodeActivity : AppCompatActivity() {
                 }
             }
         })
-    }
-
-    override fun finish() {
-        super.finish()
-        // Slide out animation
-        overridePendingTransition(
-            R.anim.slide_in_left,
-            R.anim.slide_out_right
-        )
     }
 
     private fun setClickListeners() {
@@ -154,54 +158,15 @@ class EpisodeActivity : AppCompatActivity() {
             intent.data = Uri.parse(link.link)
             startActivity(intent)
         } catch (e: Exception) {
-            Toast.makeText(this, "Service unavailable", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Service unavailable", Toast.LENGTH_SHORT).show()
             e.printStackTrace()
         }
     }
 
-    private var repeatUrl: String? = null
 
     private fun streamEpisode(url: String?) {
-        repeatUrl = url
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                0
-            )
-        } else {
-            if (url != null) {
-                viewModel.startStream(url)
-            }
-        }
+        if (url != null) viewModel.startStream(url)
     }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == 0) {
-            if (grantResults.size == 1
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED
-            ) {
-                // We can now safely use the API we requested access to
-                streamEpisode(repeatUrl)
-            } else {
-                // Permission was denied or request was cancelled
-                Toast.makeText(
-                    this,
-                    "You need to give permission to write on external storage to stream an episode",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
-    }
-
 
     private fun setSwipeRefresh() {
         binding.episodeSwipeRefresh.setOnRefreshListener {
@@ -209,5 +174,4 @@ class EpisodeActivity : AppCompatActivity() {
             viewModel.refresh()
         }
     }
-
 }

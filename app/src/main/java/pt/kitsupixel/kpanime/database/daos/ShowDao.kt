@@ -26,6 +26,9 @@ interface ShowDao {
     @Query("UPDATE show_meta SET favorite = NOT(favorite) WHERE show_id = :id")
     fun toggleFavorite(id: Long)
 
+    @Query("UPDATE show_meta SET watched = NOT(watched) WHERE show_id = :id")
+    fun toggleWatched(id: Long)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg shows: DatabaseShow)
 

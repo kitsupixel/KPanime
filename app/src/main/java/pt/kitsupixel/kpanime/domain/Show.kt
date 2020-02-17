@@ -8,5 +8,6 @@ data class Show(
     val season: String?,
     val year: Int?,
     val ongoing: Boolean,
-    val favorite: Boolean? = false
+    val favorite: Boolean = false,
+    val watched: Boolean = false
 )

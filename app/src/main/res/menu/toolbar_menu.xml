@@ -6,9 +6,13 @@
         android:id="@+id/app_bar_search"
         android:icon="@drawable/ic_search"
         android:title="@string/search"
-        android:tooltipText="@string/search_shows"
         android:visible="false"
         app:actionViewClass="android.widget.SearchView"
-        app:showAsAction="always"
-        app:tint="@android:color/white" />
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/aboutFragment"
+        android:title="About" />
+    <item
+        android:id="@+id/settingsFragment"
+        android:title="Settings" />
 </menu>

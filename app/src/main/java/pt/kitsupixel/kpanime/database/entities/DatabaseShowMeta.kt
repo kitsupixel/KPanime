@@ -6,5 +6,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "show_meta")
 data class DatabaseShowMeta constructor(
     @PrimaryKey val show_id: Long,
-    var favorite: Boolean = false
+    var favorite: Boolean = false,
+    var watched: Boolean = false
 )

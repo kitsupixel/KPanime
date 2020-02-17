@@ -16,13 +16,8 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginBottom="2dp"
-        app:cardBackgroundColor="#222222"
         app:cardCornerRadius="0dp"
-        app:cardElevation="5dp">
+        app:cardElevation="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -30,7 +25,7 @@
 
             <TextView
                 android:id="@+id/quality_link"
-                style="@style/CustomHeadline6"
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/mdPadding"
@@ -41,7 +36,6 @@
                 android:text="@{episode.typeCapitalized()}"
                 tools:text="Episode"
                 android:textAlignment="viewStart"
-                android:textColor="@color/colorTextPrimaryDark"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -50,7 +44,7 @@
 
             <TextView
                 android:id="@+id/link_type"
-                style="@style/CustomHeadline6"
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/mdPadding"
@@ -58,7 +52,6 @@
                 android:maxLines="2"
                 android:text="@{episode.number}"
                 android:textAlignment="viewStart"
-                android:textColor="@color/colorTextPrimaryDark"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBaseline_toBaselineOf="@+id/quality_link"
@@ -67,7 +60,7 @@
 
             <TextView
                 android:id="@+id/episode_date"
-                style="@style/CustomHeadline6"
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/mdPadding"
@@ -76,7 +69,6 @@
                 android:text="@{episode.releasedToLocalDate()}"
                 android:textAlignment="viewStart"
                 android:textAllCaps="false"
-                android:textColor="@color/colorTextPrimaryDark"
                 android:textStyle="bold"
                 app:layout_constraintBaseline_toBaselineOf="@+id/link_type"
                 app:layout_constraintEnd_toEndOf="parent"

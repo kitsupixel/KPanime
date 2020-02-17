@@ -15,7 +15,6 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
-        style="@style/Widget.MaterialComponents.CardView.ReleaseItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
@@ -99,7 +98,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="?attr/selectableItemBackground"
-                android:onClick="@{() -> clickListener.onClick(episodeAndShow.show)}"
+                android:onClick="@{() -> clickListener.onClick(episodeAndShow.episode.show_id, episodeAndShow.episode.id)}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

@@ -24,7 +24,8 @@ fun List<DatabaseShowAndMeta>.showMetaAsDomainModel(): List<Show> {
             season = it.show.season,
             year = it.show.year,
             ongoing = it.show.ongoing,
-            favorite = it.meta?.favorite ?: false
+            favorite = it.meta?.favorite ?: false,
+            watched = it.meta?.watched ?: false
         )
     }
 }
@@ -38,6 +39,7 @@ fun DatabaseShowAndMeta.showMetaAsDomainModel(): Show {
         season = this.show.season,
         year = this.show.year,
         ongoing = this.show.ongoing,
-        favorite = this.meta?.favorite ?: false
+        favorite = this.meta?.favorite ?: false,
+        watched = this.meta?.watched ?: false
     )
 }

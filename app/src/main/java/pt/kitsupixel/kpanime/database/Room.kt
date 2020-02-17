@@ -10,19 +10,17 @@ import pt.kitsupixel.kpanime.database.daos.EpisodeDao
 import pt.kitsupixel.kpanime.database.daos.LinkDao
 import pt.kitsupixel.kpanime.database.daos.ShowDao
 import pt.kitsupixel.kpanime.database.daos.ShowMetaDao
-import pt.kitsupixel.kpanime.database.entities.DatabaseEpisode
-import pt.kitsupixel.kpanime.database.entities.DatabaseLink
-import pt.kitsupixel.kpanime.database.entities.DatabaseShow
-import pt.kitsupixel.kpanime.database.entities.DatabaseShowMeta
+import pt.kitsupixel.kpanime.database.entities.*
 
 @Database(
     entities = [
         DatabaseShow::class,
         DatabaseEpisode::class,
         DatabaseLink::class,
-        DatabaseShowMeta::class
+        DatabaseShowMeta::class,
+        DatabaseEpisodeMeta::class
     ],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -42,7 +40,7 @@ fun getDatabase(context: Context): AppDatabase {
                 AppDatabase::class.java,
                 "db_shows"
             )
-                .addMigrations(MIGRATION_3_4)
+                .addMigrations(MIGRATION_3_4, MIGRATION_4_5)
                 .build()
         }
     }
@@ -55,6 +53,20 @@ val MIGRATION_3_4 = object : Migration(3, 4) {
         database.execSQL("ALTER TABLE shows ADD COLUMN active INTEGER NOT NULL DEFAULT 1")
         database.execSQL("ALTER TABLE episodes ADD COLUMN type TEXT NOT NULL DEFAULT 'episode'")
         database.execSQL("ALTER TABLE episode_links ADD COLUMN language TEXT NOT NULL DEFAULT 'en'")
+    }
+
+}
+
+val MIGRATION_4_5 = object : Migration(4, 5) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("ALTER TABLE show_meta ADD COLUMN watched INTEGER NOT NULL DEFAULT 0")
+        database.execSQL("""
+        CREATE TABLE episode_meta (
+            episode_id INTEGER PRIMARY KEY NOT NULL,
+            downloaded INTEGER NOT NULL DEFAULT 0,
+            watched INTEGER NOT NULL DEFAULT 0
+        )
+        """.trimIndent())
     }
 
 }

@@ -81,20 +81,10 @@ class EpisodeViewModel(
             refresh()
         }
 
-        val torrentOptions = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
-            TorrentOptions.Builder()
-                .saveLocation(MediaStore.Downloads.EXTERNAL_CONTENT_URI.toString())
-                .removeFilesAfterStop(true)
-                .build()
-        } else {
-            TorrentOptions.Builder()
-                .saveLocation(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS))
-                .removeFilesAfterStop(true)
-                .build()
-        }
-
-
-        torrentStream = TorrentStream.init(torrentOptions)
+        torrentStream = TorrentStream.init(TorrentOptions.Builder()
+            .saveLocation(application.getExternalFilesDir(null))
+            .removeFilesAfterStop(true)
+            .build())
         torrentStream.addListener(this)
     }
 
@@ -113,19 +103,12 @@ class EpisodeViewModel(
     }
 
     fun setTorrentOptions(removeAfterStop: Boolean) {
-        Timber.i("setTorrentOptions:" + removeAfterStop.toString())
+        Timber.i("setTorrentOptions:%s", removeAfterStop.toString())
 
-        torrentStream.options = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
-            TorrentOptions.Builder()
-                .saveLocation(MediaStore.Downloads.EXTERNAL_CONTENT_URI.toString())
-                .removeFilesAfterStop(true)
-                .build()
-        } else {
-            TorrentOptions.Builder()
-                .saveLocation(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS))
-                .removeFilesAfterStop(true)
-                .build()
-        }
+        torrentStream.options = TorrentOptions.Builder()
+            .saveLocation(application.getExternalFilesDir(null))
+            .removeFilesAfterStop(removeAfterStop)
+            .build()
     }
 
     fun setTorrent480Link(url: String) {
@@ -184,10 +167,10 @@ class EpisodeViewModel(
 
     override fun onStreamProgress(torrent: Torrent?, status: StreamStatus?) {
         if (status != null && _progressTorrent.value != status.bufferProgress) {
-            if (BuildConfig.Logging) Timber.i("Progress: " + status?.bufferProgress)
-            _progressTorrent.value = status?.bufferProgress
+            if (BuildConfig.Logging) Timber.i("Progress: %s", status?.bufferProgress)
+            _progressTorrent.value = status.bufferProgress
             _progressTorrentText.value =
-                "Down. Speed: ${humanReadableByteCountSI(status?.downloadSpeed.toLong())}"
+                "Down. Speed: ${humanReadableByteCountSI(status.downloadSpeed.toLong())}"
         }
     }
 

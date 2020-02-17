@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="pt.kitsupixel.kpanime.ui.detail.DetailActivity">
+    tools:context="pt.kitsupixel.kpanime.ui.detail.DetailFragment">
 
     <data>
 
@@ -14,8 +14,7 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#222222">
+        android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/detail_appbar"
@@ -63,8 +62,7 @@
                     android:layout_marginStart="@dimen/mdPadding"
                     android:layout_marginTop="32dp"
                     android:layout_marginEnd="@dimen/mdPadding"
-                    android:textAppearance="@style/CustomHeadline5"
-                    android:textColor="@color/colorTextPrimaryDark"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
                     android:textSize="30sp"
                     app:convertTextToHtml="@{viewModel.show.title}"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -80,8 +78,7 @@
                     android:layout_marginTop="@dimen/lgPadding"
                     android:layout_marginEnd="@dimen/mdPadding"
                     android:text="@{viewModel.show.synopsis}"
-                    android:textAppearance="?textAppearanceHeadline6"
-                    android:textColor="@color/colorTextPrimaryDark"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/titleTextView"
@@ -127,10 +124,8 @@
             android:layout_margin="16dp"
             android:layout_marginTop="8dp"
             android:onClick="@{() -> viewModel.toggleFavorite()}"
-            app:backgroundTint="@color/colorPrimary"
             app:layout_anchor="@id/detail_appbar"
             app:layout_anchorGravity="bottom|end"
-            app:rippleColor="@color/colorAccent"
             app:srcCompat="@drawable/ic_unfavourite"
             app:tint="@android:color/white" />
 
