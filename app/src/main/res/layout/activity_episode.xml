@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="pt.kitsupixel.kpanime.ui.episode.EpisodeFragment">
+    tools:context="pt.kitsupixel.kpanime.ui.episode.EpisodeActivity">
 
     <data>
 
@@ -18,33 +18,30 @@
         android:layout_gravity="center_horizontal|top"
         android:gravity="center_horizontal|top">
 
-        <TextView
-            android:id="@+id/episode_text_view"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/episode_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/lgPadding"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="@dimen/lgPadding"
-            android:text="@string/loading"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-            app:formatEpisodeText="@{viewModel.episode}"
+            android:minHeight="?attr/actionBarSize"
+            android:background="@android:color/transparent"
+            android:theme="?attr/actionBarTheme"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Episode 001" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/whatch_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/lgPadding"
-            android:layout_marginTop="@dimen/lgPadding"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="@dimen/lgPadding"
             android:text="To watch the episode choose a quality (experimental)"
             android:visibility="gone"
             app:goneIfFalse="@{viewModel.textViewable}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/episode_text_view"
+            app:layout_constraintTop_toBottomOf="@+id/episode_toolbar"
             tools:visibility="visible" />
 
         <Button
@@ -114,17 +111,17 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/mdPadding"
-            app:refreshing="@{safeUnbox(viewModel.refreshing)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2">
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            app:refreshing="@{safeUnbox(viewModel.refreshing)}">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/episode_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="5"
+                app:spanCount="2"
                 tools:listitem="@layout/link_item" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
@@ -143,7 +140,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_720"
-            tools:visibility="visible">
+            tools:visibility="gone">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -187,8 +184,8 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/progress_bar"
                         android:layout_alignEnd="@id/progress_bar"
-                        app:progressText="@{safeUnbox(viewModel.progressTorrent)}"
                         android:textAlignment="center"
+                        app:progressText="@{safeUnbox(viewModel.progressTorrent)}"
                         tools:text="50%" />
 
                     <TextView
@@ -213,7 +210,6 @@
             </androidx.cardview.widget.CardView>
 
         </FrameLayout>
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

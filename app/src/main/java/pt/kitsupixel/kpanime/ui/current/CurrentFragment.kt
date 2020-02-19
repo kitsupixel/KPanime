@@ -1,6 +1,7 @@
 package pt.kitsupixel.kpanime.ui.current
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.*
@@ -16,6 +17,7 @@ import pt.kitsupixel.kpanime.adapters.ShowItemAdapter
 import pt.kitsupixel.kpanime.adapters.ShowItemClickListener
 import pt.kitsupixel.kpanime.databinding.CurrentFragmentBinding
 import pt.kitsupixel.kpanime.domain.Show
+import pt.kitsupixel.kpanime.ui.detail.DetailActivity
 import pt.kitsupixel.kpanime.ui.main.MainActivity
 import timber.log.Timber
 import java.util.*
@@ -93,11 +95,10 @@ class CurrentFragment : Fragment() {
     private fun setupViews() {
         // Click Listener for Recycler View
         viewModelAdapter = ShowItemAdapter(ShowItemClickListener { showId ->
-            Navigation.findNavController(this.view!!)
-                .navigate(
-                    CurrentFragmentDirections.actionGlobalDetailFragment()
-                        .setShowId(showId)
-                )
+            startActivity(
+                Intent(context, DetailActivity::class.java)
+                    .putExtra("showId", showId)
+            )
         })
 
         // Initialize Recycler View

@@ -2,6 +2,7 @@ package pt.kitsupixel.kpanime.ui.main
 
 import android.os.Bundle
 import android.os.Handler
+import android.view.Menu
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
+
         // Finding the Navigation Controller
         navController = findNavController(R.id.nav_host_fragment)
 
@@ -38,14 +40,9 @@ class MainActivity : AppCompatActivity() {
 
         // Setting Up ActionBar with Navigation Controller
         // Pass the IDs of top-level destinations in AppBarConfiguration
-        val appBarConfiguration = AppBarConfiguration(
-            topLevelDestinationIds = setOf(
-                R.id.homeFragment,
-                R.id.latestFragment,
-                R.id.currentFragment,
-                R.id.showsFragment
-            )
-        )
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+        // Action bar
+        setSupportActionBar(binding.toolbar)
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
@@ -72,14 +69,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp()
-    }
-
-    fun showBottomNavigation() {
-        binding.bottomNavView.visibility = View.VISIBLE
-    }
-
-    fun hideBottomNavigation() {
-        binding.bottomNavView.visibility = View.GONE
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }

@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="pt.kitsupixel.kpanime.ui.episode.EpisodeFragment">
+    tools:context="pt.kitsupixel.kpanime.ui.episode.EpisodeActivity">
 
     <data>
 
@@ -124,7 +124,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="2"
+                app:spanCount="5"
                 tools:listitem="@layout/link_item" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
@@ -143,7 +143,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_720"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -187,8 +187,8 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/progress_bar"
                         android:layout_alignEnd="@id/progress_bar"
-                        android:textAlignment="center"
                         app:progressText="@{safeUnbox(viewModel.progressTorrent)}"
+                        android:textAlignment="center"
                         tools:text="50%" />
 
                     <TextView

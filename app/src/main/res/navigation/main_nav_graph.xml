@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_nav_graph.xml"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="pt.kitsupixel.kpanime.ui.home.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/home_fragment" />
+    <fragment
+        android:id="@+id/latestFragment"
+        android:name="pt.kitsupixel.kpanime.ui.latest.LatestFragment"
+        android:label="Latest Releases"
+        tools:layout="@layout/latest_fragment" />
+    <fragment
+        android:id="@+id/showsFragment"
+        android:name="pt.kitsupixel.kpanime.ui.shows.ShowsFragment"
+        android:label="All Shows"
+        tools:layout="@layout/shows_fragment" />
+    <fragment
+        android:id="@+id/currentFragment"
+        android:name="pt.kitsupixel.kpanime.ui.current.CurrentFragment"
+        android:label="Current Season"
+        tools:layout="@layout/current_fragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="pt.kitsupixel.kpanime.ui.settings.settingsFragment"
+        android:label="Settings"
+        tools:layout="@layout/settings_fragment" />
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="pt.kitsupixel.kpanime.ui.about.AboutFragment"
+        android:label="About"
+        tools:layout="@layout/about_fragment" />
+</navigation>

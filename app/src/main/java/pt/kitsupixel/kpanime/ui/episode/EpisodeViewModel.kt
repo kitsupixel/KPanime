@@ -167,7 +167,7 @@ class EpisodeViewModel(
 
     override fun onStreamProgress(torrent: Torrent?, status: StreamStatus?) {
         if (status != null && _progressTorrent.value != status.bufferProgress) {
-            if (BuildConfig.Logging) Timber.i("Progress: %s", status?.bufferProgress)
+            if (BuildConfig.Logging) Timber.i("Progress: %s", status.bufferProgress)
             _progressTorrent.value = status.bufferProgress
             _progressTorrentText.value =
                 "Down. Speed: ${humanReadableByteCountSI(status.downloadSpeed.toLong())}"

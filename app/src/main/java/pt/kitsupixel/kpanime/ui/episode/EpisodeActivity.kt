@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -19,27 +20,22 @@ import pt.kitsupixel.kpanime.BuildConfig
 import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.adapters.LinkItemAdapter
 import pt.kitsupixel.kpanime.adapters.LinkItemClickListener
-import pt.kitsupixel.kpanime.databinding.EpisodeFragmentBinding
+import pt.kitsupixel.kpanime.databinding.ActivityEpisodeBinding
 import pt.kitsupixel.kpanime.domain.Link
 import pt.kitsupixel.kpanime.ui.main.MainActivity
 import timber.log.Timber
 
 
-class EpisodeFragment : Fragment() {
+class EpisodeActivity : AppCompatActivity() {
 
     private val viewModel: EpisodeViewModel by lazy {
-        val activity = requireNotNull(this.activity) {
-            "You can only access the viewModel after onActivityCreated()"
-        }
-        ViewModelProvider(this, EpisodeViewModel.Factory(activity.application, showId, episodeId))
+        ViewModelProvider(this, EpisodeViewModel.Factory(this.application, showId, episodeId))
             .get(
                 EpisodeViewModel::class.java
             )
     }
 
-    private val args: EpisodeFragmentArgs by navArgs()
-
-    private lateinit var binding: EpisodeFragmentBinding
+    private lateinit var binding: ActivityEpisodeBinding
 
     private lateinit var viewModelAdapter: LinkItemAdapter
 
@@ -47,69 +43,58 @@ class EpisodeFragment : Fragment() {
 
     private var episodeId: Long = 0L
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.episode_fragment,
-            container,
-            false
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // Create the slide in animation
+        overridePendingTransition(
+            R.anim.slide_in_right,
+            R.anim.slide_out_left
         )
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_episode)
 
-        showId = args.showId
-        episodeId = args.episodeId
+        showId = intent.getLongExtra("showId", 0L)
+        episodeId = intent.getLongExtra("episodeId", 0L)
 
         binding.lifecycleOwner = this
 
         binding.viewModel = viewModel
 
-        setClickListeners()
+        setupViews()
 
-        setRecyclerView()
-
-        setSwipeRefresh()
-
-        setTorrentStreamListener()
-
-        viewModel.episode.observe(viewLifecycleOwner, Observer { episode ->
+        viewModel.episode.observe(this, Observer { episode ->
             if (episode != null)
-                this.activity?.title = episode.type.capitalize() + " " + episode.number
+                this.title = episode.type.capitalize() + " " + episode.number
         })
 
-        return binding.root
+        setSupportActionBar(binding.episodeToolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(true)
     }
 
-    private fun setTorrentStreamListener() {
-        viewModel.openPlayer.observe(viewLifecycleOwner, Observer { isOpenPlayer ->
-            if (isOpenPlayer == true) {
-                val torrent: Torrent? = viewModel.torrent.value
-                if (torrent != null) {
-                    try {
-                        val intent =
-                            Intent(Intent.ACTION_VIEW, Uri.parse(torrent.videoFile.toString()))
-                        intent.setDataAndType(Uri.parse(torrent.videoFile.toString()), "video/mp4")
-                        startActivity(intent)
+    private fun setupViews() {
+        viewModelAdapter =
+            LinkItemAdapter(LinkItemClickListener { link ->
+                linkClicked(link)
+            })
 
-                        viewModel.endLoading()
-                    } catch (e: Exception) {
-                        Toast.makeText(context, "Service unavailable", Toast.LENGTH_SHORT).show()
-                        e.printStackTrace()
-                    }
-                }
-            }
-        })
-    }
+        binding.button480.setOnClickListener {
+            streamEpisode(viewModel.torrent480p.value)
+        }
 
-    private fun setRecyclerView() {
+        binding.button720.setOnClickListener {
+            streamEpisode(viewModel.torrent720p.value)
+        }
+
+        binding.button1080.setOnClickListener {
+            streamEpisode(viewModel.torrent1080p.value)
+        }
+
         binding.episodeRecyclerView.apply {
             setHasFixedSize(true)
             adapter = viewModelAdapter
         }
 
-        viewModel.links.observe(viewLifecycleOwner, Observer { links ->
+        viewModel.links.observe(this, Observer { links ->
 
             links?.apply {
                 viewModelAdapter.submitList(links)
@@ -130,25 +115,30 @@ class EpisodeFragment : Fragment() {
                 }
             }
         })
-    }
 
-    private fun setClickListeners() {
-        viewModelAdapter =
-            LinkItemAdapter(LinkItemClickListener { link ->
-                linkClicked(link)
-            })
-
-        binding.button480.setOnClickListener {
-            streamEpisode(viewModel.torrent480p.value)
+        binding.episodeSwipeRefresh.setOnRefreshListener {
+            if (BuildConfig.Logging) Timber.i("onRefresh called from SwipeRefreshLayout")
+            viewModel.refresh()
         }
 
-        binding.button720.setOnClickListener {
-            streamEpisode(viewModel.torrent720p.value)
-        }
+        viewModel.openPlayer.observe(this, Observer { isOpenPlayer ->
+            if (isOpenPlayer == true) {
+                val torrent: Torrent? = viewModel.torrent.value
+                if (torrent != null) {
+                    try {
+                        val intent =
+                            Intent(Intent.ACTION_VIEW, Uri.parse(torrent.videoFile.toString()))
+                        intent.setDataAndType(Uri.parse(torrent.videoFile.toString()), "video/mp4")
+                        startActivity(intent)
 
-        binding.button1080.setOnClickListener {
-            streamEpisode(viewModel.torrent1080p.value)
-        }
+                        viewModel.endLoading()
+                    } catch (e: Exception) {
+                        Toast.makeText(this, "Service unavailable", Toast.LENGTH_SHORT).show()
+                        e.printStackTrace()
+                    }
+                }
+            }
+        })
     }
 
     private fun linkClicked(link: Link) {
@@ -158,7 +148,7 @@ class EpisodeFragment : Fragment() {
             intent.data = Uri.parse(link.link)
             startActivity(intent)
         } catch (e: Exception) {
-            Toast.makeText(context, "Service unavailable", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Service unavailable", Toast.LENGTH_SHORT).show()
             e.printStackTrace()
         }
     }
@@ -168,10 +158,18 @@ class EpisodeFragment : Fragment() {
         if (url != null) viewModel.startStream(url)
     }
 
-    private fun setSwipeRefresh() {
-        binding.episodeSwipeRefresh.setOnRefreshListener {
-            if (BuildConfig.Logging) Timber.i("onRefresh called from SwipeRefreshLayout")
-            viewModel.refresh()
-        }
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return false
     }
+
+    override fun finish() {
+        super.finish()
+        // Slide out animation
+        overridePendingTransition(
+            R.anim.slide_in_left,
+            R.anim.slide_out_right
+        )
+    }
+
 }

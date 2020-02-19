@@ -21,7 +21,7 @@
         android:layout_marginEnd="2dp"
         android:layout_marginBottom="2dp"
         app:cardCornerRadius="5dp"
-        app:cardElevation="5dp">
+        app:cardElevation="1dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -37,6 +37,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                android:tint="?attr/colorOnSurface"
                 tools:srcCompat="@drawable/ic_torrent_black_24dp" />
 
             <TextView
@@ -69,11 +70,11 @@
                 android:layout_marginEnd="8dp"
                 android:checkable="false"
                 android:text="@{link.quality}"
-                android:textColor="@android:color/white"
-                app:chipBackgroundColor="#6610f2"
+                android:textColor="?attr/colorOnPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/type_image_view"
+                tools:chipBackgroundColor="#6610f2"
                 tools:text="360p" />
 
             <View

@@ -2,6 +2,7 @@ package pt.kitsupixel.kpanime
 
 import android.app.Application
 import android.os.Build
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.work.*
 import com.google.android.gms.ads.MobileAds
 import kotlinx.coroutines.CoroutineScope
@@ -62,6 +63,8 @@ class KPApplication : Application() {
 
         val database = getDatabase(this)
         showsRepository = ShowsRepository(database)
+
+       // AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
         delayedInit()
     }

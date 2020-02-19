@@ -14,7 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.main.MainActivity">
+        <activity android:name=".ui.main.MainActivity"
+            android:alwaysRetainTaskState="true"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
                 <action android:name="android.intent.action.MAIN" />
@@ -22,6 +24,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.detail.DetailActivity"
+            android:launchMode="singleTop"/>
+
+        <activity
+            android:name=".ui.episode.EpisodeActivity"
+            android:launchMode="singleTop"/>
 
         <meta-data
             android:name="preloaded_fonts"

@@ -86,9 +86,10 @@ class ShowsRepository(private val database: AppDatabase) {
                 database.episodeDao.insert(*episodes.asDatabaseModel())
             } catch (e: HttpException) {
                 // Log exception //
-                Timber.e(e.message())
+                e.printStackTrace()
             } catch (e: Throwable) {
                 // Log error //)
+                e.printStackTrace()
             }
         }
     }

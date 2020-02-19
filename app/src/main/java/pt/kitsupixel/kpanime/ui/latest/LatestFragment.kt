@@ -1,6 +1,7 @@
 package pt.kitsupixel.kpanime.ui.latest
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.databinding.DataBindingUtil
@@ -14,6 +15,7 @@ import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.adapters.ReleaseItemAdapter
 import pt.kitsupixel.kpanime.adapters.ReleaseItemClickListener
 import pt.kitsupixel.kpanime.databinding.LatestFragmentBinding
+import pt.kitsupixel.kpanime.ui.detail.DetailActivity
 import pt.kitsupixel.kpanime.ui.main.MainActivity
 import timber.log.Timber
 
@@ -68,12 +70,11 @@ class LatestFragment : Fragment() {
 
     private fun setupView() {
         // Click Listener for Recycler View
-        viewModelAdapter = ReleaseItemAdapter(ReleaseItemClickListener { showId, episodeId ->
-            Navigation.findNavController(this.view!!)
-                .navigate(
-                    LatestFragmentDirections.actionGlobalDetailFragment()
-                        .setShowId(showId)
-                )
+        viewModelAdapter = ReleaseItemAdapter(ReleaseItemClickListener { showId, _ ->
+            startActivity(
+                Intent(context, DetailActivity::class.java)
+                    .putExtra("showId", showId)
+            )
         })
 
         // Initialize Recycler View

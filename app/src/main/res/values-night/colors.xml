@@ -9,5 +9,4 @@
     <color name="secondaryTextColor">#ffffff</color>
     <color name="errorColor">#b00020</color>
     <color name="errorTextColor">#ffffff</color>
-    <color name="backgroundColor">#212121</color>
 </resources>
