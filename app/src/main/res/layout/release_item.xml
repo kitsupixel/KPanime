@@ -62,23 +62,14 @@
                 tools:text="Zettai Karen Children THE UNLIMITED – Hyoubu Kyousuke" />
 
             <TextView
-                android:id="@+id/episodeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:text="@{episodeAndShow.episode.typeCapitalized()}"
-                app:layout_constraintStart_toEndOf="@+id/ShowImageView"
-                app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
-
-            <TextView
                 android:id="@+id/numberTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="@{episodeAndShow.episode.number}"
-                app:layout_constraintBaseline_toBaselineOf="@+id/episodeTextView"
-                app:layout_constraintStart_toEndOf="@+id/episodeTextView"
+                android:layout_marginTop="@dimen/mdPadding"
+                app:episodeOrBatch="@{episodeAndShow.episode}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                app:layout_constraintStart_toStartOf="@+id/titleTextView"
+                app:layout_constraintTop_toBottomOf="@+id/titleTextView"
                 tools:text="33" />
 
 
@@ -88,7 +79,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:text="@{episodeAndShow.episode.releasedToLocalDate()}"
-                app:layout_constraintBaseline_toBaselineOf="@+id/episodeTextView"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                app:layout_constraintBaseline_toBaselineOf="@+id/numberTextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="2020-01-01" />
 

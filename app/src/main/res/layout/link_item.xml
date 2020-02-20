@@ -42,7 +42,7 @@
                 tools:srcCompat="@drawable/ic_torrent_black_24dp" />
 
             <TextView
-                android:id="@+id/link_type"
+                android:id="@+id/episode_number"
                 style="@style/TextAppearance.MaterialComponents.Subtitle1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

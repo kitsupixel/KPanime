@@ -110,3 +110,14 @@ fun progressIndicator(progressBar: ProgressBar, value: Int) {
 fun progressText(textView: TextView, value: Int) {
     textView.text = "${value}%"
 }
+
+@BindingAdapter("episodeOrBatch")
+fun episodeOrBatch(textView: TextView, episode: Episode?) {
+    if (episode != null) {
+        if (episode.type == "episode") {
+            textView.text = String.format(textView.context.resources.getString(R.string.episode_text), episode.number)
+        } else {
+            textView.text = String.format(textView.context.resources.getString(R.string.batch_text), episode.number)
+        }
+    }
+}

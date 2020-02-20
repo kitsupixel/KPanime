@@ -24,53 +24,30 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/show_title_text_view"
-                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:id="@+id/episode_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/mdPadding"
+                android:layout_marginStart="@dimen/lgPadding"
                 android:layout_marginTop="@dimen/lgPadding"
-                android:layout_marginBottom="16dp"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:text="@{episode.typeCapitalized()}"
-                tools:text="Episode"
+                android:layout_marginBottom="@dimen/lgPadding"
+                app:episodeOrBatch="@{episode}"
                 android:textAlignment="viewStart"
-                android:textSize="18sp"
-                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/link_type"
-                style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/mdPadding"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:text="@{episode.number}"
-                android:textAlignment="viewStart"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBaseline_toBaselineOf="@+id/show_title_text_view"
-                app:layout_constraintStart_toEndOf="@+id/show_title_text_view"
-                tools:text="001" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Episode 001" />
 
             <TextView
                 android:id="@+id/episode_date"
-                style="@style/TextAppearance.MaterialComponents.Subtitle1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/mdPadding"
-                android:ellipsize="end"
-                android:maxLines="2"
+                android:layout_marginEnd="@dimen/lgPadding"
                 android:text="@{episode.releasedToLocalDate()}"
                 android:textAlignment="viewStart"
                 android:textAllCaps="false"
-                android:textStyle="bold"
-                app:layout_constraintBaseline_toBaselineOf="@+id/link_type"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                app:layout_constraintBaseline_toBaselineOf="@+id/episode_number"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="10/10/18" />
 

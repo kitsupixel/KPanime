@@ -1,5 +1,6 @@
 package pt.kitsupixel.kpanime.ui.about
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.databinding.AboutFragmentBinding
 
@@ -43,5 +45,15 @@ class AboutFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        activity?.findViewById<BottomNavigationView>(R.id.bottom_nav_view)?.visibility = View.GONE
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        activity?.findViewById<BottomNavigationView>(R.id.bottom_nav_view)?.visibility = View.VISIBLE
     }
 }
