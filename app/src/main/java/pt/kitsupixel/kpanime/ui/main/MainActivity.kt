@@ -15,6 +15,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.databinding.ActivityMainBinding
+import kotlin.system.exitProcess
 
 
 class MainActivity : AppCompatActivity() {
@@ -60,8 +61,7 @@ class MainActivity : AppCompatActivity() {
         if (navController.graph.startDestination == navController.currentDestination?.id) {
             // Check if back is already pressed. If yes, then exit the app.
             if (backPressedOnce) {
-                super.onBackPressed()
-                return
+                exitProcess(0)
             }
 
             backPressedOnce = true

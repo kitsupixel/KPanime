@@ -11,8 +11,8 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/aboutFragment"
-        android:title="About" />
+        android:title="@string/title_about" />
     <item
         android:id="@+id/settingsFragment"
-        android:title="Settings" />
+        android:title="@string/title_settings" />
 </menu>

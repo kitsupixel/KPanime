@@ -97,11 +97,11 @@
         <com.google.android.gms.ads.AdView
             android:id="@+id/adView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"
             android:layout_marginStart="@dimen/lgPadding"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="@dimen/lgPadding"
             app:adSize="SMART_BANNER"
             app:adUnitId="ca-app-pub-7666356884507044/7153901171"

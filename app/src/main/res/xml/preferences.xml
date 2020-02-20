@@ -30,7 +30,7 @@
             android:summary="@string/delete_episode_summary"
             android:title="@string/delete_episode_after_exiting" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="Other">
+    <PreferenceCategory android:title="@string/other">
         <Preference
             android:key="version"
             android:summary="@string/version_name"

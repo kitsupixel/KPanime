@@ -24,7 +24,7 @@
     <string name="batch_text">Batch %1$s</string>
     <string name="connecting">A establecer ligação…</string>
     <string name="down_speed">Vel. Down.: %s</string>
-    <string name="home">Home</string>
+    <string name="home">Início</string>
     <string name="dark_theme">Tema Escuro</string>
     <string name="light_theme">Tema Claro</string>
     <string name="press_back_exit">Pressiona outra vez no VOLTAR para sair</string>
@@ -41,4 +41,6 @@
     <string name="service_unavailable">Serviço indisponível</string>
     <string name="report">Relatar problemas técnicos ou sugerir novos recursos</string>
     <string name="delete_episode_summary">Apaga o episódio após sair do ecrã do episódio.</string>
+    <string name="other">Outros</string>
+    <string name="title_home">Início</string>
 </resources>
