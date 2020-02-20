@@ -18,33 +18,30 @@
         android:layout_gravity="center_horizontal|top"
         android:gravity="center_horizontal|top">
 
-        <TextView
-            android:id="@+id/episode_text_view"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/episode_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/lgPadding"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="@dimen/lgPadding"
-            android:text="@string/loading"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-            app:formatEpisodeText="@{viewModel.episode}"
+            android:minHeight="?attr/actionBarSize"
+            android:background="@android:color/transparent"
+            android:theme="?attr/actionBarTheme"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Episode 001" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/watch_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/lgPadding"
-            android:layout_marginTop="@dimen/lgPadding"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="@dimen/lgPadding"
-            android:text="To watch the episode choose a quality (experimental)"
+            android:text="@string/watch_episode"
             android:visibility="gone"
             app:goneIfFalse="@{viewModel.textViewable}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/episode_text_view"
+            app:layout_constraintTop_toBottomOf="@+id/episode_toolbar"
             tools:visibility="visible" />
 
         <Button
@@ -97,18 +94,6 @@
             app:layout_constraintStart_toEndOf="@+id/button_720"
             tools:visibility="visible" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/lgPadding"
-            android:layout_marginTop="@dimen/lgPadding"
-            android:layout_marginEnd="@dimen/lgPadding"
-            android:text="@string/click_link"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_480" />
-
         <com.google.android.gms.ads.AdView
             android:id="@+id/adView"
             android:layout_width="wrap_content"
@@ -124,15 +109,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_480" />
 
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/lgPadding"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/lgPadding"
+            android:text="@string/click_link"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/adView" />
+
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/episode_swipe_refresh"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/mdPadding"
-            app:refreshing="@{safeUnbox(viewModel.refreshing)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2">
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            app:refreshing="@{safeUnbox(viewModel.refreshing)}">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/episode_recycler_view"
@@ -158,7 +155,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_720"
-            tools:visibility="visible">
+            tools:visibility="gone">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -167,7 +164,7 @@
                 android:layout_margin="@dimen/lgPadding"
                 android:gravity="center|center_vertical"
                 app:cardCornerRadius="10dp"
-                app:cardElevation="10dp"
+                app:cardElevation="2dp"
                 app:contentPadding="@dimen/lgPadding">
 
                 <RelativeLayout
@@ -202,8 +199,8 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/progress_bar"
                         android:layout_alignEnd="@id/progress_bar"
-                        app:progressText="@{safeUnbox(viewModel.progressTorrent)}"
                         android:textAlignment="center"
+                        app:progressText="@{safeUnbox(viewModel.progressTorrent)}"
                         tools:text="50%" />
 
                     <TextView
@@ -228,7 +225,6 @@
             </androidx.cardview.widget.CardView>
 
         </FrameLayout>
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

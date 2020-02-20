@@ -1,14 +1,8 @@
 <resources>
-    <string name="app_name">KPanime</string>
-    <string name="tab_home">Home</string>
-    <string name="tab_latest">Latest</string>
-    <string name="tab_current">Current</string>
-    <string name="tab_shows">Shows</string>
+    <string name="app_name" translatable="false">KPanime</string>
     <string name="episode">Episode</string>
     <string name="search">Search</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_home" translatable="false">Home</string>
     <string name="title_notifications">Notifications</string>
     <string name="home">Home</string>
     <string name="latest">Latest</string>
@@ -17,12 +11,39 @@
     <string name="pick_favorites">Please pick your favorite shows and enjoy!</string>
     <string name="search_shows">Search shows</string>
     <string name="episode_text">Episode %1$s</string>
+    <string name="batch_text">Batch %1$s</string>
     <string name="loading">Loading…</string>
-    <string name="warning">Warning: This feature is experimental and can cause a crash on the application.\nThe Video stream is treated as a torrent download, and can stop playing at any given time depending on the total number of seeds or the internet speed.\nThe use of VLC player is recommended.
-    </string>
-    <string name="quality480p">480p</string>
-    <string name="quality720p">720p</string>
-    <string name="quality1080p">1080p</string>
+    <string name="warning">"Warning: This feature is experimental and can cause a crash on the application.\nThe Video stream is treated as a torrent download, and can stop playing at any given time depending on the total number of seeds or the internet speed.\n\nThe use of VLC player is recommended."</string>
+    <string name="quality480p" translatable="false">480p</string>
+    <string name="quality720p" translatable="false">720p</string>
+    <string name="quality1080p" translatable="false">1080p</string>
     <string name="click_link">Click a link from the list bellow to download</string>
-    <string name="delete_episode_after_exiting">Delete episode after exiting this screen</string>
+    <string name="delete_episode_after_exiting">Delete episode after exiting screen</string>
+    <string name="about_1">This app was created mainly to satisfy my anime needs, but the world is so huge and full of people with the same interests as myself, I published the app for all to use.</string>
+    <string name="about_2">There is some costs to maintaining the app, namely the webserver that\'s providing the API with the information of the anime, so I added some small ads, that I think don\'t disrupt the user experience, I myself use the app with the ads.</string>
+    <string name="buy_me_coffee">Buy me a coffee</string>
+    <string name="watch_episode">To watch the episode choose a quality (experimental)</string>
+    <string name="light_theme">Light Theme</string>
+    <string name="dark_theme">Dark Theme</string>
+    <string name="follow_system">Follow System Settings</string>
+    <string name="choose_a_theme">Choose a theme to display the app</string>
+    <string name="app_settings">App Settings</string>
+    <string name="app_version">App version</string>
+    <string name="report">Report technical issues or suggest new features</string>
+    <string name="send_feedback">Send feedback</string>
+    <string name="theme">Theme</string>
+    <string name="title_latest">Latest Releases</string>
+    <string name="title_shows">All Shows</string>
+    <string name="title_current">Current Season</string>
+    <string name="title_settings">Settings</string>
+    <string name="title_about">About</string>
+    <string name="service_unavailable">Service unavailable</string>
+    <string name="added_to_favorites">This show was added to your favourites</string>
+    <string name="removed_from_favorites">This show was removed from your favourites</string>
+    <string name="press_back_exit">Press BACK again to exit</string>
+    <string name="connecting">Connecting…</string>
+    <string name="down_speed">Down. Speed: %s</string>
+    <string name="about_3">I would really appreciate you if rated this app, and if you really liked this app and want to buy me a coffee I\'ll put here a button for your convenience ;)</string>
+    <string name="delete_episode_summary">Deletes the episode after exiting the episode screen.</string>
+
 </resources>

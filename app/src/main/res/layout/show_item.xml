@@ -30,7 +30,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/video_thumbnail"
+                android:id="@+id/show_thumbnail_image_view"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:adjustViewBounds="false"
@@ -45,9 +45,10 @@
                 tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
             <TextView
-                android:id="@+id/quality_link"
+                android:id="@+id/show_title_text_view"
+                style="@style/TextAppearance.ItemTitle"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="32dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
@@ -62,8 +63,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/clickableOverlay"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/video_thumbnail"
-                style="@style/TextAppearance.ItemTitle"
+                app:layout_constraintTop_toBottomOf="@+id/show_thumbnail_image_view"
                 tools:text="A VERY BIG VIDEO TITLE TO PLACE HERE" />
 
             <View

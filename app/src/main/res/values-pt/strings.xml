@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_settings">Definições da applicação</string>
+    <string name="app_version">Versão da aplicação</string>
+    <string name="buy_me_coffee">Paga-me um café</string>
+    <string name="choose_a_theme">Escolhe um tema para a aplicação</string>
+    <string name="click_link">Clica num link da lista abaixo para fazer download</string>
+    <string name="current">Esta Temp.</string>
+    <string name="delete_episode_after_exiting">Apagar episodios após sair do ecrã</string>
+    <string name="episode">Episódio</string>
+    <string name="episode_text">Episódio</string>
+    <string name="follow_system">Theme por defeito do sistema</string>
+    <string name="latest">Recentes</string>
+    <string name="loading">A carregar…</string>
+    <string name="pick_favorites">Escolhe as tua séries favoritas</string>
+    <string name="search">Pesquisa</string>
+    <string name="search_shows">Pesquisa nas Séries</string>
+    <string name="send_feedback">Envia feedback</string>
+    <string name="shows">Séries</string>
+    <string name="theme">Tema</string>
+    <string name="title_notifications">Notificações</string>
+    <string name="warning">Aviso: Esta funcionalidade é experimental e pode causar um crash na aplicação.\nO vídeo é tratado como um download torrent, e pode parar a qualquer momento, dependendo do número total de seeders ou da velocidade da internet.\n\nRecomenda-se o uso do VLC player.</string>
+    <string name="watch_episode">Para veres o episódio escolhe uma qualidade (experimental)</string>
+    <string name="batch_text">Batch %1$s</string>
+    <string name="connecting">A establecer ligação…</string>
+    <string name="down_speed">Vel. Down.: %s</string>
+    <string name="home">Home</string>
+    <string name="dark_theme">Tema Escuro</string>
+    <string name="light_theme">Tema Claro</string>
+    <string name="press_back_exit">Pressiona outra vez no VOLTAR para sair</string>
+    <string name="title_about">Sobre</string>
+    <string name="title_current">Temporada Atual</string>
+    <string name="title_latest">Lançamentos recentes</string>
+    <string name="title_settings">Definições</string>
+    <string name="title_shows">Todas as séries</string>
+    <string name="removed_from_favorites">Esta sério foi removida dos teus favoritos</string>
+    <string name="added_to_favorites">Está série foi adicionada aos teus favoritos</string>
+    <string name="about_1">Esta aplicação foi criada principalmente para satisfazer minhas necessidades de anime, mas o mundo é tão grande e cheio de pessoas com os mesmos interesses que eu decidi publicar a aplicação para que todos a possam usar.</string>
+    <string name="about_2">Existem alguns custos para manter a aplicação, nomeadamente, o servidor web que está fornecer as informações dos animes via API, com isto tive de adicionar alguns pequenos anúncios, estes que não degradam a experiência do utilizador, eu mesmo uso a aplicação com os anúncios..</string>
+    <string name="about_3">Eu realmente agradeceria se avaliasse esta aplicação, e se você realmente gostou desta aplicação e quiser me pagar um café eu vou colocar aqui um botão para o efeito ;)</string>
+    <string name="service_unavailable">Serviço indisponível</string>
+    <string name="report">Relatar problemas técnicos ou sugerir novos recursos</string>
+    <string name="delete_episode_summary">Apaga o episódio após sair do ecrã do episódio.</string>
+</resources>

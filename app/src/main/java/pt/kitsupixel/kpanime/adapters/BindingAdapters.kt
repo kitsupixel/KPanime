@@ -35,6 +35,11 @@ fun goneIfNotFalse(view: View, it: Any?) {
     view.visibility = if (it == false) View.GONE else View.VISIBLE
 }
 
+@BindingAdapter("goneIfTrue")
+fun goneIfTrue(view: View, it: Any?) {
+    view.visibility = if (it == true) View.GONE else View.VISIBLE
+}
+
 @BindingAdapter("goneIfEmpty")
 fun goneIfEmpty(view: View, it: List<Any>?) {
     view.visibility = if (it != null) {
@@ -89,13 +94,6 @@ fun convertTitle(textView: TextView, text: String?) {
             @Suppress("DEPRECATION")
             textView.text = Html.fromHtml(text)
         }
-    }
-}
-
-@BindingAdapter("formatEpisodeText")
-fun formatEpisodeText(textView: TextView, episode: Episode?) {
-    if (episode != null) {
-        textView.text = episode.type.capitalize() + " " + episode.number
     }
 }
 

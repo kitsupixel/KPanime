@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import com.github.se_bastiaan.torrentstream.StreamStatus
 import com.github.se_bastiaan.torrentstream.Torrent
 import com.github.se_bastiaan.torrentstream.TorrentOptions
@@ -18,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import pt.kitsupixel.kpanime.BuildConfig
+import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.database.getDatabase
 import pt.kitsupixel.kpanime.repository.ShowsRepository
 import pt.kitsupixel.kpanime.utils.humanReadableByteCountSI
@@ -70,7 +72,8 @@ class EpisodeViewModel(
     val progressTorrent: LiveData<Int>
         get() = _progressTorrent
 
-    private var _progressTorrentText = MutableLiveData<String?>("Connecting...")
+    private var _progressTorrentText =
+        MutableLiveData<String?>(application.resources.getString(R.string.connecting))
     val progressTorrentText: LiveData<String?>
         get() = _progressTorrentText
 
@@ -81,10 +84,19 @@ class EpisodeViewModel(
             refresh()
         }
 
-        torrentStream = TorrentStream.init(TorrentOptions.Builder()
-            .saveLocation(application.getExternalFilesDir(null))
-            .removeFilesAfterStop(true)
-            .build())
+        PreferenceManager.getDefaultSharedPreferences(application.applicationContext)
+            .getBoolean("delete_episodes_preference", true)
+        torrentStream = TorrentStream.init(
+            TorrentOptions.Builder()
+                .saveLocation(application.getExternalFilesDir(null))
+                .removeFilesAfterStop(
+                    PreferenceManager.getDefaultSharedPreferences(application.applicationContext).getBoolean(
+                        "delete_episodes_preference",
+                        true
+                    )
+                )
+                .build()
+        )
         torrentStream.addListener(this)
     }
 
@@ -100,15 +112,6 @@ class EpisodeViewModel(
             showsRepository.refreshLinks(showId, episodeId)
             _refreshing.value = false
         }
-    }
-
-    fun setTorrentOptions(removeAfterStop: Boolean) {
-        Timber.i("setTorrentOptions:%s", removeAfterStop.toString())
-
-        torrentStream.options = TorrentOptions.Builder()
-            .saveLocation(application.getExternalFilesDir(null))
-            .removeFilesAfterStop(removeAfterStop)
-            .build()
     }
 
     fun setTorrent480Link(url: String) {
@@ -169,8 +172,10 @@ class EpisodeViewModel(
         if (status != null && _progressTorrent.value != status.bufferProgress) {
             if (BuildConfig.Logging) Timber.i("Progress: %s", status.bufferProgress)
             _progressTorrent.value = status.bufferProgress
-            _progressTorrentText.value =
-                "Down. Speed: ${humanReadableByteCountSI(status.downloadSpeed.toLong())}"
+            _progressTorrentText.value = String.format(
+                application.resources.getString(R.string.down_speed),
+                humanReadableByteCountSI(status.downloadSpeed.toLong())
+            )
         }
     }
 

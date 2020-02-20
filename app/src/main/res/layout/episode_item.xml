@@ -24,7 +24,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/quality_link"
+                android:id="@+id/show_title_text_view"
                 style="@style/TextAppearance.MaterialComponents.Subtitle1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -54,8 +54,8 @@
                 android:textAlignment="viewStart"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintBaseline_toBaselineOf="@+id/quality_link"
-                app:layout_constraintStart_toEndOf="@+id/quality_link"
+                app:layout_constraintBaseline_toBaselineOf="@+id/show_title_text_view"
+                app:layout_constraintStart_toEndOf="@+id/show_title_text_view"
                 tools:text="001" />
 
             <TextView

@@ -37,7 +37,7 @@ class AboutFragment : Fragment() {
                 intent.data = Uri.parse("https://paypal.me/kitsupixel")
                 startActivity(intent)
             } catch (e: Exception) {
-                Toast.makeText(context, "Service unavailable", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, resources.getString(R.string.service_unavailable), Toast.LENGTH_SHORT).show()
                 e.printStackTrace()
             }
         }

@@ -56,8 +56,13 @@ class EpisodeActivity : AppCompatActivity() {
         setupViews()
 
         viewModel.episode.observe(this, Observer { episode ->
-            if (episode != null)
-                this.title = episode.type.capitalize() + " " + episode.number
+            if (episode != null && episode.type == "episode") {
+                this.title =
+                    String.format(resources.getString(R.string.episode_text), episode.number)
+            } else if (episode != null) {
+                this.title =
+                    String.format(resources.getString(R.string.batch_text), episode.number)
+            }
         })
 
         setSupportActionBar(binding.episodeToolbar)
@@ -127,7 +132,7 @@ class EpisodeActivity : AppCompatActivity() {
 
                         viewModel.endLoading()
                     } catch (e: Exception) {
-                        Toast.makeText(this, "Service unavailable", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, resources.getString(R.string.service_unavailable), Toast.LENGTH_SHORT).show()
                         e.printStackTrace()
                     }
                 }
@@ -149,7 +154,7 @@ class EpisodeActivity : AppCompatActivity() {
             intent.data = Uri.parse(link.link)
             startActivity(intent)
         } catch (e: Exception) {
-            Toast.makeText(this, "Service unavailable", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, resources.getString(R.string.service_unavailable), Toast.LENGTH_SHORT).show()
             e.printStackTrace()
         }
     }

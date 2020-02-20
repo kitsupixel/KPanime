@@ -8,31 +8,30 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="pt.kitsupixel.kpanime.ui.home.HomeFragment"
-        android:label="Home"
+        android:label="@string/title_home"
         tools:layout="@layout/home_fragment" />
     <fragment
         android:id="@+id/latestFragment"
         android:name="pt.kitsupixel.kpanime.ui.latest.LatestFragment"
-        android:label="Latest Releases"
+        android:label="@string/title_latest"
         tools:layout="@layout/latest_fragment" />
     <fragment
         android:id="@+id/showsFragment"
         android:name="pt.kitsupixel.kpanime.ui.shows.ShowsFragment"
-        android:label="All Shows"
+        android:label="@string/title_shows"
         tools:layout="@layout/shows_fragment" />
     <fragment
         android:id="@+id/currentFragment"
         android:name="pt.kitsupixel.kpanime.ui.current.CurrentFragment"
-        android:label="Current Season"
+        android:label="@string/title_current"
         tools:layout="@layout/current_fragment" />
     <fragment
         android:id="@+id/settingsFragment"
         android:name="pt.kitsupixel.kpanime.ui.settings.settingsFragment"
-        android:label="Settings"
-        tools:layout="@layout/settings_fragment" />
+        android:label="@string/title_settings" />
     <fragment
         android:id="@+id/aboutFragment"
         android:name="pt.kitsupixel.kpanime.ui.about.AboutFragment"
-        android:label="About"
+        android:label="@string/title_about"
         tools:layout="@layout/about_fragment" />
 </navigation>

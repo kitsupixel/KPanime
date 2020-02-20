@@ -13,7 +13,7 @@
             android:summary="Receive notifications every time a new episode of your favorite shows is released"
             android:title="Allow notifications" />
     </PreferenceCategory-->
-    <PreferenceCategory android:title="App Settings">
+    <PreferenceCategory android:title="@string/app_settings">
 
         <ListPreference
             android:backgroundTintMode="add"
@@ -21,18 +21,26 @@
             android:entryValues="@array/key_theme_preferences"
             android:icon="@drawable/ic_palette_black_24dp"
             android:key="theme_preference"
-            android:summary="Choose a theme to display the app"
-            android:title="Theme" />
+            android:summary="@string/choose_a_theme"
+            android:title="@string/theme" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:icon="@drawable/ic_file_download_black_24dp"
+            android:key="delete_episodes_preference"
+            android:summary="@string/delete_episode_summary"
+            android:title="@string/delete_episode_after_exiting" />
     </PreferenceCategory>
     <PreferenceCategory android:title="Other">
         <Preference
             android:key="version"
             android:summary="@string/version_name"
-            android:title="App version" />
+            android:title="@string/app_version"
+            app:icon="@drawable/ic_info_outline_black_24dp" />
         <Preference
+            app:icon="@drawable/ic_feedback_black_24dp"
             app:key="feedback"
-            app:summary="Report technical issues or suggest new features"
-            app:title="Send feedback">
+            app:summary="@string/report"
+            app:title="@string/send_feedback">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://www.kitsupixel.pt#contacts" />

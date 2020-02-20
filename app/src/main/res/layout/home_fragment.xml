@@ -28,6 +28,7 @@
             android:textAlignment="center"
             android:textSize="30sp"
             android:visibility="gone"
+            app:goneIfTrue="@{safeUnbox(viewModel.refreshing)}"
             app:goneIfEmpty="@{viewModel.shows}"/>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

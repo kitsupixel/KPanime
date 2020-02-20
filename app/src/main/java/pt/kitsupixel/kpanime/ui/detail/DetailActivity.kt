@@ -83,13 +83,13 @@ class DetailActivity : AppCompatActivity() {
                 if (isFavourite == true)
                     Snackbar.make(
                         this.findViewById(android.R.id.content)!!,
-                        "This show was added to your favourites",
+                        resources.getString(R.string.added_to_favorites),
                         Snackbar.LENGTH_SHORT
                     ).show()
                 else if (isFavourite == false)
                     Snackbar.make(
                         this.findViewById(android.R.id.content)!!,
-                        "This show was removed from your favourites",
+                        resources.getString(R.string.removed_from_favorites),
                         Snackbar.LENGTH_SHORT
                     ).show()
 

@@ -36,7 +36,7 @@
             android:layout_marginStart="@dimen/lgPadding"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="@dimen/lgPadding"
-            android:text="To watch the episode choose a quality (experimental)"
+            android:text="@string/watch_episode"
             android:visibility="gone"
             app:goneIfFalse="@{viewModel.textViewable}"
             app:layout_constraintEnd_toEndOf="parent"
@@ -164,7 +164,7 @@
                 android:layout_margin="@dimen/lgPadding"
                 android:gravity="center|center_vertical"
                 app:cardCornerRadius="10dp"
-                app:cardElevation="10dp"
+                app:cardElevation="2dp"
                 app:contentPadding="@dimen/lgPadding">
 
                 <RelativeLayout
