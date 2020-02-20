@@ -29,6 +29,9 @@ android {
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
     }
+    applicationVariants.all { variant ->
+        variant.resValue "string", "version_name", variant.versionName
+    }
     buildTypes {
         debug {
             applicationIdSuffix ".debug"
@@ -147,4 +150,7 @@ dependencies {
     androidTestImplementation "androidx.room:room-testing:2.2.3"
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    // Preferences
+    implementation "androidx.preference:preference:1.1.0"
 }

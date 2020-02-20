@@ -40,7 +40,14 @@ class MainActivity : AppCompatActivity() {
 
         // Setting Up ActionBar with Navigation Controller
         // Pass the IDs of top-level destinations in AppBarConfiguration
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
+        val appBarConfiguration = AppBarConfiguration(
+            topLevelDestinationIds = setOf(
+                R.id.homeFragment,
+                R.id.latestFragment,
+                R.id.currentFragment,
+                R.id.showsFragment
+            )
+        )
         // Action bar
         setSupportActionBar(binding.toolbar)
         setupActionBarWithNavController(navController, appBarConfiguration)

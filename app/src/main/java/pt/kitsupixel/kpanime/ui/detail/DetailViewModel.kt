@@ -10,6 +10,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import pt.kitsupixel.kpanime.database.getDatabase
+import pt.kitsupixel.kpanime.domain.Episode
+import pt.kitsupixel.kpanime.domain.Show
 import pt.kitsupixel.kpanime.repository.ShowsRepository
 import timber.log.Timber
 
@@ -20,9 +22,9 @@ class DetailViewModel(application: Application, private val showId: Long) : View
     private val database = getDatabase(application)
     private val showsRepository = ShowsRepository(database)
 
-    var show = showsRepository.getShow(showId)
+    var show: LiveData<Show?>
 
-    val episodes = showsRepository.getEpisodesByShow(showId)
+    var episodes: LiveData<List<Episode>?>
 
     private val _refreshing = MutableLiveData<Boolean>(false)
     val refreshing: LiveData<Boolean>
@@ -35,11 +37,16 @@ class DetailViewModel(application: Application, private val showId: Long) : View
 
     init {
         Timber.i("Init")
+        _refreshing.value = true
+
+        show = showsRepository.getShow(showId)
+        episodes = showsRepository.getEpisodesByShow(showId)
+
         viewModelScope.launch {
-            _refreshing.value = true
             showsRepository.refreshEpisodes(showId)
-            _refreshing.value = false
         }
+
+        _refreshing.value = false
     }
 
     fun toggleFavorite() {

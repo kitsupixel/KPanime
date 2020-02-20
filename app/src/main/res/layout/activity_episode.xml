@@ -30,7 +30,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/whatch_text"
+            android:id="@+id/watch_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/lgPadding"
@@ -59,7 +59,7 @@
             app:layout_constraintEnd_toStartOf="@+id/button_720"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/whatch_text"
+            app:layout_constraintTop_toBottomOf="@+id/watch_text"
             tools:visibility="visible" />
 
         <Button
@@ -94,17 +94,32 @@
             app:layout_constraintStart_toEndOf="@+id/button_720"
             tools:visibility="visible" />
 
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="@dimen/lgPadding"
+            android:layout_marginEnd="@dimen/lgPadding"
+            app:adSize="SMART_BANNER"
+            app:adUnitId="ca-app-pub-7666356884507044/7153901171"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_480" />
+
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/lgPadding"
-            android:layout_marginTop="@dimen/lgPadding"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="@dimen/lgPadding"
             android:text="@string/click_link"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_480" />
+            app:layout_constraintTop_toBottomOf="@+id/adView" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/episode_swipe_refresh"

@@ -1,8 +1,11 @@
 package pt.kitsupixel.kpanime
 
 import android.app.Application
+import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.preference.Preference
+import androidx.preference.PreferenceManager
 import androidx.work.*
 import com.google.android.gms.ads.MobileAds
 import kotlinx.coroutines.CoroutineScope
@@ -21,7 +24,11 @@ class KPApplication : Application() {
 
     private lateinit var showsRepository: ShowsRepository
 
-    var lastAdShown: Long = 0L
+    private lateinit var preferences: SharedPreferences
+
+    private lateinit var preferencesListener: SharedPreferences.OnSharedPreferenceChangeListener
+
+    private val THEME_PREFERENCE = "theme_preference"
 
     private fun delayedInit() {
         applicationScope.launch {
@@ -64,17 +71,27 @@ class KPApplication : Application() {
         val database = getDatabase(this)
         showsRepository = ShowsRepository(database)
 
-       // AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        preferences = PreferenceManager.getDefaultSharedPreferences(this)
+
+        preferencesListener = SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
+            Timber.i("SharedPreferences changed: %s", key)
+            if (key == THEME_PREFERENCE) {
+                setAppTheme(sharedPreferences.getString(key, "system"))
+            }
+        }
+
+        setAppTheme(preferences.getString(THEME_PREFERENCE, "system"))
 
         delayedInit()
     }
 
-    fun getTimeLastAd(): Long {
-        return lastAdShown
-    }
-
-    fun setTimeLastAd() {
-        lastAdShown = System.currentTimeMillis()
+    fun setAppTheme(theme: String?) {
+        val mode = when(theme) {
+            "light" -> AppCompatDelegate.MODE_NIGHT_NO
+            "dark" -> AppCompatDelegate.MODE_NIGHT_YES
+            else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        }
+        AppCompatDelegate.setDefaultNightMode(mode)
     }
 
 }

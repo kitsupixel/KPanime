@@ -9,6 +9,8 @@ import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.snackbar.Snackbar
 import pt.kitsupixel.kpanime.BuildConfig
@@ -29,13 +31,9 @@ class DetailActivity : AppCompatActivity() {
     }
 
 
-    //private val args: DetailActivityArgs by navArgs()
-
     private lateinit var binding: ActivityDetailBinding
 
     private lateinit var viewModelAdapter: EpisodeItemAdapter
-
-    private lateinit var collapsingToolbar: CollapsingToolbarLayout
 
     private var showId: Long = 0L
 
@@ -118,6 +116,13 @@ class DetailActivity : AppCompatActivity() {
 
         ViewCompat.requestApplyInsets(binding.detailCordinatorLayout)
         ViewCompat.setNestedScrollingEnabled(binding.detailEpisodesRecyclerview, false)
+
+        val adView: AdView = binding.adView
+        val adRequest: AdRequest = AdRequest.Builder()
+            .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+            .build()
+
+        adView.loadAd(adRequest)
     }
 
     override fun onSupportNavigateUp(): Boolean {

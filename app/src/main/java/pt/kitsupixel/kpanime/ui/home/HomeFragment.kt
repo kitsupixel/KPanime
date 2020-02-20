@@ -11,7 +11,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.onNavDestinationSelected
 import androidx.recyclerview.widget.GridLayoutManager
 import pt.kitsupixel.kpanime.BuildConfig
 import pt.kitsupixel.kpanime.R
@@ -93,6 +95,11 @@ class HomeFragment : Fragment() {
         })
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val navController = findNavController()
+        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+    }
+
     private fun setupViews() {
         // Click Listener for Recycler View
         viewModelAdapter = ShowItemAdapter(ShowItemClickListener { showId ->
@@ -146,5 +153,4 @@ class HomeFragment : Fragment() {
             setAdapterToShows()
         }
     }
-
 }

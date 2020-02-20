@@ -30,7 +30,7 @@
         <item name="colorControlHighlight">@color/primaryTextColor</item>
         <item name="android:textColorHint">@color/primaryTextColor</item>
         <item name="android:editTextColor">@color/primaryTextColor</item>
-        <item name="android:textColor">@android:color/black</item>
+        <item name="actionMenuTextColor">@android:color/black</item>
     </style>
 
     <style name="AppTheme.SecondAppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >

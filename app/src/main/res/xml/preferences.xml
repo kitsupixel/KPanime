@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--PreferenceCategory
+        android:text="@string/title_notifications"
+        android:title="@string/title_notifications">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:icon="@drawable/ic_notifications_black_24dp"
+            android:key="notifications_preference"
+            android:summary="Receive notifications every time a new episode of your favorite shows is released"
+            android:title="Allow notifications" />
+    </PreferenceCategory-->
+    <PreferenceCategory android:title="App Settings">
+
+        <ListPreference
+            android:backgroundTintMode="add"
+            android:entries="@array/theme_preferences"
+            android:entryValues="@array/key_theme_preferences"
+            android:icon="@drawable/ic_palette_black_24dp"
+            android:key="theme_preference"
+            android:summary="Choose a theme to display the app"
+            android:title="Theme" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Other">
+        <Preference
+            android:key="version"
+            android:summary="@string/version_name"
+            android:title="App version" />
+        <Preference
+            app:key="feedback"
+            app:summary="Report technical issues or suggest new features"
+            app:title="Send feedback">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://www.kitsupixel.pt#contacts" />
+        </Preference>
+    </PreferenceCategory>
+
+</PreferenceScreen>

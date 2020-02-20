@@ -21,6 +21,7 @@
             app:menu="@menu/toolbar_menu"
             app:title="@string/app_name"
             android:theme="@style/AppTheme.AppBarOverlay"
+            app:popupTheme="@style/Theme.AppCompat.DayNight.NoActionBar"
             app:titleTextColor="@color/primaryTextColor" />
 
         <fragment

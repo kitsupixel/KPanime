@@ -86,24 +86,39 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/mdPadding"
-                    android:layout_marginTop="@dimen/lgPadding"
                     android:layout_marginEnd="@dimen/mdPadding"
                     android:text="@{viewModel.show.synopsis}"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/titleTextView"
                     tools:text="What happens when a science-inclined girl and boy who are deeply passionate about research fall in love? An intelligent woman named Himuro Ayame who is a science graduate student at Saitama University happens to ask fellow science grad student Yukimura Shinya out. Of course, there’s no logical reason for this love! But as a science and engineering major, not being able to logically prove love would mean that those feelings aren’t real, and they’d fail as a science student. With that in mind, the two drag everyone else in the lab into trying various experiments to prove love actually exists." />
+
+                <com.google.android.gms.ads.AdView
+                    android:id="@+id/adView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="@dimen/lgPadding"
+                    android:layout_marginEnd="@dimen/lgPadding"
+                    app:adSize="SMART_BANNER"
+                    app:adUnitId="ca-app-pub-7666356884507044/1778285564"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
 
                 <ProgressBar
                     android:id="@+id/loadingSpinner"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/lgPadding"
+                    android:layout_marginTop="16dp"
                     app:goneIfFalse="@{viewModel.refreshing}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
+                    app:layout_constraintTop_toBottomOf="@+id/adView" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/detail_episodes_recyclerview"

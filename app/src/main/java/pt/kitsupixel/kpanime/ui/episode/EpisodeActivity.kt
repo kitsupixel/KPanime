@@ -1,28 +1,22 @@
 package pt.kitsupixel.kpanime.ui.episode
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.github.se_bastiaan.torrentstream.Torrent
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
 import pt.kitsupixel.kpanime.BuildConfig
 import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.adapters.LinkItemAdapter
 import pt.kitsupixel.kpanime.adapters.LinkItemClickListener
 import pt.kitsupixel.kpanime.databinding.ActivityEpisodeBinding
 import pt.kitsupixel.kpanime.domain.Link
-import pt.kitsupixel.kpanime.ui.main.MainActivity
 import timber.log.Timber
 
 
@@ -139,6 +133,13 @@ class EpisodeActivity : AppCompatActivity() {
                 }
             }
         })
+
+        val adView: AdView = binding.adView
+        val adRequest: AdRequest = AdRequest.Builder()
+            .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+            .build()
+
+        adView.loadAd(adRequest)
     }
 
     private fun linkClicked(link: Link) {

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="layout_modes">Light Theme; Dark Theme; Follow System Settings</string-array>
+    <string-array name="key_theme_preferences">
+        <item>light</item>
+        <item>dark</item>
+        <item>system</item>
+    </string-array>
+    <string-array name="theme_preferences">
+        <item>Light Theme</item>
+        <item>Dark Theme</item>
+        <item>Follow System Settings</item>
+    </string-array>
+</resources>
