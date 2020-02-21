@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         if (navController.graph.startDestination == navController.currentDestination?.id) {
             // Check if back is already pressed. If yes, then exit the app.
             if (backPressedOnce) {
-                exitProcess(0)
+                super.onBackPressed()
             }
 
             backPressedOnce = true

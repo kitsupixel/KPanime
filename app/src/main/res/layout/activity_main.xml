@@ -3,47 +3,63 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:foregroundTint="@color/primaryTextColor"
-            android:foregroundTintMode="add"
-            android:minHeight="?attr/actionBarSize"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:menu="@menu/toolbar_menu"
-            app:title="@string/app_name"
-            android:theme="@style/AppTheme.AppBarOverlay"
-            app:popupTheme="@style/Theme.AppCompat.DayNight.NoActionBar"
-            app:titleTextColor="@color/primaryTextColor" />
 
-        <fragment
-            android:id="@+id/nav_host_fragment"
-            android:name="androidx.navigation.fragment.NavHostFragment"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:defaultNavHost="true"
-            app:layout_constraintBottom_toTopOf="@+id/bottom_nav_view"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            app:navGraph="@navigation/main_nav_graph"
-            tools:ignore="FragmentTagUsage"
-            tools:layout_editor_absoluteX="0dp" />
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bottom_nav_view"
+            android:fitsSystemWindows="true">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/main_appbar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/AppTheme.AppBarOverlay"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_scrollFlags="scroll|enterAlways|snap"
+                    app:menu="@menu/toolbar_menu"
+                    app:popupTheme="@style/Theme.AppCompat.DayNight.NoActionBar"
+                    app:title="@string/app_name" />
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+            <fragment
+                android:id="@+id/nav_host_fragment"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:defaultNavHost="true"
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+                app:layout_constraintTop_toBottomOf="@+id/main_appbar_layout"
+                app:navGraph="@navigation/main_nav_graph"
+                tools:ignore="FragmentTagUsage"
+                tools:layout_editor_absoluteX="0dp" />
+
+        </FrameLayout>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             app:itemHorizontalTranslationEnabled="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:menu="@menu/bottom_menu"
-            tools:layout_conversion_absoluteHeight="56dp"
-            tools:layout_conversion_absoluteWidth="0dp" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:menu="@menu/bottom_menu" />
+    </RelativeLayout>
 </layout>

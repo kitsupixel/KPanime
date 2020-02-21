@@ -46,5 +46,7 @@
     <string name="about_3">I would really appreciate you if rated this app, and if you really liked this app and want to buy me a coffee I\'ll put here a button for your convenience ;)</string>
     <string name="delete_episode_summary">Deletes the episode after exiting the episode screen.</string>
     <string name="other">Other</string>
+    <string name="marked_as_watched">This show was marked as watched</string>
+    <string name="unmarked_watched">This show was unmarked from watched</string>
 
 </resources>

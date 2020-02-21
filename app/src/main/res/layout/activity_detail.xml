@@ -28,7 +28,7 @@
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
                 app:contentScrim="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
                 <ImageView
                     android:id="@+id/show_title_text_view"
@@ -52,6 +52,7 @@
                     app:layout_collapseMode="pin" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
+
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.core.widget.NestedScrollView
@@ -153,6 +154,20 @@
             app:layout_anchor="@id/detail_appbar"
             app:layout_anchorGravity="bottom|end"
             app:srcCompat="@drawable/ic_unfavourite"
+            app:tint="@android:color/white" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/watched_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|start"
+            android:layout_marginStart="85dp"
+            app:useCompatPadding="true"
+            android:onClick="@{() -> viewModel.toggleWatched()}"
+            app:backgroundTint="#3F51B5"
+            app:layout_anchor="@+id/favourite_fab"
+            app:layout_anchorGravity="start|center"
+            app:srcCompat="@drawable/ic_playlist_add_black_24dp"
             app:tint="@android:color/white" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

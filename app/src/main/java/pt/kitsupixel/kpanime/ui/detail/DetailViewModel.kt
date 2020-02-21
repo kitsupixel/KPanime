@@ -34,6 +34,10 @@ class DetailViewModel(application: Application, private val showId: Long) : View
     val eventFavorite: LiveData<Boolean?>
         get() = _eventFavorite
 
+    private val _eventWatched = MutableLiveData<Boolean?>()
+    val eventWatched: LiveData<Boolean?>
+        get() = _eventWatched
+
 
     init {
         Timber.i("Init")
@@ -54,6 +58,14 @@ class DetailViewModel(application: Application, private val showId: Long) : View
         viewModelScope.launch {
             showsRepository.toggleFavorite(showId)
             _eventFavorite.value = toggle == false
+        }
+    }
+
+    fun toggleWatched() {
+        val toggle = show.value?.watched ?: false
+        viewModelScope.launch {
+            showsRepository.toggleWatched(showId)
+            _eventWatched.value = toggle == false
         }
     }
 

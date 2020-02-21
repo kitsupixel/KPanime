@@ -131,9 +131,35 @@ class ShowsRepository(private val database: AppDatabase) {
         withContext(Dispatchers.IO) {
             val record = database.showMetaDao.get(showId)
             if (record != null) {
-                database.showMetaDao.delete(record)
+                record.favorite = !record.favorite
+                database.showMetaDao.update(record)
             } else {
-                database.showMetaDao.insert(DatabaseShowMeta(showId, true))
+                database.showMetaDao.insert(
+                    DatabaseShowMeta(
+                        show_id = showId,
+                        favorite = true,
+                        watched = false
+                    )
+                )
+            }
+        }
+    }
+
+    suspend fun toggleWatched(showId: Long) {
+        if (BuildConfig.Logging) Timber.i("toggleWatched called with id $showId!")
+        withContext(Dispatchers.IO) {
+            val record = database.showMetaDao.get(showId)
+            if (record != null) {
+                record.watched = !record.watched
+                database.showMetaDao.update(record)
+            } else {
+                database.showMetaDao.insert(
+                    DatabaseShowMeta(
+                        show_id = showId,
+                        favorite = false,
+                        watched = true
+                    )
+                )
             }
         }
     }

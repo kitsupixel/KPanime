@@ -43,4 +43,6 @@
     <string name="delete_episode_summary">Apaga o episódio após sair do ecrã do episódio.</string>
     <string name="other">Outros</string>
     <string name="title_home">Início</string>
+    <string name="marked_as_watched">Esta série foi marcada como vista</string>
+    <string name="unmarked_watched">Esta série foi removida das vistas</string>
 </resources>

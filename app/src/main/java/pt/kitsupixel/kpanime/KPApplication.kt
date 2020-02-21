@@ -34,7 +34,7 @@ class KPApplication : Application() {
         applicationScope.launch {
             showsRepository.refreshShows()
 
-            setupRecurringWork()
+            //setupRecurringWork()
 
             MobileAds.initialize(applicationContext, "ca-app-pub-7666356884507044~9085371469")
         }

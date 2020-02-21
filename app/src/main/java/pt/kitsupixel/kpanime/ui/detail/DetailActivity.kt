@@ -70,6 +70,11 @@ class DetailActivity : AppCompatActivity() {
                 else -> binding.favouriteFab.setImageResource(R.drawable.ic_unfavourite)
             }
 
+            when (show?.watched) {
+                true -> binding.watchedFab.setImageResource(R.drawable.ic_playlist_add_check_black_24dp)
+                else -> binding.watchedFab.setImageResource(R.drawable.ic_playlist_add_black_24dp)
+            }
+
             if (show?.title != null) {
                 this.title = show.title
             }
@@ -90,6 +95,27 @@ class DetailActivity : AppCompatActivity() {
                     Snackbar.make(
                         this.findViewById(android.R.id.content)!!,
                         resources.getString(R.string.removed_from_favorites),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+
+                if (BuildConfig.Logging) Timber.i("favourite is $isFavourite")
+
+                viewModel.eventFavoriteClear()
+            }
+        })
+
+        viewModel.eventWatched.observe(this, Observer { isFavourite ->
+            if (isFavourite != null) {
+                if (isFavourite == true)
+                    Snackbar.make(
+                        this.findViewById(android.R.id.content)!!,
+                        resources.getString(R.string.marked_as_watched),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                else if (isFavourite == false)
+                    Snackbar.make(
+                        this.findViewById(android.R.id.content)!!,
+                        resources.getString(R.string.unmarked_watched),
                         Snackbar.LENGTH_SHORT
                     ).show()
 
