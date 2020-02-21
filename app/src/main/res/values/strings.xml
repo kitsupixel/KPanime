@@ -48,5 +48,7 @@
     <string name="other">Other</string>
     <string name="marked_as_watched">This show was marked as watched</string>
     <string name="unmarked_watched">This show was unmarked from watched</string>
+    <string name="favorite">Favorite</string>
+    <string name="watched">Watched</string>
 
 </resources>
