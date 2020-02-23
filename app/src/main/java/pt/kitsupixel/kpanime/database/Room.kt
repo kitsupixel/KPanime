@@ -6,10 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import pt.kitsupixel.kpanime.database.daos.EpisodeDao
-import pt.kitsupixel.kpanime.database.daos.LinkDao
-import pt.kitsupixel.kpanime.database.daos.ShowDao
-import pt.kitsupixel.kpanime.database.daos.ShowMetaDao
+import pt.kitsupixel.kpanime.database.daos.*
 import pt.kitsupixel.kpanime.database.entities.*
 
 @Database(
@@ -28,6 +25,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract val episodeDao: EpisodeDao
     abstract val linkDao: LinkDao
     abstract val showMetaDao: ShowMetaDao
+    abstract val episodeMetaDao: EpisodeMetaDao
 }
 
 private lateinit var INSTANCE: AppDatabase

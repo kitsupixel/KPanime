@@ -127,12 +127,18 @@ class EpisodeActivity : AppCompatActivity() {
                     try {
                         val intent =
                             Intent(Intent.ACTION_VIEW, Uri.parse(torrent.videoFile.toString()))
-                        intent.setDataAndType(Uri.parse(torrent.videoFile.toString()), "video/mp4")
+                        intent.setDataAndType(Uri.parse(torrent.videoFile.toString()), "video/*")
                         startActivity(intent)
+
+                        viewModel.markEpisodeWatched()
 
                         viewModel.endLoading()
                     } catch (e: Exception) {
-                        Toast.makeText(this, resources.getString(R.string.service_unavailable), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this,
+                            resources.getString(R.string.service_unavailable),
+                            Toast.LENGTH_SHORT
+                        ).show()
                         e.printStackTrace()
                     }
                 }
@@ -153,8 +159,13 @@ class EpisodeActivity : AppCompatActivity() {
             intent.addCategory(Intent.CATEGORY_BROWSABLE)
             intent.data = Uri.parse(link.link)
             startActivity(intent)
+            viewModel.markEpisodeDownloaded()
         } catch (e: Exception) {
-            Toast.makeText(this, resources.getString(R.string.service_unavailable), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                resources.getString(R.string.service_unavailable),
+                Toast.LENGTH_SHORT
+            ).show()
             e.printStackTrace()
         }
     }

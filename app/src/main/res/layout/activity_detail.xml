@@ -48,7 +48,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="?attr/actionBarSize"
+                    app:menu="@menu/detail_menu"
                     android:theme="@style/AppTheme.SecondAppBarOverlay"
+                    app:popupTheme="@style/Theme.AppCompat.DayNight.NoActionBar"
                     app:layout_collapseMode="pin" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -148,12 +150,15 @@
             android:id="@+id/favourite_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:layout_marginTop="8dp"
             android:onClick="@{() -> viewModel.toggleFavorite()}"
-            app:layout_anchor="@id/detail_appbar"
+            android:padding="0dp"
+            app:backgroundTint="@color/primaryColor"
+            app:layout_anchor="@+id/collapsing_toolbar"
             app:layout_anchorGravity="bottom|end"
             app:srcCompat="@drawable/ic_unfavourite"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="32dp"
             app:tint="@android:color/white" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -161,13 +166,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|start"
-            android:layout_marginStart="85dp"
-            app:useCompatPadding="true"
             android:onClick="@{() -> viewModel.toggleWatched()}"
-            app:backgroundTint="#3F51B5"
+            app:backgroundTint="@color/watched"
             app:layout_anchor="@+id/favourite_fab"
-            app:layout_anchorGravity="start|center"
-            app:srcCompat="@drawable/ic_playlist_add_black_24dp"
+            app:layout_anchorGravity="center_vertical|start"
+            app:srcCompat="@drawable/ic_unwatch"
+            app:useCompatPadding="true"
+            android:layout_margin="0dp"
             app:tint="@android:color/white" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,8 +1,10 @@
 package pt.kitsupixel.kpanime.adapters
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -11,7 +13,9 @@ import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.databinding.EpisodeItemBinding
 import pt.kitsupixel.kpanime.domain.Episode
 
-class EpisodeItemAdapter(val clickListener: EpisodeItemClickListener) :
+class EpisodeItemAdapter(val clickListener: EpisodeItemClickListener,
+                         val downloadClickListener: EpisodeItemDownloadClickListener,
+                         val watchedClickListener: EpisodeItemWatchedClickListener) :
     ListAdapter<Episode, EpisodeItemViewHolder>(
         EpisodeItemDiffCallback()
     ) {
@@ -28,14 +32,36 @@ class EpisodeItemAdapter(val clickListener: EpisodeItemClickListener) :
 
     override fun onBindViewHolder(holder: EpisodeItemViewHolder, position: Int) {
         holder.viewDataBinding.also {
-            it.episode = getItem(position)
+            val tempEpisode = getItem(position)
+            it.episode = tempEpisode
             it.clickListener = clickListener
+            it.downloadClickListener = downloadClickListener
+            it.watchedClickListener = watchedClickListener
+
+
+            it.downloadImageButton.setColorFilter(when(tempEpisode.downloaded) {
+                true -> android.R.color.holo_green_dark
+                else -> android.R.color.black
+            })
+
+            it.watchedImageButton.setColorFilter(when(tempEpisode.watched) {
+                true -> android.R.color.holo_blue_dark
+                else -> android.R.color.black
+            })
         }
     }
 }
 
 
 class EpisodeItemClickListener(val clickListener: (id: Long) -> Unit) {
+    fun onClick(episode: Episode) = clickListener(episode.id)
+}
+
+class EpisodeItemDownloadClickListener(val clickListener: (id: Long) -> Unit) {
+    fun onClick(episode: Episode) = clickListener(episode.id)
+}
+
+class EpisodeItemWatchedClickListener(val clickListener: (id: Long) -> Unit) {
     fun onClick(episode: Episode) = clickListener(episode.id)
 }
 

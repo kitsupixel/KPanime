@@ -10,4 +10,6 @@
     <color name="errorColor">#b00020</color>
     <color name="errorTextColor">#ffffff</color>
     <color name="backgroundColor">#212121</color>
+    <color name="watched">#0D47A1</color>
+    <color name="iconBlack">#000000</color>
 </resources>

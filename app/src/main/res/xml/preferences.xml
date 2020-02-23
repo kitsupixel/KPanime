@@ -16,9 +16,9 @@
     <PreferenceCategory android:title="@string/app_settings">
 
         <ListPreference
-            android:backgroundTintMode="add"
             android:entries="@array/theme_preferences"
             android:entryValues="@array/key_theme_preferences"
+            android:defaultValue="system"
             android:icon="@drawable/ic_palette_black_24dp"
             android:key="theme_preference"
             android:summary="@string/choose_a_theme"

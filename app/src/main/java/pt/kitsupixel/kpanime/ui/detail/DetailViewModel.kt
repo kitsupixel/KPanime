@@ -38,6 +38,14 @@ class DetailViewModel(application: Application, private val showId: Long) : View
     val eventWatched: LiveData<Boolean?>
         get() = _eventWatched
 
+    private val _eventEpisodeWatched = MutableLiveData<Boolean?>()
+    val eventEpisodeWatched: LiveData<Boolean?>
+        get() = _eventEpisodeWatched
+
+    private val _eventEpisodeDownloaded = MutableLiveData<Boolean?>()
+    val eventEpisodeDownloaded: LiveData<Boolean?>
+        get() = _eventEpisodeDownloaded
+
 
     init {
         Timber.i("Init")
@@ -61,6 +69,10 @@ class DetailViewModel(application: Application, private val showId: Long) : View
         }
     }
 
+    fun eventFavoriteClear() {
+        _eventFavorite.value = null
+    }
+
     fun toggleWatched() {
         val toggle = show.value?.watched ?: false
         viewModelScope.launch {
@@ -69,17 +81,37 @@ class DetailViewModel(application: Application, private val showId: Long) : View
         }
     }
 
-    fun eventFavoriteClear() {
-        _eventFavorite.value = null
+    fun eventWatchedClear() {
+        _eventEpisodeWatched.value = null
     }
 
     fun refresh() {
         viewModelScope.launch {
             _refreshing.value = true
             showsRepository.refreshEpisodes(showId)
-            showsRepository.refreshShows()
+            //showsRepository.refreshShows()
             _refreshing.value = false
         }
+    }
+
+    fun toggleEpisodeWatched(episodeId: Long) {
+        viewModelScope.launch {
+            _eventEpisodeWatched.value = showsRepository.toggleEpisodeWatched(episodeId, null)
+        }
+    }
+
+    fun eventEpisodeWatchedClear() {
+        _eventEpisodeWatched.value = null
+    }
+
+    fun toggleEpisodeDownloaded(episodeId: Long) {
+        viewModelScope.launch {
+            _eventEpisodeDownloaded.value = showsRepository.toggleEpisodeDownloaded(episodeId, null)
+        }
+    }
+
+    fun eventEpisodeDownloadedClear() {
+        _eventEpisodeDownloaded.value = null
     }
 
     class Factory(val app: Application, val id: Long) : ViewModelProvider.Factory {

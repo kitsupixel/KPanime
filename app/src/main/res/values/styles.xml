@@ -17,7 +17,9 @@
         <item name="bottomNavigationStyle">@style/AppBottomNavigation</item>
     </style>
 
-    <style name="AppBottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView.Colored" />
+    <style name="AppBottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView.Colored" >
+        <item name="android:background">@color/primaryColor</item>
+    </style>
 
     <style name="TextAppearance.ItemTitle" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="android:textSize">12sp</item>
@@ -32,6 +34,8 @@
         <item name="android:editTextColor">@color/primaryTextColor</item>
         <item name="actionMenuTextColor">@android:color/black</item>
     </style>
+
+    <style name="AppTheme.ToolBarPopUpTheme" parent="Widget.MaterialComponents.BottomNavigationView.Colored" />
 
     <style name="AppTheme.SecondAppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
         <item name="colorControlHighlight">@color/primaryTextColor</item>

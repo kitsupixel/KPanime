@@ -32,7 +32,7 @@
             <ImageView
                 android:id="@+id/show_thumbnail_image_view"
                 android:layout_width="match_parent"
-                android:layout_height="170dp"
+                android:layout_height="180dp"
                 android:adjustViewBounds="false"
                 android:contentDescription="@{show.title}"
                 android:cropToPadding="false"
@@ -86,7 +86,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_favourite"
-                android:tint="@android:color/holo_red_light"
+                android:tint="@color/primaryColor"
                 app:goneIfFalse="@{show.favorite}"
                 android:contentDescription="@string/favorite" />
 
@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:tint="@android:color/holo_blue_bright"
+                android:tint="@color/watched"
                 app:goneIfFalse="@{show.watched}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

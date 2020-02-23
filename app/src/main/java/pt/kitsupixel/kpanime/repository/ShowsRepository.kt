@@ -147,7 +147,7 @@ class ShowsRepository(private val database: AppDatabase) {
 
     suspend fun toggleWatched(showId: Long) {
         if (BuildConfig.Logging) Timber.i("toggleWatched called with id $showId!")
-        withContext(Dispatchers.IO) {
+        return withContext(Dispatchers.IO) {
             val record = database.showMetaDao.get(showId)
             if (record != null) {
                 record.watched = !record.watched
@@ -160,6 +160,54 @@ class ShowsRepository(private val database: AppDatabase) {
                         watched = true
                     )
                 )
+            }
+        }
+    }
+
+    suspend fun toggleEpisodeDownloaded(episodeId: Long, value: Boolean?): Boolean {
+        if (BuildConfig.Logging) Timber.i("toggleWatched called with id $episodeId!")
+        return withContext(Dispatchers.IO) {
+            val record = database.episodeMetaDao.get(episodeId)
+            if (record != null) {
+                record.downloaded = !record.downloaded
+                if (value != null) record.downloaded = value
+                database.episodeMetaDao.update(record)
+
+                record.downloaded
+            } else {
+                database.episodeMetaDao.insert(
+                    DatabaseEpisodeMeta(
+                        episode_id = episodeId,
+                        watched = false,
+                        downloaded = true
+                    )
+                )
+
+                true
+            }
+        }
+    }
+
+    suspend fun toggleEpisodeWatched(episodeId: Long, value: Boolean?): Boolean {
+        if (BuildConfig.Logging) Timber.i("toggleWatched called with id $episodeId!")
+        return withContext(Dispatchers.IO) {
+            val record = database.episodeMetaDao.get(episodeId)
+            if (record != null) {
+                record.watched = !record.watched
+                if (value != null) record.downloaded = value
+                database.episodeMetaDao.update(record)
+
+                record.watched
+            } else {
+                database.episodeMetaDao.insert(
+                    DatabaseEpisodeMeta(
+                        episode_id = episodeId,
+                        watched = true,
+                        downloaded = false
+                    )
+                )
+
+                true
             }
         }
     }

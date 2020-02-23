@@ -11,6 +11,14 @@
         <variable
             name="clickListener"
             type="pt.kitsupixel.kpanime.adapters.EpisodeItemClickListener" />
+
+        <variable
+            name="downloadClickListener"
+            type="pt.kitsupixel.kpanime.adapters.EpisodeItemDownloadClickListener" />
+
+        <variable
+            name="watchedClickListener"
+            type="pt.kitsupixel.kpanime.adapters.EpisodeItemWatchedClickListener" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -42,26 +50,59 @@
                 android:id="@+id/episode_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/lgPadding"
+                android:layout_marginEnd="32dp"
                 android:text="@{episode.releasedToLocalDate()}"
                 android:textAlignment="viewStart"
                 android:textAllCaps="false"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                 app:layout_constraintBaseline_toBaselineOf="@+id/episode_number"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/download_image_button"
                 tools:text="10/10/18" />
 
             <View
                 android:id="@+id/clickableOverlay"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:layout_marginEnd="16dp"
                 android:background="?attr/selectableItemBackground"
                 android:onClick="@{() -> clickListener.onClick(episode)}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/download_image_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:visibility="gone" />
+                tools:visibility="visible" />
+
+            <ImageButton
+                android:id="@+id/download_image_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/lgPadding"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="@dimen/lgPadding"
+                android:background="@android:color/transparent"
+                android:onClick="@{() -> downloadClickListener.onClick(episode)}"
+                app:episodeImageButtonTint="@{episode.downloaded}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/watched_image_button"
+                app:layout_constraintTop_toTopOf="parent"
+                android:tint="@color/iconBlack"
+                app:srcCompat="@drawable/ic_file_download_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/watched_image_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/lgPadding"
+                android:layout_marginEnd="@dimen/lgPadding"
+                android:layout_marginBottom="@dimen/lgPadding"
+                android:background="@android:color/transparent"
+                android:onClick="@{() -> watchedClickListener.onClick(episode)}"
+                app:episodeImageButtonTint="@{episode.watched}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:tint="@color/iconBlack"
+                app:srcCompat="@drawable/ic_watched" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

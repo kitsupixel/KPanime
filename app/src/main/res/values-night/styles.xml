@@ -1,0 +1,5 @@
+<resources>
+    <style name="AppBottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView.Colored" >
+        <item name="android:background">@color/backgroundColor</item>
+    </style>
+</resources>

@@ -1,9 +1,6 @@
 package pt.kitsupixel.kpanime.ui.episode
 
 import android.app.Application
-import android.os.Build
-import android.os.Environment
-import android.provider.MediaStore
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -181,6 +178,18 @@ class EpisodeViewModel(
 
     override fun onStreamError(torrent: Torrent?, e: java.lang.Exception?) {
         if (BuildConfig.Logging) Timber.i("onStreamError")
+    }
+
+    fun markEpisodeWatched() {
+        viewModelScope.launch {
+            showsRepository.toggleEpisodeWatched(episodeId, true)
+        }
+    }
+
+    fun markEpisodeDownloaded() {
+        viewModelScope.launch {
+            showsRepository.toggleEpisodeDownloaded(episodeId, true)
+        }
     }
 
     class Factory(val app: Application, val showId: Long, val episodeId: Long) :

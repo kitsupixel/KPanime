@@ -1,8 +1,10 @@
 package pt.kitsupixel.kpanime.adapters
 
+import android.graphics.PorterDuff
 import android.os.Build
 import android.text.Html
 import android.view.View
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -115,9 +117,35 @@ fun progressText(textView: TextView, value: Int) {
 fun episodeOrBatch(textView: TextView, episode: Episode?) {
     if (episode != null) {
         if (episode.type == "episode") {
-            textView.text = String.format(textView.context.resources.getString(R.string.episode_text), episode.number)
+            textView.text = String.format(
+                textView.context.resources.getString(R.string.episode_text),
+                episode.number
+            )
         } else {
-            textView.text = String.format(textView.context.resources.getString(R.string.batch_text), episode.number)
+            textView.text = String.format(
+                textView.context.resources.getString(R.string.batch_text),
+                episode.number
+            )
+        }
+    }
+}
+
+@BindingAdapter("episodeImageButtonTint")
+fun episodeImageButtonTint(imageButton: ImageButton, value: Boolean?) {
+    imageButton.colorFilter = null
+    if (value != null) {
+        if (value) {
+
+
+            imageButton.setColorFilter(
+                imageButton.context.resources.getColor(
+                    when (imageButton.id) {
+                        R.id.download_image_button -> R.color.primaryColor
+                        else -> R.color.watched
+                    }, null
+                ),
+                PorterDuff.Mode.SRC_ATOP
+            )
         }
     }
 }
