@@ -15,12 +15,11 @@
         android:id="@+id/home_swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:refreshing="@{safeUnbox(viewModel.refreshing)}"
-        android:layout_marginBottom="?actionBarSize">
+        app:refreshing="@{safeUnbox(viewModel.refreshing)}">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,7 +42,7 @@
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="10"
-                tools:listitem="@layout/show_item">
+                tools:listitem="@layout/home_show_item">
 
             </androidx.recyclerview.widget.RecyclerView>
 
@@ -66,7 +65,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:goneIfEmpty="@{viewModel.favorites}"
                 tools:itemCount="10"
-                tools:listitem="@layout/show_item">
+                tools:listitem="@layout/home_show_item">
 
             </androidx.recyclerview.widget.RecyclerView>
 
@@ -86,7 +85,7 @@
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="10"
-                tools:listitem="@layout/show_item">
+                tools:listitem="@layout/home_show_item">
 
             </androidx.recyclerview.widget.RecyclerView>
 
@@ -108,13 +107,13 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="10"
                 app:goneIfEmpty="@{viewModel.watched}"
-                tools:listitem="@layout/show_item">
+                tools:listitem="@layout/home_show_item">
 
             </androidx.recyclerview.widget.RecyclerView>
 
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

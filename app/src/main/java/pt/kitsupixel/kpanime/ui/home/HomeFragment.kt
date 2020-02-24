@@ -11,8 +11,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
 import pt.kitsupixel.kpanime.BuildConfig
 import pt.kitsupixel.kpanime.R
-import pt.kitsupixel.kpanime.adapters.ShowItemAdapter
-import pt.kitsupixel.kpanime.adapters.ShowItemClickListener
+import pt.kitsupixel.kpanime.adapters.HomeShowItemAdapter
+import pt.kitsupixel.kpanime.adapters.HomeShowItemClickListener
 import pt.kitsupixel.kpanime.databinding.HomeFragmentBinding
 import pt.kitsupixel.kpanime.domain.Show
 import pt.kitsupixel.kpanime.ui.detail.DetailActivity
@@ -35,10 +35,10 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: HomeFragmentBinding
 
-    private lateinit var viewModelAdapterFavorites: ShowItemAdapter
-    private lateinit var viewModelAdapterCurrent: ShowItemAdapter
-    private lateinit var viewModelAdapterLatest: ShowItemAdapter
-    private lateinit var viewModelAdapterWatched: ShowItemAdapter
+    private lateinit var viewModelAdapterFavorites: HomeShowItemAdapter
+    private lateinit var viewModelAdapterCurrent: HomeShowItemAdapter
+    private lateinit var viewModelAdapterLatest: HomeShowItemAdapter
+    private lateinit var viewModelAdapterWatched: HomeShowItemAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -77,28 +77,28 @@ class HomeFragment : Fragment() {
 
     private fun setupViews() {
         // Click Listener for Recycler View
-        viewModelAdapterLatest = ShowItemAdapter(ShowItemClickListener { showId ->
+        viewModelAdapterLatest = HomeShowItemAdapter(HomeShowItemClickListener { showId ->
             startActivity(
                 Intent(context, DetailActivity::class.java)
                     .putExtra("showId", showId)
             )
         })
 
-        viewModelAdapterFavorites = ShowItemAdapter(ShowItemClickListener { showId ->
+        viewModelAdapterFavorites = HomeShowItemAdapter(HomeShowItemClickListener { showId ->
             startActivity(
                 Intent(context, DetailActivity::class.java)
                     .putExtra("showId", showId)
             )
         })
 
-        viewModelAdapterCurrent = ShowItemAdapter(ShowItemClickListener { showId ->
+        viewModelAdapterCurrent = HomeShowItemAdapter(HomeShowItemClickListener { showId ->
             startActivity(
                 Intent(context, DetailActivity::class.java)
                     .putExtra("showId", showId)
             )
         })
 
-        viewModelAdapterWatched = ShowItemAdapter(ShowItemClickListener { showId ->
+        viewModelAdapterWatched = HomeShowItemAdapter(HomeShowItemClickListener { showId ->
             startActivity(
                 Intent(context, DetailActivity::class.java)
                     .putExtra("showId", showId)

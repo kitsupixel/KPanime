@@ -11,12 +11,12 @@
 
         <variable
             name="clickListener"
-            type="pt.kitsupixel.kpanime.adapters.ShowItemClickListener" />
+            type="pt.kitsupixel.kpanime.adapters.HomeShowItemClickListener" />
 
     </data>
 
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
+        android:layout_width="126dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
