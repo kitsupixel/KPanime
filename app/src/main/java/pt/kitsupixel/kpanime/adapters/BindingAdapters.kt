@@ -45,13 +45,13 @@ fun goneIfTrue(view: View, it: Any?) {
 @BindingAdapter("goneIfEmpty")
 fun goneIfEmpty(view: View, it: List<Any>?) {
     view.visibility = if (it != null) {
-        if (it.size > 0) {
+        if (it.isEmpty()) {
             View.GONE
         } else {
             View.VISIBLE
         }
     } else {
-        View.VISIBLE
+        View.GONE
     }
 }
 
@@ -135,8 +135,6 @@ fun episodeImageButtonTint(imageButton: ImageButton, value: Boolean?) {
     imageButton.colorFilter = null
     if (value != null) {
         if (value) {
-
-
             imageButton.setColorFilter(
                 imageButton.context.resources.getColor(
                     when (imageButton.id) {

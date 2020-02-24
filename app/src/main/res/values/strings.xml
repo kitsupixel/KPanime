@@ -54,5 +54,6 @@
     <string name="saved_episode_watched">Episode saved as Watched</string>
     <string name="unsave_episode_watched">Episode was removed from Watched</string>
     <string name="pick_favorites">Pick your favorite shows to fill this screen</string>
-
+    <string name="your_favorites">Your Favorites</string>
+    <string name="your_watched">Your Watched</string>
 </resources>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -16,14 +16,14 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="4dp"
         app:cardCornerRadius="0dp"
-        app:cardElevation="2dp">
+        app:cardElevation="1dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -83,12 +83,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:contentDescription="@string/favorite"
+                android:tint="@color/primaryColor"
+                android:visibility="gone"
+                app:goneIfFalse="@{show.favorite}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_favourite"
-                android:tint="@color/primaryColor"
-                app:goneIfFalse="@{show.favorite}"
-                android:contentDescription="@string/favorite" />
+                app:srcCompat="@drawable/ic_favourite" />
 
             <ImageView
                 android:id="@+id/watched_image_view"
@@ -96,12 +97,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:contentDescription="@string/watched"
                 android:tint="@color/watched"
+                android:visibility="gone"
                 app:goneIfFalse="@{show.watched}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_remove_red_eye_black_24dp"
-                android:contentDescription="@string/watched" />
+                app:srcCompat="@drawable/ic_remove_red_eye_black_24dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>

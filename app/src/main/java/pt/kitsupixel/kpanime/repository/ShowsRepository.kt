@@ -12,6 +12,7 @@ import pt.kitsupixel.kpanime.domain.EpisodeAndShow
 import pt.kitsupixel.kpanime.domain.Link
 import pt.kitsupixel.kpanime.domain.Show
 import pt.kitsupixel.kpanime.network.DTObjects.asDatabaseModel
+import pt.kitsupixel.kpanime.network.DTObjects.asDomainModel
 import pt.kitsupixel.kpanime.network.Network
 import retrofit2.HttpException
 import timber.log.Timber
@@ -25,6 +26,11 @@ class ShowsRepository(private val database: AppDatabase) {
 
     val favorites: LiveData<List<Show>> =
         Transformations.map(database.showDao.favorites()) {
+            it?.showMetaAsDomainModel()
+        }
+
+    val watched: LiveData<List<Show>> =
+        Transformations.map(database.showDao.watched()) {
             it?.showMetaAsDomainModel()
         }
 
@@ -61,6 +67,11 @@ class ShowsRepository(private val database: AppDatabase) {
         return Transformations.map(database.linkDao.getByEpisode(episodeId)) {
             it?.linkAsDomainModel()
         }
+    }
+
+    fun isDBEmpty(): Boolean {
+        val shows = database.showDao.get()
+        return shows.value.isNullOrEmpty()
     }
 
     suspend fun refreshShows() {

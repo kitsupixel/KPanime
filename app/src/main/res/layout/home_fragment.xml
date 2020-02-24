@@ -1,50 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.home.HomeFragment">
 
     <data>
+
         <variable
             name="viewModel"
             type="pt.kitsupixel.kpanime.ui.home.HomeViewModel" />
     </data>
 
-    <RelativeLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/home_swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center">
+        app:refreshing="@{safeUnbox(viewModel.refreshing)}"
+        android:layout_marginBottom="?actionBarSize">
 
-        <TextView
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_centerInParent="true"
-            android:text="@string/pick_favorites"
-            android:textAlignment="center"
-            android:textSize="30sp"
-            android:visibility="gone"
-            app:goneIfTrue="@{safeUnbox(viewModel.refreshing)}"
-            app:goneIfEmpty="@{viewModel.shows}"/>
+            android:orientation="vertical">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/home_swipe_refresh"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:refreshing="@{safeUnbox(viewModel.refreshing)}">
+            <TextView
+                android:id="@+id/home_latest_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/mdPadding"
+                android:layout_marginTop="@dimen/mdPadding"
+                android:text="@string/title_latest"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/home_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="3"
-            tools:listitem="@layout/show_item" />
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/home_latest_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="10"
+                tools:listitem="@layout/show_item">
 
-    </RelativeLayout>
+            </androidx.recyclerview.widget.RecyclerView>
+
+
+            <TextView
+                android:id="@+id/home_favorites_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/mdPadding"
+                android:layout_marginTop="@dimen/mdPadding"
+                android:text="@string/your_favorites"
+                app:goneIfEmpty="@{viewModel.favorites}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/home_favorites_recyclerview"
+                android:layout_width="wrap_content"
+                android:layout_height="250dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:goneIfEmpty="@{viewModel.favorites}"
+                tools:itemCount="10"
+                tools:listitem="@layout/show_item">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <TextView
+                android:id="@+id/home_current_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/mdPadding"
+                android:layout_marginTop="@dimen/mdPadding"
+                android:text="@string/title_current"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/home_current_recyclerview"
+                android:layout_width="wrap_content"
+                android:layout_height="250dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="10"
+                tools:listitem="@layout/show_item">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <TextView
+                android:id="@+id/home_watched_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/mdPadding"
+                android:layout_marginTop="@dimen/mdPadding"
+                android:text="@string/your_watched"
+                app:goneIfEmpty="@{viewModel.watched}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/home_watched_recyclerview"
+                android:layout_width="wrap_content"
+                android:layout_height="250dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="10"
+                app:goneIfEmpty="@{viewModel.watched}"
+                tools:listitem="@layout/show_item">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
 </layout>

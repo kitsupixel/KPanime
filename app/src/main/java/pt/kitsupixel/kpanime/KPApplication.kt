@@ -11,6 +11,7 @@ import com.google.android.gms.ads.MobileAds
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import pt.kitsupixel.kpanime.database.getDatabase
 import pt.kitsupixel.kpanime.repository.ShowsRepository
 import pt.kitsupixel.kpanime.work.RefreshDataWorker
@@ -32,7 +33,16 @@ class KPApplication : Application() {
 
     private fun delayedInit() {
         applicationScope.launch {
-            showsRepository.refreshShows()
+
+            if (showsRepository.isDBEmpty()) {
+                withContext(Dispatchers.Unconfined) {
+                    showsRepository.refreshShows()
+                }
+            }
+
+            withContext(Dispatchers.Unconfined) {
+                showsRepository.refreshLatest()
+            }
 
             //setupRecurringWork()
 

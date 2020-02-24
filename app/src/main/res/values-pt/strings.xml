@@ -30,7 +30,7 @@
     <string name="press_back_exit">Pressiona de novo em VOLTAR para sair</string>
     <string name="title_about">Sobre</string>
     <string name="title_current">Esta Temporada</string>
-    <string name="title_latest">Lançamentos recentes</string>
+    <string name="title_latest">Lançamentos Recentes</string>
     <string name="title_settings">Definições</string>
     <string name="title_shows">Todas as séries</string>
     <string name="removed_from_favorites">Série removida dos Favoritos</string>
@@ -51,4 +51,6 @@
     <string name="unsave_episode_downloaded">Episódio removido dos Transferidos</string>
     <string name="unsave_episode_watched">Episódio removido dos Vistos</string>
     <string name="watched">Visto</string>
+    <string name="your_favorites">Os teus Favoritos</string>
+    <string name="your_watched">Os teus Vistos</string>
 </resources>

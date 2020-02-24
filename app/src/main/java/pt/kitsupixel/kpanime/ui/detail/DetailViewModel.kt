@@ -1,6 +1,7 @@
 package pt.kitsupixel.kpanime.ui.detail
 
 import android.app.Application
+import android.os.Handler
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -54,9 +55,9 @@ class DetailViewModel(application: Application, private val showId: Long) : View
         show = showsRepository.getShow(showId)
         episodes = showsRepository.getEpisodesByShow(showId)
 
-        viewModelScope.launch {
-            showsRepository.refreshEpisodes(showId)
-        }
+        Handler().postDelayed({
+            refresh()
+        }, 300L)
 
         _refreshing.value = false
     }

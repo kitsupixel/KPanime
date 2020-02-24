@@ -20,6 +20,10 @@ interface ShowDao {
     fun favorites(): LiveData<List<DatabaseShowAndMeta>?>
 
     @Transaction
+    @Query("SELECT shows.* FROM shows INNER JOIN show_meta ON shows.id = show_meta.show_id WHERE show_meta.watched = 1 AND shows.active = 1 ORDER BY title")
+    fun watched(): LiveData<List<DatabaseShowAndMeta>?>
+
+    @Transaction
     @Query("SELECT * FROM shows WHERE ongoing = 1 AND shows.active = 1 ORDER BY title")
     fun current(): LiveData<List<DatabaseShowAndMeta>?>
 
