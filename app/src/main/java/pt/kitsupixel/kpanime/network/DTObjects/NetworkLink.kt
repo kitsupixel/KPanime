@@ -14,7 +14,10 @@ data class NetworkLink(
     val type: String,
     val quality: String,
     val language: String,
-    val link: String
+    val link: String,
+    val seeds: Int,
+    val leeches: Int,
+    val downloads: Int
 )
 
 /**
@@ -28,7 +31,10 @@ fun NetworkLinkContainer.asDomainModel(): List<Link> {
             type = it.type,
             quality = it.quality,
             language = it.language,
-            link = it.link
+            link = it.link,
+            seeds = it.seeds,
+            leeches = it.leeches,
+            downloads = it.leeches
         )
     }
 }
@@ -41,7 +47,10 @@ fun NetworkLinkContainer.asDatabaseModel(): Array<DatabaseLink> {
             type = it.type,
             quality = it.quality,
             language = it.language,
-            link = it.link
+            link = it.link,
+            seeds = it.seeds,
+            leeches = it.leeches,
+            downloads = it.downloads
         )
     }.toTypedArray()
 }

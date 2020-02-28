@@ -37,13 +37,17 @@ class LinkItemAdapter(val clickListener: LinkItemClickListener) :
                 "magnet" -> R.drawable.ic_magnet_black_24dp
                 "torrent" -> R.drawable.ic_torrent_black_24dp
                 else -> R.drawable.ic_link_black_24dp
-
             })
 
             it.qualityChip.chipBackgroundColor = when (item.quality.toLowerCase()) {
                 "480p" -> ColorStateList.valueOf(Color.parseColor("#6610f2"))
                 "720p" -> ColorStateList.valueOf(Color.parseColor("#dc3545"))
                 else -> ColorStateList.valueOf(Color.parseColor("#007bff"))
+            }
+
+            it.linkTypeTextView.text = when (item.type.toLowerCase()) {
+                "torrent" -> String.format("S: %d | L: %d", item.seeds, item.leeches)
+                else -> item.type
             }
 
             it.clickListener = clickListener

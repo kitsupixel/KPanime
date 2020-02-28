@@ -3,6 +3,8 @@ package pt.kitsupixel.kpanime.ui.episode
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -11,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.github.se_bastiaan.torrentstream.Torrent
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
+import com.google.android.material.snackbar.Snackbar
 import pt.kitsupixel.kpanime.BuildConfig
 import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.adapters.LinkItemAdapter
@@ -76,16 +79,25 @@ class EpisodeActivity : AppCompatActivity() {
                 linkClicked(link)
             })
 
-        binding.button480.setOnClickListener {
-            streamEpisode(viewModel.torrent480p.value)
-        }
+        binding.playButton.setOnClickListener {
+            val selectedItem = binding.streamSpinner.selectedItem.toString()
 
-        binding.button720.setOnClickListener {
-            streamEpisode(viewModel.torrent720p.value)
-        }
+            var urlToStream: String? = null
 
-        binding.button1080.setOnClickListener {
-            streamEpisode(viewModel.torrent1080p.value)
+            when {
+                selectedItem.startsWith("480p") -> urlToStream = viewModel.torrent480p.value?.link
+                selectedItem.startsWith("720p") -> urlToStream = viewModel.torrent720p.value?.link
+                selectedItem.startsWith("1080p") -> urlToStream = viewModel.torrent1080p.value?.link
+            }
+
+            if (urlToStream != null)
+                streamEpisode(urlToStream)
+            else
+                Toast.makeText(
+                    baseContext,
+                    "There is no valid torrent to stream",
+                    Toast.LENGTH_SHORT
+                ).show()
         }
 
         binding.episodeRecyclerView.apply {
@@ -101,15 +113,69 @@ class EpisodeActivity : AppCompatActivity() {
                 if (viewModel.episode.value?.type == "episode") {
                     for (link in links) {
                         if (link.quality == "480p" && (link.type == "Torrent" || (link.type == "Magnet" && viewModel.torrent480p.value == null))) {
-                            viewModel.setTorrent480Link(link.link)
+                            viewModel.setTorrent480Link(link)
                             viewModel.setTextViewable(true)
+
                         } else if (link.quality == "720p" && (link.type == "Torrent" || (link.type == "Magnet" && viewModel.torrent720p.value == null))) {
-                            viewModel.setTorrent720Link(link.link)
+                            viewModel.setTorrent720Link(link)
                             viewModel.setTextViewable(true)
                         } else if (link.quality == "1080p" && (link.type == "Torrent" || (link.type == "Magnet" && viewModel.torrent1080p.value == null))) {
-                            viewModel.setTorrent1080Link(link.link)
+                            viewModel.setTorrent1080Link(link)
                             viewModel.setTextViewable(true)
                         }
+                    }
+                }
+
+                val items = mutableListOf<String?>()
+                if (viewModel.torrent480p.value != null) {
+                    val link = viewModel.torrent480p.value
+                    link?.apply {
+                        items.add(
+                            String.format(
+                                getString(R.string.stream_spinner_quality),
+                                link.quality,
+                                link.seeds,
+                                link.leeches
+                            )
+                        )
+                    }
+
+                }
+                if (viewModel.torrent720p.value != null) {
+                    val link = viewModel.torrent720p.value
+                    link?.apply {
+                        items.add(
+                            String.format(
+                                getString(R.string.stream_spinner_quality),
+                                link.quality,
+                                link.seeds,
+                                link.leeches
+                            )
+                        )
+                    }
+                }
+                if (viewModel.torrent1080p.value != null) {
+                    val link = viewModel.torrent1080p.value
+                    link?.apply {
+                        items.add(
+                            String.format(
+                                getString(R.string.stream_spinner_quality),
+                                link.quality,
+                                link.seeds,
+                                link.leeches
+                            )
+                        )
+                    }
+                }
+
+                if (items.size > 0) {
+                    val spinnerAdapter = ArrayAdapter(
+                        baseContext,
+                        android.R.layout.simple_spinner_dropdown_item,
+                        items
+                    )
+                    binding.streamSpinner.apply {
+                        adapter = spinnerAdapter
                     }
                 }
             }
@@ -169,7 +235,6 @@ class EpisodeActivity : AppCompatActivity() {
             e.printStackTrace()
         }
     }
-
 
     private fun streamEpisode(url: String?) {
         if (url != null) viewModel.startStream(url)

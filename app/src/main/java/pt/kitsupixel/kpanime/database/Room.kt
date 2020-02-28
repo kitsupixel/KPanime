@@ -17,7 +17,7 @@ import pt.kitsupixel.kpanime.database.entities.*
         DatabaseShowMeta::class,
         DatabaseEpisodeMeta::class
     ],
-    version = 5,
+    version = 6,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -38,7 +38,7 @@ fun getDatabase(context: Context): AppDatabase {
                 AppDatabase::class.java,
                 "db_shows"
             )
-                .addMigrations(MIGRATION_3_4, MIGRATION_4_5)
+                .addMigrations(MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6)
                 .build()
         }
     }
@@ -52,7 +52,6 @@ val MIGRATION_3_4 = object : Migration(3, 4) {
         database.execSQL("ALTER TABLE episodes ADD COLUMN type TEXT NOT NULL DEFAULT 'episode'")
         database.execSQL("ALTER TABLE episode_links ADD COLUMN language TEXT NOT NULL DEFAULT 'en'")
     }
-
 }
 
 val MIGRATION_4_5 = object : Migration(4, 5) {
@@ -66,5 +65,12 @@ val MIGRATION_4_5 = object : Migration(4, 5) {
         )
         """.trimIndent())
     }
+}
 
+val MIGRATION_5_6 = object : Migration(5, 6) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("ALTER TABLE episode_links ADD COLUMN seeds INTEGER NOT NULL DEFAULT 0")
+        database.execSQL("ALTER TABLE episode_links ADD COLUMN leeches INTEGER NOT NULL DEFAULT 0")
+        database.execSQL("ALTER TABLE episode_links ADD COLUMN downloads INTEGER NOT NULL DEFAULT 0")
+    }
 }

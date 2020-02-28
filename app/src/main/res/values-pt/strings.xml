@@ -53,4 +53,5 @@
     <string name="watched">Visto</string>
     <string name="your_favorites">Os teus Favoritos</string>
     <string name="your_watched">Os teus Vistos</string>
+    <string name="play">Iniciar</string>
 </resources>

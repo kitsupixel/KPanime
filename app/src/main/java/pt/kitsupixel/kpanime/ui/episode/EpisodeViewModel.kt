@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 import pt.kitsupixel.kpanime.BuildConfig
 import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.database.getDatabase
+import pt.kitsupixel.kpanime.domain.Link
 import pt.kitsupixel.kpanime.repository.ShowsRepository
 import pt.kitsupixel.kpanime.utils.humanReadableByteCountSI
 import timber.log.Timber
@@ -41,16 +42,16 @@ class EpisodeViewModel(
     val refreshing: LiveData<Boolean>
         get() = _refreshing
 
-    private var _torrent480 = MutableLiveData<String?>()
-    val torrent480p: LiveData<String?>
+    private var _torrent480 = MutableLiveData<Link?>()
+    val torrent480p: LiveData<Link?>
         get() = _torrent480
 
-    private var _torrent720 = MutableLiveData<String?>()
-    val torrent720p: LiveData<String?>
+    private var _torrent720 = MutableLiveData<Link?>()
+    val torrent720p: LiveData<Link?>
         get() = _torrent720
 
-    private var _torrent1080p = MutableLiveData<String?>()
-    val torrent1080p: LiveData<String?>
+    private var _torrent1080p = MutableLiveData<Link?>()
+    val torrent1080p: LiveData<Link?>
         get() = _torrent1080p
 
     private var _textViewable = MutableLiveData<Boolean>(false)
@@ -111,16 +112,16 @@ class EpisodeViewModel(
         }
     }
 
-    fun setTorrent480Link(url: String) {
-        _torrent480.value = url
+    fun setTorrent480Link(link: Link) {
+        _torrent480.value = link
     }
 
-    fun setTorrent720Link(url: String) {
-        _torrent720.value = url
+    fun setTorrent720Link(link: Link) {
+        _torrent720.value = link
     }
 
-    fun setTorrent1080Link(url: String) {
-        _torrent1080p.value = url
+    fun setTorrent1080Link(link: Link) {
+        _torrent1080p.value = link
     }
 
     fun setTextViewable(value: Boolean) {

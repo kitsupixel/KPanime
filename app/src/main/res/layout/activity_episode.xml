@@ -44,55 +44,34 @@
             app:layout_constraintTop_toBottomOf="@+id/episode_toolbar"
             tools:visibility="visible" />
 
-        <Button
-            android:id="@+id/button_480"
-            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="42dp"
-            android:layout_marginTop="@dimen/lgPadding"
-            android:text="@string/quality480p"
-            android:visibility="gone"
-            app:disabledIfNull="@{viewModel.torrent480p}"
+        <Spinner
+            android:id="@+id/stream_spinner"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/lgPadding"
+            android:layout_marginEnd="@dimen/mdPadding"
+            android:spinnerMode="dropdown"
             app:goneIfFalse="@{viewModel.textViewable}"
-            app:backgroundTint="#6610f2"
-            app:backgroundTintMode="add"
-            app:layout_constraintEnd_toStartOf="@+id/button_720"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintBottom_toBottomOf="@+id/play_button"
+            app:layout_constraintEnd_toStartOf="@+id/play_button"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/watch_text"
-            tools:visibility="visible" />
+            app:layout_constraintTop_toTopOf="@+id/play_button" />
 
         <Button
-            android:id="@+id/button_720"
+            android:id="@+id/play_button"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_width="wrap_content"
-            android:layout_height="42dp"
-            android:text="@string/quality720p"
-            android:visibility="gone"
-            app:disabledIfNull="@{viewModel.torrent720p}"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/lgPadding"
+            android:layout_marginEnd="@dimen/lgPadding"
+            android:contentDescription="@null"
+            android:drawableEnd="@drawable/ic_play_arrow_white_24dp"
+            android:text="@string/play"
             app:goneIfFalse="@{viewModel.textViewable}"
-            app:backgroundTint="#dc3545"
-            app:layout_constraintBaseline_toBaselineOf="@+id/button_480"
-            app:layout_constraintEnd_toStartOf="@+id/button_1080"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/button_480"
-            tools:visibility="visible" />
-
-        <Button
-            android:id="@+id/button_1080"
-            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="42dp"
-            android:text="@string/quality1080p"
-            android:visibility="gone"
-            app:disabledIfNull="@{viewModel.torrent1080p}"
-            app:goneIfFalse="@{viewModel.textViewable}"
-            app:backgroundTint="#007bff"
-            app:layout_constraintBaseline_toBaselineOf="@+id/button_720"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/button_720"
-            tools:visibility="visible" />
+            app:layout_constraintTop_toBottomOf="@+id/watch_text" />
+
 
         <com.google.android.gms.ads.AdView
             android:id="@+id/adView"
@@ -107,7 +86,7 @@
             app:adUnitId="ca-app-pub-7666356884507044/7153901171"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_480" />
+            app:layout_constraintTop_toBottomOf="@+id/play_button" />
 
         <TextView
             android:id="@+id/textView2"
@@ -151,11 +130,11 @@
             android:focusable="true"
             android:keepScreenOn="true"
             app:goneIfFalse="@{viewModel.loadingTorrent}"
-            app:layout_constraintBottom_toBottomOf="@+id/episode_swipe_refresh"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_720"
-            tools:visibility="gone">
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -164,6 +143,7 @@
                 android:layout_margin="@dimen/lgPadding"
                 android:gravity="center|center_vertical"
                 app:cardCornerRadius="10dp"
+                app:goneIfFalse="@{viewModel.loadingTorrent}"
                 app:cardElevation="2dp"
                 app:contentPadding="@dimen/lgPadding">
 
@@ -211,7 +191,7 @@
                         android:layout_alignStart="@id/progress_bar"
                         android:text="@{viewModel.progressTorrentText}"
                         android:textAlignment="center"
-                        tools:text="50%" />
+                        tools:text="@string/connecting" />
 
                     <TextView
                         android:id="@+id/warning_text_view"
@@ -225,7 +205,6 @@
             </androidx.cardview.widget.CardView>
 
         </FrameLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

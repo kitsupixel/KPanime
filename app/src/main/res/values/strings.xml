@@ -56,4 +56,6 @@
     <string name="pick_favorites">Pick your favorite shows to fill this screen</string>
     <string name="your_favorites">Your Favorites</string>
     <string name="your_watched">Your Watched</string>
+    <string name="stream_spinner_quality" translatable="false">%s (S: %d | L: %d)</string>
+    <string name="play">Play</string>
 </resources>
