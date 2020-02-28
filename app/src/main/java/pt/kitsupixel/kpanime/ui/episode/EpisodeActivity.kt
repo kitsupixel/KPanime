@@ -90,14 +90,7 @@ class EpisodeActivity : AppCompatActivity() {
                 selectedItem.startsWith("1080p") -> urlToStream = viewModel.torrent1080p.value?.link
             }
 
-            if (urlToStream != null)
-                streamEpisode(urlToStream)
-            else
-                Toast.makeText(
-                    baseContext,
-                    "There is no valid torrent to stream",
-                    Toast.LENGTH_SHORT
-                ).show()
+            streamEpisode(urlToStream)
         }
 
         binding.episodeRecyclerView.apply {
@@ -237,7 +230,25 @@ class EpisodeActivity : AppCompatActivity() {
     }
 
     private fun streamEpisode(url: String?) {
-        if (url != null) viewModel.startStream(url)
+        if (url != null) {
+            if (!viewModel.torrentStream.isStreaming) {
+                viewModel.startStream(url)
+            } else {
+                if (viewModel.torrentStream.currentTorrentUrl == url) {
+                    viewModel.forceOpenPlayer()
+                } else {
+                    viewModel.torrentStream.stopStream()
+                    viewModel.startStream(url)
+                }
+            }
+        } else {
+            Toast.makeText(
+                this,
+                "There is no valid torrent to stream",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
     }
 
     override fun onSupportNavigateUp(): Boolean {

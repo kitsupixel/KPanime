@@ -160,6 +160,10 @@ class EpisodeViewModel(
 
     override fun onStreamStopped() {
         if (BuildConfig.Logging) Timber.i("onStreamStopped")
+        setProgress(0)
+        _torrent.value = null
+        _openPlayer.value = null
+        _progressTorrentText.value = application.resources.getString(R.string.connecting)
     }
 
     override fun onStreamStarted(torrent: Torrent?) {
@@ -179,6 +183,7 @@ class EpisodeViewModel(
 
     override fun onStreamError(torrent: Torrent?, e: java.lang.Exception?) {
         if (BuildConfig.Logging) Timber.i("onStreamError")
+        e?.printStackTrace()
     }
 
     fun markEpisodeWatched() {
@@ -191,6 +196,10 @@ class EpisodeViewModel(
         viewModelScope.launch {
             showsRepository.toggleEpisodeDownloaded(episodeId, true)
         }
+    }
+
+    fun forceOpenPlayer() {
+        _openPlayer.value = true
     }
 
     class Factory(val app: Application, val showId: Long, val episodeId: Long) :
