@@ -23,8 +23,8 @@ android {
         applicationId "pt.kitsupixel.kpanime"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 27
-        versionName "1.27"
+        versionCode 28
+        versionName "1.28"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -152,4 +152,7 @@ dependencies {
 
     // Preferences
     implementation "androidx.preference:preference:$version_preference"
+
+    // pusher
+    implementation 'com.pusher:pusher-java-client:2.0.2'
 }

@@ -16,6 +16,10 @@ interface ShowDao {
     fun get(id: Long): LiveData<DatabaseShowAndMeta?>
 
     @Transaction
+    @Query("SELECT * FROM shows WHERE id = :id")
+    fun getObj(id: Long): DatabaseShowAndMeta?
+
+    @Transaction
     @Query("SELECT shows.* FROM shows INNER JOIN show_meta ON shows.id = show_meta.show_id WHERE show_meta.favorite = 1 AND shows.active = 1 ORDER BY title")
     fun favorites(): LiveData<List<DatabaseShowAndMeta>?>
 

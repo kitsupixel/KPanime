@@ -50,6 +50,10 @@ class ShowsRepository(private val database: AppDatabase) {
         }
     }
 
+    fun getShowObj(showId: Long): Show? {
+        return database.showDao.getObj(showId)?.showMetaAsDomainModel()
+    }
+
     fun getEpisodesByShow(showId: Long): LiveData<List<Episode>?> {
         return Transformations.map(database.episodeDao.getByShow(showId)) {
             it?.episodeMetaAsDomainModel()

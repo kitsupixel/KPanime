@@ -58,4 +58,7 @@
     <string name="your_watched">Your Watched</string>
     <string name="stream_spinner_quality" translatable="false">%s (S: %d | L: %d)</string>
     <string name="play">Play</string>
+    <string name="new_episode">New episode released</string>
+    <string name="new_episode_notification_channel_id" translatable="false">new_episode_channel</string>
+    <string name="new_episode_notification_channel_name" translatable="false">New Episodes</string>
 </resources>
