@@ -54,4 +54,6 @@
     <string name="your_favorites">Os teus Favoritos</string>
     <string name="your_watched">Os teus Vistos</string>
     <string name="play">Iniciar</string>
+    <string name="episode_released">Episódio %1$s foi lançado!</string>
+    <string name="new_episode">Novos episódios disponíveis</string>
 </resources>

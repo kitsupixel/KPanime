@@ -2,8 +2,6 @@ package pt.kitsupixel.kpanime.ui.main
 
 import android.os.Bundle
 import android.os.Handler
-import android.view.Menu
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.postDelayed
@@ -15,8 +13,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.databinding.ActivityMainBinding
-import kotlin.system.exitProcess
-
 
 class MainActivity : AppCompatActivity() {
 

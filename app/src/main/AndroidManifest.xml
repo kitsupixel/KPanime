@@ -27,11 +27,13 @@
 
         <activity
             android:name=".ui.detail.DetailActivity"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.main.MainActivity"/>
 
         <activity
             android:name=".ui.episode.EpisodeActivity"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.detail.DetailActivity"/>
 
         <meta-data
             android:name="preloaded_fonts"

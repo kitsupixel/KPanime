@@ -10,6 +10,7 @@
     <string name="shows">Shows</string>
     <string name="search_shows">Search shows</string>
     <string name="episode_text">Episode %1$s</string>
+    <string name="episode_released">Episode %1$s was released!</string>
     <string name="batch_text">Batch %1$s</string>
     <string name="loading">Loading…</string>
     <string name="warning">"Warning: This feature is experimental and can cause a crash on the application.\nThe Video stream is treated as a torrent download, and can stop playing at any given time depending on the total number of seeds or the internet speed.\n\nThe use of VLC player is recommended."</string>
@@ -58,7 +59,8 @@
     <string name="your_watched">Your Watched</string>
     <string name="stream_spinner_quality" translatable="false">%s (S: %d | L: %d)</string>
     <string name="play">Play</string>
-    <string name="new_episode">New episode released</string>
+    <string name="new_episode">New episodes released</string>
     <string name="new_episode_notification_channel_id" translatable="false">new_episode_channel</string>
     <string name="new_episode_notification_channel_name" translatable="false">New Episodes</string>
+    <string name="new_episode_notification_line" translatable="false"><b>%s</b>: %s</string>
 </resources>

@@ -23,8 +23,8 @@ android {
         applicationId "pt.kitsupixel.kpanime"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 28
-        versionName "1.28"
+        versionCode 29
+        versionName "1.29"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -39,6 +39,7 @@ android {
 
             buildConfigField("Boolean", "AdmobTest", "true")
             buildConfigField("Boolean", "Logging", "true")
+            buildConfigField("String", "PusherKey", "\"fe66ce92d8502e96f15c\"")
         }
         release {
             minifyEnabled false
@@ -46,6 +47,7 @@ android {
 
             buildConfigField("Boolean", "AdmobTest", "false")
             buildConfigField("Boolean", "Logging", "false")
+            buildConfigField("String", "PusherKey", "\"fc3f3c80d6a7fe57e784\"")
 
             signingConfig signingConfigs.release
         }
@@ -154,5 +156,5 @@ dependencies {
     implementation "androidx.preference:preference:$version_preference"
 
     // pusher
-    implementation 'com.pusher:pusher-java-client:2.0.2'
+    implementation "com.pusher:pusher-java-client:$version_pusher"
 }
