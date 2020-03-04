@@ -4,6 +4,7 @@
     package="pt.kitsupixel.kpanime">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".KPApplication"
@@ -34,6 +35,15 @@
             android:name=".ui.episode.EpisodeActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".ui.detail.DetailActivity"/>
+
+        <service android:name=".services.PusherService"
+            android:exported="false"/>
+
+        <receiver android:name=".receiver.PusherBroadcastReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
         <meta-data
             android:name="preloaded_fonts"
