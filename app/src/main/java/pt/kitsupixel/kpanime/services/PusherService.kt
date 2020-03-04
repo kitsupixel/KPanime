@@ -150,10 +150,11 @@ class PusherService: Service() {
             for (item in notifications) {
                 val resultIntent = Intent(applicationContext, DetailActivity::class.java)
                     .putExtra("showId", item.show.id)
+                    .setAction(System.currentTimeMillis().toString())
 
                 val pendingIntent = TaskStackBuilder.create(applicationContext).run {
                     addNextIntentWithParentStack(resultIntent)
-                    getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+                    getPendingIntent(item.show.id.toInt(), PendingIntent.FLAG_UPDATE_CURRENT)
                 }
                 notificationsToSend.add(
                     NotificationCompat.Builder(
