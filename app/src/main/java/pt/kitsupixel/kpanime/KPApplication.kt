@@ -1,23 +1,18 @@
 package pt.kitsupixel.kpanime
 
 import android.app.Application
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
-import androidx.work.Constraints
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
+import androidx.work.*
 import com.google.android.gms.ads.MobileAds
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import pt.kitsupixel.kpanime.database.getDatabase
 import pt.kitsupixel.kpanime.repository.ShowsRepository
-import pt.kitsupixel.kpanime.services.PusherService
+import pt.kitsupixel.kpanime.work.NotificationWorker
 import pt.kitsupixel.kpanime.work.RefreshDataWorker
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -34,47 +29,62 @@ class KPApplication : Application() {
     private lateinit var preferencesListener: SharedPreferences.OnSharedPreferenceChangeListener
 
     private val THEME_PREFERENCE = "theme_preference"
+    private val NOTIFICATION_PREFERENCE = "notifications_preference"
 
     private fun delayedInit() {
         applicationScope.launch {
+            setupRecurringWork()
 
-            if (showsRepository.isDBEmpty()) {
-                withContext(Dispatchers.Unconfined) {
-                    showsRepository.refreshShows()
-                }
+            if (preferences.getBoolean(NOTIFICATION_PREFERENCE, true)) {
+                setupNotificationWork()
+            } else {
+                WorkManager.getInstance().cancelAllWorkByTag(NotificationWorker.WORK_NAME)
             }
-
-            withContext(Dispatchers.Unconfined) {
-                showsRepository.refreshLatest()
-            }
-
-            //setupRecurringWork()
 
             MobileAds.initialize(applicationContext, "ca-app-pub-7666356884507044~9085371469")
-
-            applicationContext.startService(Intent(applicationContext, PusherService::class.java))
         }
     }
 
-    private fun setupRecurringWork() {
-        val constraints = Constraints.Builder()
-            //.setRequiredNetworkType(NetworkType.UNMETERED)
-            //.setRequiresBatteryNotLow(true)
-            //.setRequiresCharging(true)
-            .apply {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    setRequiresDeviceIdle(true)
-                }
-            }.build()
+    private fun setupNotificationWork() {
+        val constraints = if (BuildConfig.DEBUG) {
+            Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
+        } else {
+            Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .setRequiresBatteryNotLow(true)
+                .apply {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        setRequiresDeviceIdle(true)
+                    }
+                }.build()
+        }
 
-        val repeatingRequest = PeriodicWorkRequestBuilder<RefreshDataWorker>(5, TimeUnit.SECONDS)
-            .setConstraints(constraints)
-            .build()
+        val repeatingRequest = if (BuildConfig.DEBUG) {
+            PeriodicWorkRequestBuilder<NotificationWorker>(15, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .build()
+        } else {
+            PeriodicWorkRequestBuilder<NotificationWorker>(1, TimeUnit.HOURS)
+                .setConstraints(constraints)
+                .build()
+        }
 
         WorkManager.getInstance().enqueueUniquePeriodicWork(
-            RefreshDataWorker.WORK_NAME,
+            NotificationWorker.WORK_NAME,
             ExistingPeriodicWorkPolicy.KEEP,
             repeatingRequest
+        )
+    }
+
+    private fun setupRecurringWork() {
+        val oneTimeWorkRequest = OneTimeWorkRequestBuilder<RefreshDataWorker>().build()
+
+        WorkManager.getInstance().enqueueUniqueWork(
+            RefreshDataWorker.WORK_NAME,
+            ExistingWorkPolicy.REPLACE,
+            oneTimeWorkRequest
         )
     }
 

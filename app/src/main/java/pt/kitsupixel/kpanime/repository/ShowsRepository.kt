@@ -12,7 +12,6 @@ import pt.kitsupixel.kpanime.domain.EpisodeAndShow
 import pt.kitsupixel.kpanime.domain.Link
 import pt.kitsupixel.kpanime.domain.Show
 import pt.kitsupixel.kpanime.network.DTObjects.asDatabaseModel
-import pt.kitsupixel.kpanime.network.DTObjects.asDomainModel
 import pt.kitsupixel.kpanime.network.Network
 import retrofit2.HttpException
 import timber.log.Timber
@@ -44,15 +43,12 @@ class ShowsRepository(private val database: AppDatabase) {
             it?.episodeShowAsDomainModel()
         }
 
-    fun getShow(showId: Long): LiveData<Show?> {
-        return Transformations.map(database.showDao.get(showId)) {
+    fun getShow(showId: Long): LiveData<Show?> = Transformations.map(database.showDao.get(showId)) {
             it?.showMetaAsDomainModel()
         }
-    }
 
-    fun getShowObj(showId: Long): Show? {
-        return database.showDao.getObj(showId)?.showMetaAsDomainModel()
-    }
+    fun getShowObj(showId: Long): Show? = database.showDao.getObj(showId)?.showMetaAsDomainModel()
+
 
     fun getEpisodesByShow(showId: Long): LiveData<List<Episode>?> {
         return Transformations.map(database.episodeDao.getByShow(showId)) {
@@ -64,6 +60,10 @@ class ShowsRepository(private val database: AppDatabase) {
         return Transformations.map(database.episodeDao.get(episodeId)) {
             it?.episodeMetaAsDomainModel()
         }
+    }
+
+    fun getEpisodeObj(episodeId: Long): Episode? {
+        return database.episodeDao.getObj(episodeId)?.episodeAsDomainModel()
     }
 
 
@@ -109,17 +109,19 @@ class ShowsRepository(private val database: AppDatabase) {
         }
     }
 
-    suspend fun refreshLatest() {
+    suspend fun refreshLatest(): List<Long>? {
         if (BuildConfig.Logging) Timber.i("refreshLatest called!")
-        withContext(Dispatchers.IO) {
+        return withContext(Dispatchers.IO) {
             try {
                 val episodes = Network.KPanime.getLatestEpisodes().await()
                 database.episodeDao.insert(*episodes.asDatabaseModel())
             } catch (e: HttpException) {
                 // Log exception //
                 Timber.e(e.message())
+                null
             } catch (e: Throwable) {
-                // Log error //)
+                Timber.e(e.message.toString())
+                null
             }
         }
     }

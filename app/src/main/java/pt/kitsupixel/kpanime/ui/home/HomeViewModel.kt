@@ -1,12 +1,14 @@
 package pt.kitsupixel.kpanime.ui.home
 
 import android.app.Application
-import android.os.Handler
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import pt.kitsupixel.kpanime.database.getDatabase
 import pt.kitsupixel.kpanime.repository.ShowsRepository
 
@@ -25,12 +27,6 @@ class HomeViewModel(application: Application) : ViewModel() {
 
     var watched = showsRepository.watched
 
-    init {
-        Handler().postDelayed({
-            refresh()
-        }, 300L)
-    }
-
     private val _refreshing = MutableLiveData<Boolean>(true)
     val refreshing: LiveData<Boolean>
         get() = _refreshing
@@ -47,6 +43,10 @@ class HomeViewModel(application: Application) : ViewModel() {
             showsRepository.refreshLatest()
             _refreshing.value = false
         }
+    }
+
+    fun completeRefresh() {
+        _refreshing.value = false
     }
 
     class Factory(val app: Application) : ViewModelProvider.Factory {

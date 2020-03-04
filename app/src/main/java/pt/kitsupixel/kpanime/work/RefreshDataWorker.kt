@@ -4,17 +4,22 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.bumptech.glide.load.HttpException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import pt.kitsupixel.kpanime.database.getDatabase
-import pt.kitsupixel.kpanime.domain.EpisodeAndShow
 import pt.kitsupixel.kpanime.repository.ShowsRepository
 import timber.log.Timber
 
-class RefreshDataWorker(appContext: Context, params: WorkerParameters):
+class RefreshDataWorker(appContext: Context, params: WorkerParameters) :
     CoroutineWorker(appContext, params) {
 
     companion object {
         const val WORK_NAME = "RefreshDataWorker"
+        const val SUMMARY_ID = 0
+        const val GROUP_KEY_NEW_EPISODE = "pt.kitsupixel.kpanime.NEW_EPISODE"
     }
+
+    private val applicationScope = CoroutineScope(Dispatchers.Default)
 
     /**
      * A coroutine-friendly method to do your work.
@@ -24,22 +29,11 @@ class RefreshDataWorker(appContext: Context, params: WorkerParameters):
         val database = getDatabase(applicationContext)
         val repository = ShowsRepository(database)
 
+        Timber.d("Starting RefreshDataWorker")
+
         return try {
             repository.refreshShows()
             repository.refreshLatest()
-            val latest = repository.latest
-            val latestList: List<EpisodeAndShow>? = latest.value
-
-            if (latestList?.size!! > 0) {
-                for (episodeAndShow in latestList) {
-                    if (episodeAndShow.show.favorite == true) {
-                        Timber.i("New episode %s from your favorites found! %s", episodeAndShow.episode.number, episodeAndShow.show.title)
-                    } else {
-                        Timber.i("Not from your favorites %s : %s", episodeAndShow.episode.number, episodeAndShow.show.title)
-                    }
-                }
-            }
-
             Result.success()
         } catch (e: HttpException) {
             Result.retry()

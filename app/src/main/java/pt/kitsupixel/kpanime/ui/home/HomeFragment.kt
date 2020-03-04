@@ -149,6 +149,10 @@ class HomeFragment : Fragment() {
                     viewModelAdapterLatest.submitList(shows)
                     viewModelAdapterLatest.notifyDataSetChanged()
                 }
+
+                if (shows.size > 0) {
+                    viewModel.completeRefresh()
+                }
             }
         })
 

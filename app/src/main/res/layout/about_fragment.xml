@@ -70,28 +70,28 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/lgPadding"
-                android:layout_marginTop="@dimen/mdPadding"
-                android:layout_marginEnd="@dimen/lgPadding"
-                android:text="@string/about_3"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+<!--            <TextView-->
+<!--                android:id="@+id/textView6"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="@dimen/lgPadding"-->
+<!--                android:layout_marginTop="@dimen/mdPadding"-->
+<!--                android:layout_marginEnd="@dimen/lgPadding"-->
+<!--                android:text="@string/about_3"-->
+<!--                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/textView5" />-->
 
-            <Button
-                android:id="@+id/coffee_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/lgPadding"
-                android:text="@string/buy_me_coffee"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView6" />
+<!--            <Button-->
+<!--                android:id="@+id/coffee_button"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="@dimen/lgPadding"-->
+<!--                android:text="@string/buy_me_coffee"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/textView6" />-->
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>

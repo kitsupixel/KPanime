@@ -25,10 +25,6 @@ class LatestViewModel(application: Application) : ViewModel() {
     val refreshing: LiveData<Boolean>
         get() = _refreshing
 
-    init {
-        refresh()
-    }
-
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()

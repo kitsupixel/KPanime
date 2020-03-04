@@ -5,7 +5,6 @@ import androidx.room.*
 import pt.kitsupixel.kpanime.database.entities.DatabaseEpisode
 import pt.kitsupixel.kpanime.database.entities.DatabaseEpisodeAndMeta
 import pt.kitsupixel.kpanime.database.entities.DatabaseEpisodeAndShow
-import pt.kitsupixel.kpanime.database.entities.DatabaseEpisodeMeta
 
 @Dao
 interface EpisodeDao {
@@ -13,6 +12,9 @@ interface EpisodeDao {
     @Transaction
     @Query("SELECT * FROM episodes WHERE id = :id")
     fun get(id: Long): LiveData<DatabaseEpisodeAndMeta?>
+
+    @Query("SELECT * FROM episodes WHERE id = :id")
+    fun getObj(id: Long): DatabaseEpisode?
 
     @Transaction
     @Query("SELECT * FROM episodes WHERE show_id = :showId ORDER BY CASE type WHEN 'episode' THEN 1 WHEN 'batch' THEN 2 ELSE 3 END, CAST(number AS INT) DESC, released_on DESC")
@@ -31,8 +33,8 @@ interface EpisodeDao {
     @Query("UPDATE episode_meta SET downloaded = :state WHERE episode_id = :id")
     fun setDownloaded(id: Long, state: Boolean)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(vararg episodes: DatabaseEpisode)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insert(vararg episodes: DatabaseEpisode): List<Long>
 
     @Update
     fun update(vararg episodes: DatabaseEpisode)

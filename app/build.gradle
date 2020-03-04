@@ -23,8 +23,8 @@ android {
         applicationId "pt.kitsupixel.kpanime"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 31
-        versionName "1.31"
+        versionCode 33
+        versionName "1.33"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -133,6 +133,7 @@ dependencies {
 
     // WorkManager
     implementation "android.arch.work:work-runtime-ktx:$version_work"
+    androidTestImplementation "android.arch.work:work-testing:$version_work"
 
     // Material design components
     implementation "com.google.android.material:material:$version_material"
@@ -154,7 +155,4 @@ dependencies {
 
     // Preferences
     implementation "androidx.preference:preference:$version_preference"
-
-    // pusher
-    implementation "com.pusher:pusher-java-client:$version_pusher"
 }

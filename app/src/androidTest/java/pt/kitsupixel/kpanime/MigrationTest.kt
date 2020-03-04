@@ -1,18 +1,18 @@
 package pt.kitsupixel.kpanime
 
-import android.system.Os.close
 import androidx.room.Room
 import androidx.room.testing.MigrationTestHelper
 import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
 import pt.kitsupixel.kpanime.database.AppDatabase
 import pt.kitsupixel.kpanime.database.MIGRATION_3_4
 import pt.kitsupixel.kpanime.database.MIGRATION_4_5
+import pt.kitsupixel.kpanime.database.MIGRATION_5_6
 import java.io.IOException
-import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.Rule
 
 @RunWith(AndroidJUnit4::class)
 class MigrationTest {
@@ -20,7 +20,8 @@ class MigrationTest {
 
     // Array of all migrations
     private val ALL_MIGRATIONS = arrayOf(
-        MIGRATION_3_4, MIGRATION_4_5)
+        MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6
+    )
 
     @Rule
     val helper: MigrationTestHelper = MigrationTestHelper(
@@ -41,8 +42,8 @@ class MigrationTest {
         // once all migrations execute.
         Room.databaseBuilder(
             InstrumentationRegistry.getInstrumentation().getTargetContext(),
-            Room.,
-                    TEST_DB
+            AppDatabase::class.java,
+            TEST_DB
         ).addMigrations(*ALL_MIGRATIONS).build().apply {
             getOpenHelper().getWritableDatabase()
             close()
