@@ -33,12 +33,42 @@ interface EpisodeDao {
     @Query("UPDATE episode_meta SET downloaded = :state WHERE episode_id = :id")
     fun setDownloaded(id: Long, state: Boolean)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(vararg episodes: DatabaseEpisode): List<Long>
-
-    @Update
-    fun update(vararg episodes: DatabaseEpisode)
-
     @Delete
     fun delete(vararg episode: DatabaseEpisode)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insert(obj: DatabaseEpisode): Long
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insert(obj: List<DatabaseEpisode>): List<Long>
+
+    @Update
+    fun update(obj: DatabaseEpisode)
+
+    @Update
+    fun update(obj: List<DatabaseEpisode>)
+
+    @Transaction
+    fun insertOrUpdate(obj: DatabaseEpisode): Long {
+        val id = insert(obj)
+        if (id == -1L) update(obj)
+
+        return id
+    }
+
+    @Transaction
+    fun insertOrUpdate(objList: List<DatabaseEpisode>): List<Long> {
+        val insertResult = insert(objList).toMutableList()
+        val updateList = mutableListOf<DatabaseEpisode>()
+
+        for (i in insertResult.indices) {
+            if (insertResult[i] == -1L) {
+                updateList.add(objList[i])
+            }
+        }
+
+        if (updateList.isNotEmpty()) update(updateList)
+
+        return insertResult
+    }
 }

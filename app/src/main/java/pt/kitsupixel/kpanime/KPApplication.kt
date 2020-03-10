@@ -33,13 +33,13 @@ class KPApplication : Application() {
 
     private fun delayedInit() {
         applicationScope.launch {
-            setupRecurringWork()
-
             if (preferences.getBoolean(NOTIFICATION_PREFERENCE, true)) {
                 setupNotificationWork()
             } else {
                 WorkManager.getInstance().cancelAllWorkByTag(NotificationWorker.WORK_NAME)
             }
+
+            setupRecurringWork()
 
             MobileAds.initialize(applicationContext, "ca-app-pub-7666356884507044~9085371469")
         }

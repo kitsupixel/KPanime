@@ -7,7 +7,7 @@
         android:title="@string/title_notifications">
 
         <SwitchPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:icon="@drawable/ic_notifications_black_24dp"
             android:key="notifications_preference"
             android:summary="Receive notifications every time a new episode of your favorite shows is released"

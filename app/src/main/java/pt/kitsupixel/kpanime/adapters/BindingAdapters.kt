@@ -9,8 +9,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import coil.api.load
 import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.domain.Episode
 
@@ -57,33 +56,17 @@ fun goneIfEmpty(view: View, it: List<Any>?) {
 
 @BindingAdapter("imageCardUrl")
 fun setImageCardUrl(imageView: ImageView, url: String) {
-    Glide.with(imageView.context)
-        .load(url)
-        .apply(
-            RequestOptions()
-                .error(R.drawable.ic_broken_image)
-                .placeholder(R.drawable.loading_animation)
-                .centerCrop() // this cropping technique scales the image so that it fills the requested bounds and then crops the extra.
-        )
-        .into(imageView)
+    imageView.load(url) {
+        crossfade(true)
+        placeholder(R.drawable.loading_animation)
+    }
 }
 
 @BindingAdapter("imageUrl")
 fun setImageUrl(imageView: ImageView, url: String?) {
-    if (url != null) {
-        Glide.with(imageView.context)
-            .load(url)
-            .apply(
-                RequestOptions()
-                    .fitCenter()
-                    .error(R.drawable.ic_broken_image)
-                    .placeholder(R.drawable.loading_animation)
-            )
-            .into(imageView)
-    } else {
-        Glide.with(imageView.context)
-            .load(R.drawable.ic_broken_image)
-            .into(imageView)
+    imageView.load(url) {
+        crossfade(true)
+        placeholder(R.drawable.loading_animation)
     }
 }
 
@@ -133,8 +116,8 @@ fun episodeOrBatch(textView: TextView, episode: Episode?) {
 @BindingAdapter("episodeImageButtonTint")
 fun episodeImageButtonTint(imageButton: ImageButton, value: Boolean?) {
     imageButton.colorFilter = null
-    if (value != null) {
-        if (value) {
+    if (value != null && value) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             imageButton.setColorFilter(
                 imageButton.context.resources.getColor(
                     when (imageButton.id) {

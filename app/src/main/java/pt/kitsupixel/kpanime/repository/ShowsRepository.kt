@@ -98,7 +98,7 @@ class ShowsRepository(private val database: AppDatabase) {
         withContext(Dispatchers.IO) {
             try {
                 val episodes = Network.KPanime.getEpisodes(showId).await()
-                database.episodeDao.insert(*episodes.asDatabaseModel())
+                database.episodeDao.insertOrUpdate(episodes.asDatabaseModel().toList())
             } catch (e: HttpException) {
                 // Log exception //
                 e.printStackTrace()
@@ -114,7 +114,7 @@ class ShowsRepository(private val database: AppDatabase) {
         return withContext(Dispatchers.IO) {
             try {
                 val episodes = Network.KPanime.getLatestEpisodes().await()
-                database.episodeDao.insert(*episodes.asDatabaseModel())
+                database.episodeDao.insertOrUpdate(episodes.asDatabaseModel().toList())
             } catch (e: HttpException) {
                 // Log exception //
                 Timber.e(e.message())

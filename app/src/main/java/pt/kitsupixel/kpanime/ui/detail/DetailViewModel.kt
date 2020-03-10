@@ -57,7 +57,7 @@ class DetailViewModel(application: Application, private val showId: Long) : View
 
         Handler().postDelayed({
             refresh()
-        }, 300L)
+        }, 1000L)
 
         _refreshing.value = false
     }

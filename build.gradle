@@ -22,7 +22,7 @@ buildscript {
         version_timber = "4.7.1"
         version_multidex = "1.0.3"
         version_material = "1.1.0"
-        version_admob = "18.3.0"
+        version_admob = "19.0.0"
         version_torrent_stream = "2.6.1"
         version_preference = "1.1.0"
         version_junit = "4.12"
@@ -30,7 +30,7 @@ buildscript {
         version_espresso = "3.2.0"
         version_legacy = "1.0.0"
         version_lifecycle = "2.2.0"
-        version_pusher = "2.0.2"
+        version_coil = "0.9.5"
     }
     repositories {
         google()

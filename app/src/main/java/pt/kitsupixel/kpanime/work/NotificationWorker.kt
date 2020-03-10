@@ -12,17 +12,16 @@ import androidx.core.app.TaskStackBuilder
 import androidx.navigation.NavDeepLinkBuilder
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.bumptech.glide.load.HttpException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import pt.kitsupixel.kpanime.BuildConfig
 import pt.kitsupixel.kpanime.R
 import pt.kitsupixel.kpanime.database.getDatabase
 import pt.kitsupixel.kpanime.domain.EpisodeAndShow
 import pt.kitsupixel.kpanime.repository.ShowsRepository
 import pt.kitsupixel.kpanime.ui.detail.DetailActivity
 import pt.kitsupixel.kpanime.ui.main.MainActivity
+import retrofit2.HttpException
 import timber.log.Timber
 
 class NotificationWorker(appContext: Context, params: WorkerParameters) :
@@ -50,10 +49,7 @@ class NotificationWorker(appContext: Context, params: WorkerParameters) :
             withContext(applicationScope.coroutineContext) {
                 val notifications = mutableListOf<EpisodeAndShow>()
 
-                var insertedIds = repository.refreshLatest()
-
-                if (BuildConfig.DEBUG)
-                    insertedIds = mutableListOf(21135, 21134)
+                val insertedIds = repository.refreshLatest()
 
                 Timber.d("InsertedIds: ${insertedIds.toString()}")
 
@@ -64,13 +60,11 @@ class NotificationWorker(appContext: Context, params: WorkerParameters) :
                         if (episode != null) {
                             val show = repository.getShowObj(episode.show_id)
                             Timber.d("Show: %s", show?.title.toString())
-                            if (show != null) {
+                            if (show != null && show.favorite) {
                                 Timber.d("New notification! %s : %s", show.title, episode.number)
                                 notifications.add(
                                     EpisodeAndShow(episode, show)
                                 )
-//                                } else if (show != null) {
-//                                    Timber.d("New episode but no notification! %s : %s", show.title, episode.number)
                             }
                         }
                     }
